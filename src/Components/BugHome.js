@@ -21,6 +21,7 @@ import Switch from '@mui/material/Switch'
 import DeleteIcon from '@mui/icons-material/Delete'
 import FilterListIcon from '@mui/icons-material/FilterList'
 import { visuallyHidden } from '@mui/utils'
+import apiUrl from './../apiUrl'
 
 function createData(name, issue, priority, estimatedTime, dateDue, assigned) {
 	return {
@@ -32,6 +33,14 @@ function createData(name, issue, priority, estimatedTime, dateDue, assigned) {
 		assigned
 	}
 }
+
+React.useEffect(() => {
+	fetch(apiUrl + '/bugs/')
+		.then((res) => res.json())
+		.then((data) => {
+			console.log(data)
+		})
+}, [])
 
 const rows = [
 	createData('Table not displaying', 'React', 1, 4, 'date', 'Shanti'),
