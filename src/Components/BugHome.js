@@ -22,21 +22,22 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import FilterListIcon from '@mui/icons-material/FilterList'
 import { visuallyHidden } from '@mui/utils'
 
-function createData(name, calories, fat, carbs, protein) {
+function createData(name, issue, priority, estimatedTime, dateDue, assigned) {
 	return {
 		name,
-		calories,
-		fat,
-		carbs,
-		protein
+		issue,
+		priority,
+		estimatedTime,
+		dateDue,
+		assigned
 	}
 }
 
 const rows = [
-	createData('Cupcake', 305, 3.7, 67, 4.3),
-	createData('Donut', 452, 25.0, 51, 4.9),
-	createData('Eclair', 262, 16.0, 24, 6.0),
-	createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+	createData('Table not displaying', 'React', 1, 4, 'date', 'Shanti'),
+	createData('API delete route', 'Express', 2, 1, 'date', 'Alex'),
+	createData('CSS Styling indentation', 'React', 3, 24, 'date', 'Irais'),
+	createData('Theme', 'MUI library', 3, 6, 'date', 'Alexandra'),
 	createData('Gingerbread', 356, 16.0, 49, 3.9),
 	createData('Honeycomb', 408, 3.2, 87, 6.5),
 	createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
@@ -81,33 +82,39 @@ function stableSort(array, comparator) {
 const headCells = [
 	{
 		id: 'name',
-		numeric: false,
+		align: 'left',
 		disablePadding: true,
-		label: 'Dessert (100g serving)'
+		label: 'Bug Name'
+	},
+	// {
+	// 	id: 'issues',
+	// 	numeric: false,
+	// 	disablePadding: true,
+	// 	label: 'Issues'
+	// },
+	// {
+	// 	id: 'priority',
+	// 	numeric: true,
+	// 	disablePadding: false,
+	// 	label: 'Priority'
+	// },
+	// {
+	// 	id: 'timeEstimate',
+	// 	numeric: true,
+	// 	disablePadding: false,
+	// 	label: 'Estimated Time'
+	// },
+	{
+		id: 'dateDue',
+		align: 'center',
+		disablePadding: true,
+		label: 'Due Date'
 	},
 	{
-		id: 'calories',
-		numeric: true,
+		id: 'assigned',
+		align: 'right',
 		disablePadding: false,
-		label: 'Calories'
-	},
-	{
-		id: 'fat',
-		numeric: true,
-		disablePadding: false,
-		label: 'Fat (g)'
-	},
-	{
-		id: 'carbs',
-		numeric: true,
-		disablePadding: false,
-		label: 'Carbs (g)'
-	},
-	{
-		id: 'protein',
-		numeric: true,
-		disablePadding: false,
-		label: 'Protein (g)'
+		label: 'Assigned To'
 	}
 ]
 
@@ -134,14 +141,14 @@ function EnhancedTableHead(props) {
 						checked={rowCount > 0 && numSelected === rowCount}
 						onChange={onSelectAllClick}
 						inputProps={{
-							'aria-label': 'select all desserts'
+							'aria-label': 'select all bugs'
 						}}
 					/>
 				</TableCell>
 				{headCells.map((headCell) => (
 					<TableCell
 						key={headCell.id}
-						align={headCell.numeric ? 'right' : 'left'}
+						align={headCell.align}
 						padding={headCell.disablePadding ? 'none' : 'normal'}
 						sortDirection={orderBy === headCell.id ? order : false}
 					>
@@ -206,7 +213,7 @@ const EnhancedTableToolbar = (props) => {
 					id="tableTitle"
 					component="div"
 				>
-					Nutrition
+					All Bugs
 				</Typography>
 			)}
 
@@ -299,7 +306,7 @@ const BugHome = () => {
 				<EnhancedTableToolbar numSelected={selected.length} />
 				<TableContainer>
 					<Table
-						sx={{ minWidth: 750 }}
+						sx={{ minWidth: 375 }}
 						aria-labelledby="tableTitle"
 						size={dense ? 'small' : 'medium'}
 					>
@@ -347,10 +354,8 @@ const BugHome = () => {
 											>
 												{row.name}
 											</TableCell>
-											<TableCell align="right">{row.calories}</TableCell>
-											<TableCell align="right">{row.fat}</TableCell>
-											<TableCell align="right">{row.carbs}</TableCell>
-											<TableCell align="right">{row.protein}</TableCell>
+											<TableCell align="left">{row.dateDue}</TableCell>
+											<TableCell align="right">{row.assigned}</TableCell>
 										</TableRow>
 									)
 								})}
