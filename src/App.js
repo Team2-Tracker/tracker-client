@@ -1,9 +1,15 @@
 import './App.css'
+import { Routes, Route } from 'react-router-dom'
+import BugHome from './Components/BugHome'
+import TopNavBar from './Components/TopNavBar'
 
 function App() {
 	return (
 		<div className="App">
-			<h1>Homepage</h1>
+			<TopNavBar />
+			<Routes>
+				<Route path="/" element={<BugHome />} />
+			</Routes>
 		</div>
 	)
 }
