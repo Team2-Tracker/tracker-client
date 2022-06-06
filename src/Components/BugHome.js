@@ -34,14 +34,6 @@ function createData(name, issue, priority, estimatedTime, dateDue, assigned) {
 	}
 }
 
-React.useEffect(() => {
-	fetch(apiUrl + '/bugs/')
-		.then((res) => res.json())
-		.then((data) => {
-			console.log(data)
-		})
-}, [])
-
 const rows = [
 	createData('Table not displaying', 'React', 1, 4, 'date', 'Shanti'),
 	createData('API delete route', 'Express', 2, 1, 'date', 'Alex'),
@@ -254,6 +246,14 @@ const BugHome = () => {
 	const [page, setPage] = React.useState(0)
 	const [dense, setDense] = React.useState(false)
 	const [rowsPerPage, setRowsPerPage] = React.useState(5)
+
+	React.useEffect(() => {
+		fetch(apiUrl + '/bugs/')
+			.then((res) => res.json())
+			.then((data) => {
+				console.log(data)
+			})
+	}, [])
 
 	const handleRequestSort = (event, property) => {
 		const isAsc = orderBy === property && order === 'asc'
