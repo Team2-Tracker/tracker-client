@@ -9,6 +9,7 @@ import IconButton from '@mui/material/IconButton'
 import PetsIcon from '@mui/icons-material/Pets'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
+import About from '../Components/About'
 
 const TopNavBar = () => {
 
@@ -44,14 +45,15 @@ const TopNavBar = () => {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClose} component={RouterLink} to="/">Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={handleClose} component={RouterLink} to="/">Bugs</MenuItem>
+		<MenuItem onClick={handleClose} component={RouterLink} to="/users">Users</MenuItem>
+        <MenuItem onClick={handleClose} component={RouterLink} to="/about">About</MenuItem>
+        
       </Menu>
 
 					<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
 						News
-					</Typography>
+		 			</Typography>
 					<Button color="inherit">Login</Button>
 				</Toolbar>
 			</AppBar>
