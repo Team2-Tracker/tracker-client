@@ -56,47 +56,46 @@ const BugHome = () => {
 	}, [])
 
 	// For mobile, only display 3 columns:
-	let headCells = [
-		{
-			id: 'name',
-			align: 'left',
-			disablePadding: true,
-			label: 'Bug Name'
-		},
-		{
-			id: 'dateDue',
-			align: 'center',
-			disablePadding: true,
-			label: 'Date Due'
-		},
-		{
-			id: 'assigned',
-			align: 'right',
-			disablePadding: false,
-			label: 'Assigned To'
+	const headCells = () => {
+		let headCells = [
+			{
+				id: 'name',
+				align: 'left',
+				disablePadding: true,
+				label: 'Bug Name'
+			},
+			{
+				id: 'dateDue',
+				align: 'center',
+				disablePadding: true,
+				label: 'Date Due'
+			},
+			{
+				id: 'assigned',
+				align: 'right',
+				disablePadding: false,
+				label: 'Assigned To'
+			}
+		]
+		// Add "Issues" column at 600px
+		if (tablet) {
+			headCells.splice(1, 0, {
+				id: 'issues',
+				align: 'center',
+				disablePadding: true,
+				label: 'Issues'
+			})
 		}
-	]
-	// Add/Remove "Issues" column at 600px
-	if (tablet) {
-		headCells.splice(1, 0, {
-			id: 'issues',
-			align: 'center',
-			disablePadding: true,
-			label: 'Issues'
-		})
-	} else if (!tablet) {
-		headCells.splice(1, 1)
-	}
-	// Add/Remove "Date created" column at 900px
-	if (desktop) {
-		headCells.splice(3, 0, {
-			id: 'dateCreated',
-			align: 'center',
-			disablePadding: true,
-			label: 'Date Created'
-		})
-	} else if (!desktop) {
-		headCells.splice(3, 1)
+		// Add "Date created" column at 900px
+		if (desktop) {
+			headCells.splice(3, 0, {
+				id: 'dateCreated',
+				align: 'center',
+				disablePadding: true,
+				label: 'Date Created'
+			})
+		}
+		return headCells
 	}
 
 	function descendingComparator(a, b, orderBy) {
@@ -128,7 +127,7 @@ const BugHome = () => {
 		})
 		return stabilizedThis.map((el) => el[0])
 	}
-
+	// Creates the Table Heading with sort and list functionality
 	function EnhancedTableHead(props) {
 		const {
 			onSelectAllClick,
@@ -146,6 +145,7 @@ const BugHome = () => {
 			<TableHead>
 				<TableRow>
 					<TableCell padding="checkbox">
+						{/* This is the checkbox to select all - delete? */}
 						<Checkbox
 							color="primary"
 							indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -156,18 +156,22 @@ const BugHome = () => {
 							}}
 						/>
 					</TableCell>
-					{headCells.map((headCell) => (
+					{/* This maps through the headCells array to create each header */}
+					{headCells().map((headCell) => (
+						// Creates the Header itself
 						<TableCell
 							key={headCell.id}
 							align={headCell.align}
 							padding={headCell.disablePadding ? 'none' : 'normal'}
 							sortDirection={orderBy === headCell.id ? order : false}
 						>
+							{/* This is the sort label, where and what direction */}
 							<TableSortLabel
 								active={orderBy === headCell.id}
 								direction={orderBy === headCell.id ? order : 'asc'}
 								onClick={createSortHandler(headCell.id)}
 							>
+								{/* This is the actual name of the heading */}
 								{headCell.label}
 								{orderBy === headCell.id ? (
 									<Box component="span" sx={visuallyHidden}>
@@ -331,6 +335,21 @@ const BugHome = () => {
 								.map((row, index) => {
 									const isItemSelected = isSelected(row.name)
 									const labelId = `enhanced-table-checkbox-${index}`
+									// Populate Issues at 600px
+									let issuesCell = ''
+									if (tablet) {
+										issuesCell = (
+											<TableCell align="center">{row.issues}</TableCell>
+										)
+									}
+									let dateCreatedCell = ''
+									if (desktop) {
+										dateCreatedCell = (
+											<TableCell align="center">
+												{moment(row.dateCreated).format('MMM Do YY')}
+											</TableCell>
+										)
+									}
 
 									return (
 										<TableRow
@@ -359,9 +378,11 @@ const BugHome = () => {
 											>
 												{row.bugName}
 											</TableCell>
+											{issuesCell}
 											<TableCell align="left">
 												{moment(row.dateDue).format('MMM Do YY')}
 											</TableCell>
+											{dateCreatedCell}
 											<TableCell align="right">{row.assigned}</TableCell>
 										</TableRow>
 									)
