@@ -23,6 +23,7 @@ import FilterListIcon from '@mui/icons-material/FilterList'
 import { visuallyHidden } from '@mui/utils'
 import apiUrl from './../apiUrl'
 import useMediaQuery from '@mui/material/useMediaQuery'
+import moment from 'moment'
 
 const BugHome = () => {
 	// Table display order
@@ -358,7 +359,9 @@ const BugHome = () => {
 											>
 												{row.bugName}
 											</TableCell>
-											<TableCell align="left">{row.dateDue}</TableCell>
+											<TableCell align="left">
+												{moment(row.dateDue).format('MMM Do YY')}
+											</TableCell>
 											<TableCell align="right">{row.assigned}</TableCell>
 										</TableRow>
 									)
