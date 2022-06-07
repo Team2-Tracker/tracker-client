@@ -1,6 +1,7 @@
 import React from "react";
 import img1 from '../Images/alexandra.jpeg';
 import img2 from '../Images/Shanti-Headshot.jpeg';
+import img3 from '../Images/Alex-Becker.jpeg';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -46,19 +47,22 @@ function About() {
     <Grid item xs={12} sm={6} md={3}>
         
     <Card sx={{ minWidth: 345 }}>
-       <img src="" />
+       <img src={img3} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           Alex Becker
         </Typography>
         <Typography variant="body2" color="text.secondary">
-        Words
+        I am a software engineer with a background in healthcare revenue cycle. 
+        Utilizing empathetic interpersonal skills with composed analytical skills to identify and resolve challenges in a fast paced stressful environment. 
+        Passionate about improving the user experience through collaborative innovation that will increase overall consumer engagement. 
+        Driven by creativity to cultivate unique solutions to front end development that would regenerate the tech space through design and functionality. 
 
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" href="">Portfolio</Button>
-        <Button size="small" href="">Github</Button>
+        <Button size="small" href="https://abeck3423.github.io/portfolio/">Portfolio</Button>
+        <Button size="small" href="https://github.com/abeck3423">Github</Button>
       </CardActions>
     </Card>
     </Grid>
