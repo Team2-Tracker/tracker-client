@@ -1,6 +1,5 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
-import { alpha } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -8,38 +7,37 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
 import TableRow from '@mui/material/TableRow'
-import Toolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
 import Paper from '@mui/material/Paper'
 import Checkbox from '@mui/material/Checkbox'
-import IconButton from '@mui/material/IconButton'
-import Tooltip from '@mui/material/Tooltip'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
-import DeleteIcon from '@mui/icons-material/Delete'
-import FilterListIcon from '@mui/icons-material/FilterList'
 import apiUrl from './../apiUrl'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import moment from 'moment'
-import Menu from '@mui/material/Menu'
-import MenuItem from '@mui/material/MenuItem'
-import { handleFilterRowsBy, getComparator, stableSort } from './Utils'
+import {
+	getComparator,
+	stableSort,
+	handleRequestSort,
+	handleSelectAllClick,
+	handleSelectOneRow,
+	handleChangePage,
+	handleChangeRowsPerPage,
+	handleChangeDense
+} from './Utils'
 import EnhancedTableHead from './EnhancedTableHead'
+import FilterMenu from './FilterMenu'
+import EnhancedTableToolbar from './EnhancedTableToolbar'
 
 const BugHome = () => {
-	// Table display order
+	// States for Controlling Table
 	const [order, setOrder] = React.useState('asc')
-	// Which column to order by
 	const [orderBy, setOrderBy] = React.useState('calories')
-	// Which items in list are selected
 	const [selected, setSelected] = React.useState([])
-	// Which page of data is displaying
 	const [page, setPage] = React.useState(0)
-	// Dense display state (true / false)
 	const [dense, setDense] = React.useState(false)
-	// How many rows to display per page
 	const [rowsPerPage, setRowsPerPage] = React.useState(5)
-	// Table row data
+	const [title, setTitle] = React.useState('All Bugs')
+	// Table row data to display
 	const [rows, setRows] = React.useState([])
 	// All bugs
 	const [allBugs, setAllBugs] = React.useState([])
@@ -117,62 +115,6 @@ const BugHome = () => {
 		return headCells
 	}
 
-	const EnhancedTableToolbar = (props) => {
-		const { numSelected } = props
-
-		return (
-			// This toolbar contains the table header OR the selected bugs feature
-			<Toolbar
-				sx={{
-					pl: { sm: 2 },
-					pr: { xs: 1, sm: 1 },
-					...(numSelected > 0 && {
-						bgcolor: (theme) =>
-							alpha(
-								theme.palette.primary.main,
-								theme.palette.action.activatedOpacity
-							)
-					})
-				}}
-			>
-				{/* Ternary displays title or selected */}
-				{numSelected > 0 ? (
-					<Typography
-						sx={{ flex: '1 1 100%' }}
-						color="inherit"
-						variant="subtitle1"
-						component="div"
-					>
-						{numSelected} selected
-					</Typography>
-				) : (
-					<Typography
-						sx={{ flex: '1 1 100%' }}
-						variant="h6"
-						id="tableTitle"
-						component="div"
-					>
-						All Bugs
-					</Typography>
-				)}
-				{/* Ternary displays delete button OR filter as appropriate */}
-				{numSelected > 0 ? (
-					<Tooltip title="Delete">
-						<IconButton>
-							<DeleteIcon />
-						</IconButton>
-					</Tooltip>
-				) : (
-					<Tooltip title="Filter list" onClick={handleMenuOpen}>
-						<IconButton>
-							<FilterListIcon />
-						</IconButton>
-					</Tooltip>
-				)}
-			</Toolbar>
-		)
-	}
-
 	EnhancedTableHead.propTypes = {
 		numSelected: PropTypes.number.isRequired,
 		onRequestSort: PropTypes.func.isRequired,
@@ -186,59 +128,6 @@ const BugHome = () => {
 		numSelected: PropTypes.number.isRequired
 	}
 
-	// This function handles the sort order
-	const handleRequestSort = (event, property) => {
-		const isAsc = orderBy === property && order === 'asc'
-		setOrder(isAsc ? 'desc' : 'asc')
-		setOrderBy(property)
-	}
-
-	// Handles selecting all rows in the table header
-	const handleSelectAllClick = (event) => {
-		if (event.target.checked) {
-			const newSelecteds = rows.map((n) => n.name)
-			setSelected(newSelecteds)
-			return
-		}
-		setSelected([])
-	}
-
-	// Handles selecting one item from the list
-	const handleClick = (event, name) => {
-		const selectedIndex = selected.indexOf(name)
-		let newSelected = []
-
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, name)
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1))
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1))
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(
-				selected.slice(0, selectedIndex),
-				selected.slice(selectedIndex + 1)
-			)
-		}
-		setSelected(newSelected)
-	}
-
-	// Changes which page is being displayed
-	const handleChangePage = (event, newPage) => {
-		setPage(newPage)
-	}
-
-	// Changes number of rows displayed per page
-	const handleChangeRowsPerPage = (event) => {
-		setRowsPerPage(parseInt(event.target.value, 10))
-		setPage(0)
-	}
-
-	// Toggles the padding
-	const handleChangeDense = (event) => {
-		setDense(event.target.checked)
-	}
-
 	// Selects whichever row is entered as name
 	const isSelected = (name) => selected.indexOf(name) !== -1
 
@@ -246,66 +135,23 @@ const BugHome = () => {
 	const emptyRows =
 		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0
 
-	// let tableAll = ''
-	console.log(rows)
-	// if (rows) {
-	// 	}
-	// }
-
 	return (
 		<Box sx={{ width: '100%' }}>
-			<Menu
-				id="filter-menu"
+			<FilterMenu
 				anchorEl={anchorEl}
-				open={menuOpen}
+				menuOpen={menuOpen}
 				onClose={handleMenuClose}
-				MenuListProps={{
-					'aria-labelledby': 'basic-button'
-				}}
-			>
-				<MenuItem
-					onClick={() => {
-						handleMenuClose()
-						handleFilterRowsBy('all', allBugs, setRows)
-					}}
-				>
-					All Bugs
-				</MenuItem>
-				<MenuItem
-					onClick={() => {
-						handleMenuClose()
-						handleFilterRowsBy('active', allBugs, setRows)
-					}}
-				>
-					Active Bugs
-				</MenuItem>
-				<MenuItem
-					onClick={() => {
-						handleMenuClose()
-						handleFilterRowsBy('closed', allBugs, setRows)
-					}}
-				>
-					Closed Bugs
-				</MenuItem>
-				<MenuItem
-					onClick={() => {
-						handleMenuClose()
-						handleFilterRowsBy('assigned', allBugs, setRows)
-					}}
-				>
-					Assigned Bugs
-				</MenuItem>
-				<MenuItem
-					onClick={() => {
-						handleMenuClose()
-						handleFilterRowsBy('unassigned', allBugs, setRows)
-					}}
-				>
-					Unassigned Bugs
-				</MenuItem>
-			</Menu>
+				handleMenuClose={handleMenuClose}
+				allBugs={allBugs}
+				setRows={setRows}
+				setTitle={setTitle}
+			/>
 			<Paper sx={{ width: '100%', mb: 2 }}>
-				<EnhancedTableToolbar numSelected={selected.length} />
+				<EnhancedTableToolbar
+					numSelected={selected.length}
+					handleMenuOpen={handleMenuOpen}
+					title={title}
+				/>
 				<TableContainer>
 					<Table
 						sx={{ minWidth: 370 }}
@@ -316,8 +162,19 @@ const BugHome = () => {
 							numSelected={selected.length}
 							order={order}
 							orderBy={orderBy}
-							onSelectAllClick={handleSelectAllClick}
-							onRequestSort={handleRequestSort}
+							onSelectAllClick={(event) =>
+								handleSelectAllClick(event, rows, setSelected)
+							}
+							onRequestSort={(event, property) =>
+								handleRequestSort(
+									event,
+									property,
+									order,
+									orderBy,
+									setOrder,
+									setOrderBy
+								)
+							}
 							rowCount={rows.length}
 							headCells={headCells}
 						/>
@@ -349,7 +206,14 @@ const BugHome = () => {
 										return (
 											<TableRow
 												hover
-												onClick={(event) => handleClick(event, row._id)}
+												onClick={(event) =>
+													handleSelectOneRow(
+														event,
+														row._id,
+														selected,
+														setSelected
+													)
+												}
 												role="checkbox"
 												aria-checked={isItemSelected}
 												tabIndex={-1}
@@ -401,12 +265,21 @@ const BugHome = () => {
 					count={rows.length}
 					rowsPerPage={rowsPerPage}
 					page={page}
-					onPageChange={handleChangePage}
-					onRowsPerPageChange={handleChangeRowsPerPage}
+					onPageChange={(event, newPage) =>
+						handleChangePage(event, newPage, setPage)
+					}
+					onRowsPerPageChange={(event) =>
+						handleChangeRowsPerPage(event, setRowsPerPage, setPage)
+					}
 				/>
 			</Paper>
 			<FormControlLabel
-				control={<Switch checked={dense} onChange={handleChangeDense} />}
+				control={
+					<Switch
+						checked={dense}
+						onChange={(event) => handleChangeDense(event, setDense)}
+					/>
+				}
 				label="Dense padding"
 			/>
 		</Box>
