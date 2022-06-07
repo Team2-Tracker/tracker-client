@@ -4,6 +4,7 @@ import React from "react";
 
 function About() {
     return (
+
         <div className="about">
          
           Tracker is an interactive app that tracks bugs and can assign them to users for comments and resolution. 
@@ -13,10 +14,6 @@ function About() {
           Patience and a natural curiosity is what she brings to a progressive environment.
 
           </div>
-         
-
-
-
       
     );
 }
