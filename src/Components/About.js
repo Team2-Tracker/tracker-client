@@ -10,7 +10,6 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 
 
-
 function About() {
     return (
 
@@ -67,10 +66,7 @@ function About() {
     </Card>
     </Grid>
 
-    
-   
 
-    
     <Grid item xs={12} sm={6} md={3}>
           
     <Card sx={{ minWidth: 345 }}>
@@ -114,10 +110,10 @@ function About() {
           </Card>
           </Grid>
     </Grid>
-  
           
           </div>
     
+
     );
 }
 
