@@ -57,8 +57,8 @@ function About() {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" href="https://alexandracrvz.github.io/Portfolio/">Portfolio</Button>
-        <Button size="small" href="https://github.com/alexandracrvz">Github</Button>
+        <Button size="small" href="">Portfolio</Button>
+        <Button size="small" href="">Github</Button>
       </CardActions>
     </Card>
     </Grid>
@@ -104,8 +104,8 @@ function About() {
               </Typography>
             </CardContent>
             <CardActions>
-              <Button size="small">Portfolio</Button>
-              <Button size="small">Github</Button>
+              <Button size="small" href="https://alexandracrvz.github.io/Portfolio/">Portfolio</Button>
+              <Button size="small" href="https://github.com/alexandracrvz">Github</Button>
             </CardActions>
           </Card>
           </Grid>
