@@ -34,8 +34,8 @@ function About() {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" href="https://alexandracrvz.github.io/Portfolio/">Portfolio</Button>
-        <Button size="small" href="https://github.com/alexandracrvz">Github</Button>
+        <Button size="small" href="https://shantibetts.github.io/Portfolio/">Portfolio</Button>
+        <Button size="small" href="https://github.com/shantibetts">Github</Button>
       </CardActions>
     </Card>
     </Grid>
