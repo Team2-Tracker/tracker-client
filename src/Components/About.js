@@ -3,7 +3,7 @@ import React from "react";
 
 function About() {
     return (
-      <h1>Tracker is an interactive app that tracks bugs/issues and can assign them to users for comments and resolution. Created by: </h1>
+      <h1>Tracker is an interactive app that tracks bugs and can assign them to users for comments and resolution. Created by: </h1>
     );
   
 
