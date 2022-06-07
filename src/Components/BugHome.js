@@ -2,34 +2,28 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 import Box from '@mui/material/Box'
 import Table from '@mui/material/Table'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
+import TrackerTableBody from './TrackerTableBody'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
-import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
-import Checkbox from '@mui/material/Checkbox'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
 import apiUrl from './../apiUrl'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import moment from 'moment'
 import {
-	getComparator,
-	stableSort,
 	handleRequestSort,
 	handleSelectAllClick,
-	handleSelectOneRow,
 	handleChangePage,
 	handleChangeRowsPerPage,
 	handleChangeDense
 } from './Utils'
+import { bugTableHeadCells } from './TableConfig'
 import EnhancedTableHead from './EnhancedTableHead'
 import FilterMenu from './FilterMenu'
 import EnhancedTableToolbar from './EnhancedTableToolbar'
 
 const BugHome = () => {
-	// States for Controlling Table
+	// States for controlling the Table
 	const [order, setOrder] = React.useState('asc')
 	const [orderBy, setOrderBy] = React.useState('calories')
 	const [selected, setSelected] = React.useState([])
@@ -39,18 +33,28 @@ const BugHome = () => {
 	const [title, setTitle] = React.useState('All Bugs')
 	// Table row data to display
 	const [rows, setRows] = React.useState([])
-	// All bugs
+	// All bugs from fetch request
 	const [allBugs, setAllBugs] = React.useState([])
 	// State for controlling filter menu
 	const [anchorEl, setAnchorEl] = React.useState(null)
 	const menuOpen = Boolean(anchorEl)
-
+	// State for controlling the Add Bug and Edit Bug form dialogs
+	const [addBugOpen, setAddBugOpen] = React.useState(false)
+	const [editBugOpen, setEditBugOpen] = React.useState(false)
 	// Event handlers for menu open and close
 	const handleMenuOpen = (event) => {
 		setAnchorEl(event.currentTarget)
 	}
 	const handleMenuClose = () => {
 		setAnchorEl(null)
+	}
+	// Open and close the Add Bug Form
+	const handleAddBugToggle = () => {
+		setAddBugOpen(!addBugOpen)
+	}
+	// Open and close the Edit Bug Form
+	const handleEditBugToggle = () => {
+		setEditBugOpen(!editBugOpen)
 	}
 
 	// Media queries to figure out how many table columns to display
@@ -71,49 +75,6 @@ const BugHome = () => {
 	React.useEffect(() => {
 		fetchAllBugs()
 	}, [])
-
-	// For mobile, only display 3 columns:
-	const headCells = () => {
-		let headCells = [
-			{
-				id: 'name',
-				align: 'left',
-				disablePadding: true,
-				label: 'Bug Name'
-			},
-			{
-				id: 'dateDue',
-				align: 'center',
-				disablePadding: true,
-				label: 'Date Due'
-			},
-			{
-				id: 'assigned',
-				align: 'right',
-				disablePadding: false,
-				label: 'Assigned To'
-			}
-		]
-		// Add "Issues" column at 600px
-		if (tablet) {
-			headCells.splice(1, 0, {
-				id: 'issues',
-				align: 'center',
-				disablePadding: true,
-				label: 'Issues'
-			})
-		}
-		// Add "Date created" column at 900px
-		if (desktop) {
-			headCells.splice(3, 0, {
-				id: 'dateCreated',
-				align: 'center',
-				disablePadding: true,
-				label: 'Date Created'
-			})
-		}
-		return headCells
-	}
 
 	EnhancedTableHead.propTypes = {
 		numSelected: PropTypes.number.isRequired,
@@ -151,6 +112,7 @@ const BugHome = () => {
 					numSelected={selected.length}
 					handleMenuOpen={handleMenuOpen}
 					title={title}
+					handleAddBugToggle={handleAddBugToggle}
 				/>
 				<TableContainer>
 					<Table
@@ -176,87 +138,22 @@ const BugHome = () => {
 								)
 							}
 							rowCount={rows.length}
-							headCells={headCells}
+							headCells={() => bugTableHeadCells(tablet, desktop)}
 						/>
-						<TableBody>
-							{
-								/* if you don't need to support IE11, you can replace the `stableSort` call with:
-                            rows.slice().sort(getComparator(order, orderBy)) */
-								stableSort(rows, getComparator(order, orderBy))
-									.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-									.map((row, index) => {
-										const isItemSelected = isSelected(row._id)
-										const labelId = `enhanced-table-checkbox-${index}`
-										// Populate Issues at 600px
-										let issuesCell = ''
-										if (tablet) {
-											issuesCell = (
-												<TableCell align="center">{row.issues}</TableCell>
-											)
-										}
-										let dateCreatedCell = ''
-										if (desktop) {
-											dateCreatedCell = (
-												<TableCell align="center">
-													{moment(row.dateCreated).format('MMM Do YY')}
-												</TableCell>
-											)
-										}
-
-										return (
-											<TableRow
-												hover
-												onClick={(event) =>
-													handleSelectOneRow(
-														event,
-														row._id,
-														selected,
-														setSelected
-													)
-												}
-												role="checkbox"
-												aria-checked={isItemSelected}
-												tabIndex={-1}
-												key={row._id}
-												selected={isItemSelected}
-											>
-												<TableCell padding="checkbox">
-													<Checkbox
-														color="primary"
-														checked={isItemSelected}
-														inputProps={{
-															'aria-labelledby': labelId
-														}}
-													/>
-												</TableCell>
-												<TableCell
-													component="th"
-													id={labelId}
-													scope="row"
-													padding="none"
-												>
-													{row.bugName}
-												</TableCell>
-												{issuesCell}
-												<TableCell align="left">
-													{moment(row.dateDue).format('MMM Do YY')}
-												</TableCell>
-												{dateCreatedCell}
-												<TableCell align="right">{row.assigned}</TableCell>
-											</TableRow>
-										)
-									})
-							}
-							{emptyRows > 0 && (
-								<TableRow
-									style={{
-										height: (dense ? 33 : 53) * emptyRows
-									}}
-								>
-									<TableCell colSpan={6} />
-								</TableRow>
-							)}
-						</TableBody>
+						<TrackerTableBody
+							order={order}
+							orderBy={orderBy}
+							page={page}
+							rowsPerPage={rowsPerPage}
+							isSelected={isSelected}
+							tablet={tablet}
+							desktop={desktop}
+							selected={selected}
+							emptyRows={emptyRows}
+							dense={dense}
+							setSelected={setSelected}
+							rows={rows}
+						/>
 					</Table>
 				</TableContainer>
 				<TablePagination
