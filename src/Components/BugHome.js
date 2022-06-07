@@ -6,10 +6,8 @@ import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
-import TableHead from '@mui/material/TableHead'
 import TablePagination from '@mui/material/TablePagination'
 import TableRow from '@mui/material/TableRow'
-import TableSortLabel from '@mui/material/TableSortLabel'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import Paper from '@mui/material/Paper'
@@ -20,10 +18,13 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
 import DeleteIcon from '@mui/icons-material/Delete'
 import FilterListIcon from '@mui/icons-material/FilterList'
-import { visuallyHidden } from '@mui/utils'
 import apiUrl from './../apiUrl'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import moment from 'moment'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
+import { handleFilterRowsBy, getComparator, stableSort } from './Utils'
+import EnhancedTableHead from './EnhancedTableHead'
 
 const BugHome = () => {
 	// Table display order
@@ -40,19 +41,37 @@ const BugHome = () => {
 	const [rowsPerPage, setRowsPerPage] = React.useState(5)
 	// Table row data
 	const [rows, setRows] = React.useState([])
+	// All bugs
+	const [allBugs, setAllBugs] = React.useState([])
+	// State for controlling filter menu
+	const [anchorEl, setAnchorEl] = React.useState(null)
+	const menuOpen = Boolean(anchorEl)
+
+	// Event handlers for menu open and close
+	const handleMenuOpen = (event) => {
+		setAnchorEl(event.currentTarget)
+	}
+	const handleMenuClose = () => {
+		setAnchorEl(null)
+	}
 
 	// Media queries to figure out how many table columns to display
 	let tablet = useMediaQuery('(min-width:600px)')
 	let desktop = useMediaQuery('(min-width:900px)')
 
-	// Fetch all bugs from database, run once on page load
-	React.useEffect(() => {
+	// Function to fetch all bugs from database
+	const fetchAllBugs = () => {
 		fetch(apiUrl + '/bugs/')
 			.then((res) => res.json())
 			.then((data) => {
-				console.log(data.bugs)
+				setAllBugs(data.bugs)
 				setRows(data.bugs)
 			})
+	}
+
+	// On page load: Set allBugs and rows = fetched bugs
+	React.useEffect(() => {
+		fetchAllBugs()
 	}, [])
 
 	// For mobile, only display 3 columns:
@@ -98,109 +117,11 @@ const BugHome = () => {
 		return headCells
 	}
 
-	function descendingComparator(a, b, orderBy) {
-		if (b[orderBy] < a[orderBy]) {
-			return -1
-		}
-		if (b[orderBy] > a[orderBy]) {
-			return 1
-		}
-		return 0
-	}
-
-	function getComparator(order, orderBy) {
-		return order === 'desc'
-			? (a, b) => descendingComparator(a, b, orderBy)
-			: (a, b) => -descendingComparator(a, b, orderBy)
-	}
-
-	// This method is created for cross-browser compatibility, if you don't
-	// need to support IE11, you can use Array.prototype.sort() directly
-	function stableSort(array, comparator) {
-		const stabilizedThis = array.map((el, index) => [el, index])
-		stabilizedThis.sort((a, b) => {
-			const order = comparator(a[0], b[0])
-			if (order !== 0) {
-				return order
-			}
-			return a[1] - b[1]
-		})
-		return stabilizedThis.map((el) => el[0])
-	}
-	// Creates the Table Heading with sort and list functionality
-	function EnhancedTableHead(props) {
-		const {
-			onSelectAllClick,
-			order,
-			orderBy,
-			numSelected,
-			rowCount,
-			onRequestSort
-		} = props
-		const createSortHandler = (property) => (event) => {
-			onRequestSort(event, property)
-		}
-
-		return (
-			<TableHead>
-				<TableRow>
-					<TableCell padding="checkbox">
-						{/* This is the checkbox to select all - delete? */}
-						<Checkbox
-							color="primary"
-							indeterminate={numSelected > 0 && numSelected < rowCount}
-							checked={rowCount > 0 && numSelected === rowCount}
-							onChange={onSelectAllClick}
-							inputProps={{
-								'aria-label': 'select all bugs'
-							}}
-						/>
-					</TableCell>
-					{/* This maps through the headCells array to create each header */}
-					{headCells().map((headCell) => (
-						// Creates the Header itself
-						<TableCell
-							key={headCell.id}
-							align={headCell.align}
-							padding={headCell.disablePadding ? 'none' : 'normal'}
-							sortDirection={orderBy === headCell.id ? order : false}
-						>
-							{/* This is the sort label, where and what direction */}
-							<TableSortLabel
-								active={orderBy === headCell.id}
-								direction={orderBy === headCell.id ? order : 'asc'}
-								onClick={createSortHandler(headCell.id)}
-							>
-								{/* This is the actual name of the heading */}
-								{headCell.label}
-								{orderBy === headCell.id ? (
-									<Box component="span" sx={visuallyHidden}>
-										{order === 'desc'
-											? 'sorted descending'
-											: 'sorted ascending'}
-									</Box>
-								) : null}
-							</TableSortLabel>
-						</TableCell>
-					))}
-				</TableRow>
-			</TableHead>
-		)
-	}
-
-	EnhancedTableHead.propTypes = {
-		numSelected: PropTypes.number.isRequired,
-		onRequestSort: PropTypes.func.isRequired,
-		onSelectAllClick: PropTypes.func.isRequired,
-		order: PropTypes.oneOf(['asc', 'desc']).isRequired,
-		orderBy: PropTypes.string.isRequired,
-		rowCount: PropTypes.number.isRequired
-	}
-
 	const EnhancedTableToolbar = (props) => {
 		const { numSelected } = props
 
 		return (
+			// This toolbar contains the table header OR the selected bugs feature
 			<Toolbar
 				sx={{
 					pl: { sm: 2 },
@@ -214,6 +135,7 @@ const BugHome = () => {
 					})
 				}}
 			>
+				{/* Ternary displays title or selected */}
 				{numSelected > 0 ? (
 					<Typography
 						sx={{ flex: '1 1 100%' }}
@@ -233,7 +155,7 @@ const BugHome = () => {
 						All Bugs
 					</Typography>
 				)}
-
+				{/* Ternary displays delete button OR filter as appropriate */}
 				{numSelected > 0 ? (
 					<Tooltip title="Delete">
 						<IconButton>
@@ -241,7 +163,7 @@ const BugHome = () => {
 						</IconButton>
 					</Tooltip>
 				) : (
-					<Tooltip title="Filter list">
+					<Tooltip title="Filter list" onClick={handleMenuOpen}>
 						<IconButton>
 							<FilterListIcon />
 						</IconButton>
@@ -251,16 +173,27 @@ const BugHome = () => {
 		)
 	}
 
+	EnhancedTableHead.propTypes = {
+		numSelected: PropTypes.number.isRequired,
+		onRequestSort: PropTypes.func.isRequired,
+		onSelectAllClick: PropTypes.func.isRequired,
+		order: PropTypes.oneOf(['asc', 'desc']).isRequired,
+		orderBy: PropTypes.string.isRequired,
+		rowCount: PropTypes.number.isRequired
+	}
+
 	EnhancedTableToolbar.propTypes = {
 		numSelected: PropTypes.number.isRequired
 	}
 
+	// This function handles the sort order
 	const handleRequestSort = (event, property) => {
 		const isAsc = orderBy === property && order === 'asc'
 		setOrder(isAsc ? 'desc' : 'asc')
 		setOrderBy(property)
 	}
 
+	// Handles selecting all rows in the table header
 	const handleSelectAllClick = (event) => {
 		if (event.target.checked) {
 			const newSelecteds = rows.map((n) => n.name)
@@ -270,6 +203,7 @@ const BugHome = () => {
 		setSelected([])
 	}
 
+	// Handles selecting one item from the list
 	const handleClick = (event, name) => {
 		const selectedIndex = selected.indexOf(name)
 		let newSelected = []
@@ -286,31 +220,90 @@ const BugHome = () => {
 				selected.slice(selectedIndex + 1)
 			)
 		}
-
 		setSelected(newSelected)
 	}
 
+	// Changes which page is being displayed
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage)
 	}
 
+	// Changes number of rows displayed per page
 	const handleChangeRowsPerPage = (event) => {
 		setRowsPerPage(parseInt(event.target.value, 10))
 		setPage(0)
 	}
 
+	// Toggles the padding
 	const handleChangeDense = (event) => {
 		setDense(event.target.checked)
 	}
 
+	// Selects whichever row is entered as name
 	const isSelected = (name) => selected.indexOf(name) !== -1
 
 	// Avoid a layout jump when reaching the last page with empty rows.
 	const emptyRows =
 		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0
 
+	// let tableAll = ''
+	console.log(rows)
+	// if (rows) {
+	// 	}
+	// }
+
 	return (
 		<Box sx={{ width: '100%' }}>
+			<Menu
+				id="filter-menu"
+				anchorEl={anchorEl}
+				open={menuOpen}
+				onClose={handleMenuClose}
+				MenuListProps={{
+					'aria-labelledby': 'basic-button'
+				}}
+			>
+				<MenuItem
+					onClick={() => {
+						handleMenuClose()
+						handleFilterRowsBy('all', allBugs, setRows)
+					}}
+				>
+					All Bugs
+				</MenuItem>
+				<MenuItem
+					onClick={() => {
+						handleMenuClose()
+						handleFilterRowsBy('active', allBugs, setRows)
+					}}
+				>
+					Active Bugs
+				</MenuItem>
+				<MenuItem
+					onClick={() => {
+						handleMenuClose()
+						handleFilterRowsBy('closed', allBugs, setRows)
+					}}
+				>
+					Closed Bugs
+				</MenuItem>
+				<MenuItem
+					onClick={() => {
+						handleMenuClose()
+						handleFilterRowsBy('assigned', allBugs, setRows)
+					}}
+				>
+					Assigned Bugs
+				</MenuItem>
+				<MenuItem
+					onClick={() => {
+						handleMenuClose()
+						handleFilterRowsBy('unassigned', allBugs, setRows)
+					}}
+				>
+					Unassigned Bugs
+				</MenuItem>
+			</Menu>
 			<Paper sx={{ width: '100%', mb: 2 }}>
 				<EnhancedTableToolbar numSelected={selected.length} />
 				<TableContainer>
@@ -326,67 +319,70 @@ const BugHome = () => {
 							onSelectAllClick={handleSelectAllClick}
 							onRequestSort={handleRequestSort}
 							rowCount={rows.length}
+							headCells={headCells}
 						/>
 						<TableBody>
-							{/* if you don't need to support IE11, you can replace the `stableSort` call with:
-                 rows.slice().sort(getComparator(order, orderBy)) */}
-							{stableSort(rows, getComparator(order, orderBy))
-								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-								.map((row, index) => {
-									const isItemSelected = isSelected(row.name)
-									const labelId = `enhanced-table-checkbox-${index}`
-									// Populate Issues at 600px
-									let issuesCell = ''
-									if (tablet) {
-										issuesCell = (
-											<TableCell align="center">{row.issues}</TableCell>
-										)
-									}
-									let dateCreatedCell = ''
-									if (desktop) {
-										dateCreatedCell = (
-											<TableCell align="center">
-												{moment(row.dateCreated).format('MMM Do YY')}
-											</TableCell>
-										)
-									}
+							{
+								/* if you don't need to support IE11, you can replace the `stableSort` call with:
+                            rows.slice().sort(getComparator(order, orderBy)) */
+								stableSort(rows, getComparator(order, orderBy))
+									.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+									.map((row, index) => {
+										const isItemSelected = isSelected(row._id)
+										const labelId = `enhanced-table-checkbox-${index}`
+										// Populate Issues at 600px
+										let issuesCell = ''
+										if (tablet) {
+											issuesCell = (
+												<TableCell align="center">{row.issues}</TableCell>
+											)
+										}
+										let dateCreatedCell = ''
+										if (desktop) {
+											dateCreatedCell = (
+												<TableCell align="center">
+													{moment(row.dateCreated).format('MMM Do YY')}
+												</TableCell>
+											)
+										}
 
-									return (
-										<TableRow
-											hover
-											onClick={(event) => handleClick(event, row.name)}
-											role="checkbox"
-											aria-checked={isItemSelected}
-											tabIndex={-1}
-											key={row.name}
-											selected={isItemSelected}
-										>
-											<TableCell padding="checkbox">
-												<Checkbox
-													color="primary"
-													checked={isItemSelected}
-													inputProps={{
-														'aria-labelledby': labelId
-													}}
-												/>
-											</TableCell>
-											<TableCell
-												component="th"
-												id={labelId}
-												scope="row"
-												padding="none"
+										return (
+											<TableRow
+												hover
+												onClick={(event) => handleClick(event, row._id)}
+												role="checkbox"
+												aria-checked={isItemSelected}
+												tabIndex={-1}
+												key={row._id}
+												selected={isItemSelected}
 											>
-												{row.bugName}
-											</TableCell>
-											{issuesCell}
-											<TableCell align="left">
-												{moment(row.dateDue).format('MMM Do YY')}
-											</TableCell>
-											{dateCreatedCell}
-											<TableCell align="right">{row.assigned}</TableCell>
-										</TableRow>
-									)
-								})}
+												<TableCell padding="checkbox">
+													<Checkbox
+														color="primary"
+														checked={isItemSelected}
+														inputProps={{
+															'aria-labelledby': labelId
+														}}
+													/>
+												</TableCell>
+												<TableCell
+													component="th"
+													id={labelId}
+													scope="row"
+													padding="none"
+												>
+													{row.bugName}
+												</TableCell>
+												{issuesCell}
+												<TableCell align="left">
+													{moment(row.dateDue).format('MMM Do YY')}
+												</TableCell>
+												{dateCreatedCell}
+												<TableCell align="right">{row.assigned}</TableCell>
+											</TableRow>
+										)
+									})
+							}
 							{emptyRows > 0 && (
 								<TableRow
 									style={{
