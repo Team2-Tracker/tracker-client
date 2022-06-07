@@ -14,8 +14,8 @@ function About() {
     return (
 
         <div className="about">
-          Tracker is an interactive app that tracks bugs and can assign them to users for comments and resolution. 
-          <br /><br />Creators:<br /><br />
+          <br /><br /> <br />Tracker is an interactive app that tracks bugs and can assign them to users for comments and resolution. 
+          <br /><br />Creators:<br /><br /><br />
           
           <Grid container>
             <Grid item xs={12} sm={6} md={3}>
