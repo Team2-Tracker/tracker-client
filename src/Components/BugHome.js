@@ -12,7 +12,6 @@ import apiUrl from './../apiUrl'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import {
 	handleRequestSort,
-	handleSelectAllClick,
 	handleChangePage,
 	handleChangeRowsPerPage,
 	handleChangeDense
@@ -77,16 +76,9 @@ const BugHome = () => {
 	}, [])
 
 	EnhancedTableHead.propTypes = {
-		numSelected: PropTypes.number.isRequired,
 		onRequestSort: PropTypes.func.isRequired,
-		onSelectAllClick: PropTypes.func.isRequired,
 		order: PropTypes.oneOf(['asc', 'desc']).isRequired,
-		orderBy: PropTypes.string.isRequired,
-		rowCount: PropTypes.number.isRequired
-	}
-
-	EnhancedTableToolbar.propTypes = {
-		numSelected: PropTypes.number.isRequired
+		orderBy: PropTypes.string.isRequired
 	}
 
 	// Selects whichever row is entered as name
@@ -109,7 +101,6 @@ const BugHome = () => {
 			/>
 			<Paper sx={{ width: '100%', mb: 2 }}>
 				<EnhancedTableToolbar
-					numSelected={selected.length}
 					handleMenuOpen={handleMenuOpen}
 					title={title}
 					handleAddBugToggle={handleAddBugToggle}
@@ -121,12 +112,8 @@ const BugHome = () => {
 						size={dense ? 'small' : 'medium'}
 					>
 						<EnhancedTableHead
-							numSelected={selected.length}
 							order={order}
 							orderBy={orderBy}
-							onSelectAllClick={(event) =>
-								handleSelectAllClick(event, rows, setSelected)
-							}
 							onRequestSort={(event, property) =>
 								handleRequestSort(
 									event,
@@ -137,7 +124,6 @@ const BugHome = () => {
 									setOrderBy
 								)
 							}
-							rowCount={rows.length}
 							headCells={() => bugTableHeadCells(tablet, desktop)}
 						/>
 						<TrackerTableBody

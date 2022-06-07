@@ -83,23 +83,8 @@ const handleSelectAllClick = (event, rows, setSelected) => {
 }
 
 // Handles selecting one item from the list
-const handleSelectOneRow = (event, name, selected, setSelected) => {
-	const selectedIndex = selected.indexOf(name)
-	let newSelected = []
-
-	if (selectedIndex === -1) {
-		newSelected = newSelected.concat(selected, name)
-	} else if (selectedIndex === 0) {
-		newSelected = newSelected.concat(selected.slice(1))
-	} else if (selectedIndex === selected.length - 1) {
-		newSelected = newSelected.concat(selected.slice(0, -1))
-	} else if (selectedIndex > 0) {
-		newSelected = newSelected.concat(
-			selected.slice(0, selectedIndex),
-			selected.slice(selectedIndex + 1)
-		)
-	}
-	setSelected(newSelected)
+const handleSelectOneRow = (name, selected, setSelected) => {
+	name === selected ? setSelected([]) : setSelected(name)
 }
 
 // Changes which page is being displayed
