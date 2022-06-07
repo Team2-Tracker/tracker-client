@@ -14,8 +14,8 @@ function About() {
     return (
 
         <div className="about">
-          Tracker is an interactive app that tracks bugs and can assign them to users for comments and resolution. 
-          <br /><br />Creators:<br /><br />
+          <br /><br /> <br />Tracker is an interactive app that tracks bugs and can assign them to users for comments and resolution. 
+          <br /><br />Creators:<br /><br /><br />
           
           <Grid container>
             <Grid item xs={12} sm={6} md={3}>
@@ -57,11 +57,13 @@ function About() {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Portfolio</Button>
-        <Button size="small">Github</Button>
+        <Button size="small" href="https://alexandracrvz.github.io/Portfolio/">Portfolio</Button>
+        <Button size="small" href="https://github.com/alexandracrvz">Github</Button>
       </CardActions>
     </Card>
     </Grid>
+
+    
    
 
     
