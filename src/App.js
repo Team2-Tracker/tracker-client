@@ -47,6 +47,7 @@ function App() {
 					}
 				/>
 				<Route path="/about" element={<About />} />
+				<Route path="/form" element={<BugForm />} />
 			</Routes>
 		</div>
 	)
