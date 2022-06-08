@@ -8,20 +8,21 @@ import TablePagination from '@mui/material/TablePagination'
 import Paper from '@mui/material/Paper'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
-import apiUrl from './../apiUrl'
-import useMediaQuery from '@mui/material/useMediaQuery'
+import apiUrl from '../apiUrl'
 import {
 	handleRequestSort,
 	handleChangePage,
 	handleChangeRowsPerPage,
 	handleChangeDense
 } from './Utils'
-import { bugTableHeadCells } from './TableConfig'
 import EnhancedTableHead from './EnhancedTableHead'
 import FilterMenu from './FilterMenu'
 import EnhancedTableToolbar from './EnhancedTableToolbar'
+import { useLocation } from 'react-router-dom'
 
-const BugHome = () => {
+const BugHome = (props) => {
+	const { dataName, tableHeadCells, tablet, desktop, homeTitle, menuArray } =
+		props
 	// States for controlling the Table
 	const [order, setOrder] = React.useState('asc')
 	const [orderBy, setOrderBy] = React.useState('calories')
@@ -29,17 +30,20 @@ const BugHome = () => {
 	const [page, setPage] = React.useState(0)
 	const [dense, setDense] = React.useState(false)
 	const [rowsPerPage, setRowsPerPage] = React.useState(5)
-	const [title, setTitle] = React.useState('All Bugs')
+	const [title, setTitle] = React.useState(homeTitle)
 	// Table row data to display
 	const [rows, setRows] = React.useState([])
 	// All bugs from fetch request
-	const [allBugs, setAllBugs] = React.useState([])
+	const [allData, setAllData] = React.useState([])
 	// State for controlling filter menu
 	const [anchorEl, setAnchorEl] = React.useState(null)
 	const menuOpen = Boolean(anchorEl)
 	// State for controlling the Add Bug and Edit Bug form dialogs
 	const [addBugOpen, setAddBugOpen] = React.useState(false)
 	const [editBugOpen, setEditBugOpen] = React.useState(false)
+	// Variable to track location inside app for reloading between Bugs and Users
+	let location = useLocation().pathname
+
 	// Event handlers for menu open and close
 	const handleMenuOpen = (event) => {
 		setAnchorEl(event.currentTarget)
@@ -56,24 +60,21 @@ const BugHome = () => {
 		setEditBugOpen(!editBugOpen)
 	}
 
-	// Media queries to figure out how many table columns to display
-	let tablet = useMediaQuery('(min-width:600px)')
-	let desktop = useMediaQuery('(min-width:900px)')
-
 	// Function to fetch all bugs from database
 	const fetchAllBugs = () => {
-		fetch(apiUrl + '/bugs/')
+		fetch(apiUrl + `/${dataName}/`)
 			.then((res) => res.json())
 			.then((data) => {
-				setAllBugs(data.bugs)
-				setRows(data.bugs)
+				setAllData(data[dataName])
+				setRows(data[dataName])
 			})
 	}
 
-	// On page load: Set allBugs and rows = fetched bugs
+	// On page load: Set allData and rows = fetched bugs
 	React.useEffect(() => {
 		fetchAllBugs()
-	}, [])
+		setTitle(homeTitle)
+	}, [location])
 
 	EnhancedTableHead.propTypes = {
 		onRequestSort: PropTypes.func.isRequired,
@@ -95,9 +96,10 @@ const BugHome = () => {
 				menuOpen={menuOpen}
 				onClose={handleMenuClose}
 				handleMenuClose={handleMenuClose}
-				allBugs={allBugs}
+				allData={allData}
 				setRows={setRows}
 				setTitle={setTitle}
+				menuArray={menuArray}
 			/>
 			<Paper sx={{ width: '100%', mb: 2 }}>
 				<EnhancedTableToolbar
@@ -124,7 +126,7 @@ const BugHome = () => {
 									setOrderBy
 								)
 							}
-							headCells={() => bugTableHeadCells(tablet, desktop)}
+							tableHeadCells={tableHeadCells}
 						/>
 						<TrackerTableBody
 							order={order}

@@ -7,7 +7,7 @@ import TableRow from '@mui/material/TableRow'
 
 // Creates the Table Heading with sort and list functionality
 export default function EnhancedTableHead(props) {
-	const { order, orderBy, onRequestSort, headCells } = props
+	const { order, orderBy, onRequestSort, tableHeadCells } = props
 
 	const createSortHandler = (property) => (event) => {
 		onRequestSort(event, property)
@@ -17,7 +17,7 @@ export default function EnhancedTableHead(props) {
 		<TableHead>
 			<TableRow>
 				{/* This maps through the headCells array to create each header */}
-				{headCells().map((headCell) => (
+				{tableHeadCells().map((headCell) => (
 					// Creates the Header itself
 					<TableCell
 						key={headCell.id}

@@ -1,28 +1,42 @@
 // Filter rows by filter
 const handleFilterRowsBy = (filter, allRows, setRows, setTitle) => {
-	if (filter === 'all') {
+	if (filter === 'allBugs') {
 		setRows(allRows)
 		setTitle('All Bugs')
 	}
-	if (filter === 'active') {
+	if (filter === 'activeBugs') {
 		const activeRows = allRows.filter((row) => row.isActive)
 		setRows(activeRows)
 		setTitle('Active Bugs')
 	}
-	if (filter === 'closed') {
+	if (filter === 'closedBugs') {
 		const activeRows = allRows.filter((row) => !row.isActive)
 		setRows(activeRows)
 		setTitle('Closed Bugs')
 	}
-	if (filter === 'assigned') {
+	if (filter === 'assignedBugs') {
 		const activeRows = allRows.filter((row) => row.assigned !== 'none')
 		setRows(activeRows)
 		setTitle('Assigned Bugs')
 	}
-	if (filter === 'unassigned') {
+	if (filter === 'unassignedBugs') {
 		const activeRows = allRows.filter((row) => row.assigned === 'none')
 		setRows(activeRows)
 		setTitle('Unassigned Bugs')
+	}
+	if (filter === 'allUsers') {
+		setRows(allRows)
+		setTitle('All Users')
+	}
+	if (filter === 'assignedUsers') {
+		const activeRows = allRows.filter((row) => row.assigned !== 'none')
+		setRows(activeRows)
+		setTitle('Users with Bugs')
+	}
+	if (filter === 'unassignedUsers') {
+		const activeRows = allRows.filter((row) => row.assigned === 'none')
+		setRows(activeRows)
+		setTitle('Users with no Bugs')
 	}
 }
 
