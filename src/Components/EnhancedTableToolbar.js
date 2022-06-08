@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { alpha } from '@mui/material/styles'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
@@ -8,17 +7,16 @@ import AddIcon from '@mui/icons-material/Add'
 import FilterListIcon from '@mui/icons-material/FilterList'
 
 const EnhancedTableToolbar = (props) => {
-	const { title, handleMenuOpen, handleDialogAddBugToggle } = props
+	const { title, handleMenuOpen, handleAddBugToggle } = props
 
 	return (
-		// This toolbar contains the table header OR the selected bugs feature
 		<Toolbar
 			sx={{
 				pl: { sm: 2 },
 				pr: { xs: 1, sm: 1 }
 			}}
 		>
-			<Tooltip title="Add bug" onClick={handleDialogAddBugToggle}>
+			<Tooltip title="Add bug" onClick={handleAddBugToggle}>
 				<IconButton>
 					<AddIcon />
 				</IconButton>
