@@ -4,18 +4,11 @@ import TableSortLabel from '@mui/material/TableSortLabel'
 import Box from '@mui/material/Box'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
-import Checkbox from '@mui/material/Checkbox'
 
 // Creates the Table Heading with sort and list functionality
 export default function EnhancedTableHead(props) {
-	const {
-		onSelectAllClick,
-		order,
-		orderBy,
-		numSelected,
-		rowCount,
-		onRequestSort
-	} = props
+	const { order, orderBy, onRequestSort, tableHeadCells } = props
+
 	const createSortHandler = (property) => (event) => {
 		onRequestSort(event, property)
 	}
@@ -23,20 +16,8 @@ export default function EnhancedTableHead(props) {
 	return (
 		<TableHead>
 			<TableRow>
-				<TableCell padding="checkbox">
-					{/* This is the checkbox to select all - delete? */}
-					<Checkbox
-						color="primary"
-						indeterminate={numSelected > 0 && numSelected < rowCount}
-						checked={rowCount > 0 && numSelected === rowCount}
-						onChange={onSelectAllClick}
-						inputProps={{
-							'aria-label': 'select all bugs'
-						}}
-					/>
-				</TableCell>
 				{/* This maps through the headCells array to create each header */}
-				{props.headCells().map((headCell) => (
+				{tableHeadCells().map((headCell) => (
 					// Creates the Header itself
 					<TableCell
 						key={headCell.id}

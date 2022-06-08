@@ -12,15 +12,14 @@ import MenuItem from '@mui/material/MenuItem'
 import About from '../Components/About'
 
 const TopNavBar = () => {
-
-	const [anchorEl, setAnchorEl] = React.useState(null);
-	const open = Boolean(anchorEl);
+	const [anchorEl, setAnchorEl] = React.useState(null)
+	const open = Boolean(anchorEl)
 	const handleClick = (event) => {
-	  setAnchorEl(event.currentTarget);
-	};
+		setAnchorEl(event.currentTarget)
+	}
 	const handleClose = () => {
-	  setAnchorEl(null);
-	};
+		setAnchorEl(null)
+	}
 
 	return (
 		<Box sx={{ flexGrow: 1 }}>
@@ -37,23 +36,28 @@ const TopNavBar = () => {
 						<PetsIcon />
 					</IconButton>
 					<Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
-        }}
-      >
-        <MenuItem onClick={handleClose} component={RouterLink} to="/">Bugs</MenuItem>
-		<MenuItem onClick={handleClose} component={RouterLink} to="/users">Users</MenuItem>
-        <MenuItem onClick={handleClose} component={RouterLink} to="/about">About</MenuItem>
-        
-      </Menu>
+						id="basic-menu"
+						anchorEl={anchorEl}
+						open={open}
+						onClose={handleClose}
+						MenuListProps={{
+							'aria-labelledby': 'basic-button'
+						}}
+					>
+						<MenuItem onClick={handleClose} component={RouterLink} to="/">
+							Bugs
+						</MenuItem>
+						<MenuItem onClick={handleClose} component={RouterLink} to="/users">
+							Users
+						</MenuItem>
+						<MenuItem onClick={handleClose} component={RouterLink} to="/about">
+							About
+						</MenuItem>
+					</Menu>
 
 					<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-						News
-		 			</Typography>
+						Tracker
+					</Typography>
 					<Button color="inherit">Login</Button>
 				</Toolbar>
 			</AppBar>
