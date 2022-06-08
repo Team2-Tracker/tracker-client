@@ -86,12 +86,14 @@ export default function BugForm() {
         required
         id="outlined-basic"
         label="Name"
+        value={name}
         variant="outlined"
         onChange={handleNameChange}
       />
       <TextField
         required
         id="outlined-basic"
+        value={issues}
         label="Issues"
         variant="outlined"
         onChange={handleIssuesChange}
@@ -115,6 +117,7 @@ export default function BugForm() {
       <TextField
         required
         id="outlined-basic"
+        value={estimate}
         label="Estimate"
         variant="outlined"
         onChange={handleEstimateChange}
@@ -138,6 +141,7 @@ export default function BugForm() {
       )}
       <TextField
         id="outlined-basic"
+        value={assigned}
         label="Assigned"
         variant="outlined"
         onChange={handleAssignedChange}
