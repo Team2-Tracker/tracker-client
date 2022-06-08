@@ -16,6 +16,7 @@ export default function EnhancedTableHead(props) {
 	return (
 		<TableHead>
 			<TableRow>
+				<TableCell />
 				{/* This maps through the headCells array to create each header */}
 				{tableHeadCells().map((headCell) => (
 					// Creates the Header itself

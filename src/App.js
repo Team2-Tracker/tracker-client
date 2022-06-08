@@ -10,6 +10,7 @@ import {
 	usersMenu
 } from './Components/TableConfig'
 import useMediaQuery from '@mui/material/useMediaQuery'
+import BugForm from './Components/BugForm'
 
 function App() {
 	// Media queries to set width
