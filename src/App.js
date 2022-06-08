@@ -4,6 +4,7 @@ import BugHome from './Components/BugHome'
 import TopNavBar from './Components/TopNavBar'
 import About from './Components/About'
 import Users from './Components/Users'
+import Details from './Components/Details'
 
 function App() {
 	return (
@@ -11,6 +12,7 @@ function App() {
 			<TopNavBar />
 			<Routes>
 				<Route path="/" element={<BugHome />} />
+				<Route path="/details" element={<Details />} />
 				<Route path="/users" element={<Users />} />
 				<Route path="/about" element={<About />} />
 			</Routes>
