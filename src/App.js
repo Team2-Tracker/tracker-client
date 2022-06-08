@@ -4,6 +4,7 @@ import BugHome from './Components/BugHome'
 import TopNavBar from './Components/TopNavBar'
 import About from './Components/About'
 import Users from './Components/Users'
+import BugForm from './Components/BugForm'
 
 function App() {
 	return (
@@ -13,6 +14,7 @@ function App() {
 				<Route path="/" element={<BugHome />} />
 				<Route path="/users" element={<Users />} />
 				<Route path="/about" element={<About />} />
+				<Route path="/form" element={<BugForm />} />
 			</Routes>
 		</div>
 	)
