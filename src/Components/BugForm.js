@@ -9,23 +9,49 @@ import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
+import Button from '@mui/material/Button';
+
+function BasicButtons() {
+  return (
+    <Stack spacing={2} direction="row">
+      <Button variant="contained">Submit</Button>
+    </Stack>
+  );
+}
+
 
 export default function BugForm() {
+  const [name, setName] = useState("");
+  const [issues, setIssues] = useState("");
   const [priority, setPriority] = useState("");
-  const [dateDue, setDateDue] = useState("");
-  const [dateCreate, setDateCreate] = useState("");
+  const [estimate, setEstimate] = useState("");
+  const [dateDue, setDateDue] = useState(new Date('2014-08-18T21:11:54'));
+  const [assigned, setAssigned] = useState("");
 
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
+
+  const handleIssuesChange = (event) => {
+    setIssues(event.target.value);
+  };
+  
   const handlePriorityChange = (event) => {
     setPriority(event.target.value);
   };
 
-  const handleDateChange = (event) => {
-    setDateDue(event.target.value);
-    console.log(event.target.value);
+  const handleEstimateChange = (event) => {
+    setEstimate(event.target.value);
   };
-  const handleCreateChange = (event) => {
-    setDateCreate(event.target.value);
-    console.log(event.target.value);
+
+  const handleDateChange = (event) => {
+    console.log(event);
+    setDateDue(event);
+    console.log(dateDue)
+  };
+
+  const handleAssignedChange = (event) => {
+      setAssigned(event.target.value);
   };
 
   return (
@@ -37,12 +63,13 @@ export default function BugForm() {
       noValidate
       autoComplete="off"
     >
-      <TextField required id="outlined-basic" label="Name" variant="outlined" />
+      <TextField required id="outlined-basic" label="Name" variant="outlined" onChange={handleNameChange} />
       <TextField
         required
         id="outlined-basic"
         label="Issues"
         variant="outlined"
+        onChange={handleIssuesChange}
       />
       <FormControl fullWidth>
         <InputLabel required id="demo-simple-select-label">
@@ -65,6 +92,7 @@ export default function BugForm() {
         id="outlined-basic"
         label="Estimate"
         variant="outlined"
+        onChange={handleEstimateChange}
       />
       {/* <DesktopDatePicker
           label="Date desktop"
@@ -80,19 +108,14 @@ export default function BugForm() {
         onChange={handleDateChange}
         renderInput={(params) => <TextField {...params} />}
       />
-      <MobileDatePicker
-        label="Date Created"
-        inputFormat="MM/dd/yyyy"
-        value={dateCreate}
-        onChange={handleCreateChange}
-        renderInput={(params) => <TextField {...params} />}
-      />
       <TextField
         required
         id="outlined-basic"
         label="Assigned"
         variant="outlined"
+        onChange={handleAssignedChange}
       />
+      <BasicButtons></BasicButtons>
     </Box>
   );
 }
