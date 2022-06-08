@@ -5,6 +5,7 @@ import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+import AddIcon from '@mui/icons-material/Add';
 import StyledFab from '@mui/material/Fab';
 import Grid from '@mui/material/Grid';
 
@@ -73,11 +74,13 @@ function Details() {
     </div>
     <Toolbar>
     <CardActions>
+
               <Button variant="outlined" size="small">Edit</Button>
               <StyledFab color="secondary" aria-label="add">
             <AssignmentIndIcon type="submit" />
           </StyledFab>
               <Button type="submit" variant="outlined" size="small">Close</Button>
+
             </CardActions>
             </Toolbar>
   </Box>

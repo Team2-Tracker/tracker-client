@@ -35,7 +35,6 @@ const TopNavBar = () => {
 						<PetsIcon />
 					</IconButton>
 					<Menu
-
 						id="basic-menu"
 						anchorEl={anchorEl}
 						open={open}
