@@ -141,7 +141,6 @@ const BugHome = (props) => {
 							dense={dense}
 							setSelected={setSelected}
 							rows={rows}
-							dataName={dataName}
 						/>
 					</Table>
 				</TableContainer>
