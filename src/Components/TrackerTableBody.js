@@ -21,7 +21,7 @@ const TrackerTableBody = (props) => {
 		dense,
 		setSelected
 	} = props
-	console.log(props)
+
 	return (
 		<TableBody>
 			{
@@ -49,8 +49,8 @@ const TrackerTableBody = (props) => {
 						return (
 							<TableRow
 								hover
-								onClick={(event) =>
-									handleSelectOneRow(event, row._id, selected, setSelected)
+								onClick={() =>
+									handleSelectOneRow(row._id, selected, setSelected)
 								}
 								role="checkbox"
 								aria-checked={isItemSelected}
@@ -58,15 +58,6 @@ const TrackerTableBody = (props) => {
 								key={row._id}
 								selected={isItemSelected}
 							>
-								<TableCell padding="checkbox">
-									<Checkbox
-										color="primary"
-										checked={isItemSelected}
-										inputProps={{
-											'aria-labelledby': labelId
-										}}
-									/>
-								</TableCell>
 								<TableCell
 									component="th"
 									id={labelId}
