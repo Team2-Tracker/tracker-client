@@ -10,7 +10,16 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import TableControlls from './TableControlls'
 
 const TrackerRow = (props) => {
-	const { tablet, desktop, selected, setSelected, dataName, row } = props
+	const {
+		tablet,
+		desktop,
+		selected,
+		setSelected,
+		dataName,
+		row,
+		handleEditDialogToggle,
+		handleDetailsDialogToggle
+	} = props
 
 	const [rowCollapseOpen, setRowCollapseOpen] = React.useState(false)
 
@@ -65,7 +74,12 @@ const TrackerRow = (props) => {
 				</TableRow>
 				<TableRow selected={true}>
 					<TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-						<TableControlls open={rowCollapseOpen} dataName={dataName} />
+						<TableControlls
+							open={rowCollapseOpen}
+							dataName={dataName}
+							handleEditDialogToggle={handleEditDialogToggle}
+							handleDetailsDialogToggle={handleDetailsDialogToggle}
+						/>
 					</TableCell>
 				</TableRow>
 			</React.Fragment>
@@ -113,7 +127,12 @@ const TrackerRow = (props) => {
 				</TableRow>
 				<TableRow selected={true}>
 					<TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-						<TableControlls open={rowCollapseOpen} dataName={dataName} />
+						<TableControlls
+							open={rowCollapseOpen}
+							dataName={dataName}
+							handleEditDialogToggle={handleEditDialogToggle}
+							handleDetailsDialogToggle={handleDetailsDialogToggle}
+						/>
 					</TableCell>
 				</TableRow>
 			</React.Fragment>

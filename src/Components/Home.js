@@ -43,9 +43,10 @@ const BugHome = (props) => {
 	// State for controlling filter menu
 	const [anchorEl, setAnchorEl] = React.useState(null)
 	const menuOpen = Boolean(anchorEl)
-	// State for controlling the Add Bug and Edit Bug form dialogs
-	const [addBugOpen, setAddBugOpen] = React.useState(false)
-	const [editBugOpen, setEditBugOpen] = React.useState(false)
+	// State for controlling the Dialogs
+	const [addDialogOpen, setAddDialogOpen] = React.useState(false)
+	const [editDialogOpen, setEditDialogOpen] = React.useState(false)
+	const [detailsDialogOpen, setDetailsDialogOpen] = React.useState(false)
 	// Variable to track location inside app for reloading between Bugs and Users
 	let location = useLocation().pathname
 
@@ -56,17 +57,21 @@ const BugHome = (props) => {
 	const handleMenuClose = () => {
 		setAnchorEl(null)
 	}
-	// Open and close the Add Bug Form
-	const handleAddBugToggle = () => {
-		setAddBugOpen(!addBugOpen)
+	// Open and close the Add Form
+	const handleAddDialogToggle = () => {
+		setAddDialogOpen(!addDialogOpen)
 	}
-	// Open and close the Edit Bug Form
-	const handleEditBugToggle = () => {
-		setEditBugOpen(!editBugOpen)
+	// Open and close the Edit Form
+	const handleEditDialogToggle = () => {
+		setEditDialogOpen(!editDialogOpen)
+	}
+	// Open and close the Details Dialog
+	const handleDetailsDialogToggle = () => {
+		setDetailsDialogOpen(!detailsDialogOpen)
 	}
 
 	// Function to fetch all bugs from database
-	const fetchAllBugs = () => {
+	const fetchAllData = () => {
 		fetch(apiUrl + `/${dataName}/`)
 			.then((res) => res.json())
 			.then((data) => {
@@ -77,7 +82,7 @@ const BugHome = (props) => {
 
 	// On page load: Set allData and rows = fetched bugs
 	React.useEffect(() => {
-		fetchAllBugs()
+		fetchAllData()
 		setTitle(homeTitle)
 	}, [location])
 
@@ -107,7 +112,7 @@ const BugHome = (props) => {
 				<EnhancedTableToolbar
 					handleMenuOpen={handleMenuOpen}
 					title={title}
-					handleAddBugToggle={handleAddBugToggle}
+					handleAddDialogToggle={handleAddDialogToggle}
 				/>
 				<TableContainer>
 					<Table
@@ -145,6 +150,8 @@ const BugHome = (props) => {
 											tablet={tablet}
 											desktop={desktop}
 											dataName={dataName}
+											handleEditDialogToggle={handleEditDialogToggle}
+											handleDetailsDialogToggle={handleDetailsDialogToggle}
 										/>
 									))
 							}
