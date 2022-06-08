@@ -9,24 +9,25 @@ import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
+import apiUrl from './../apiUrl';
 
-function BasicButtons() {
-  return (
-    <Stack spacing={2} direction="row">
-      <Button variant="contained">Submit</Button>
-    </Stack>
-  );
-}
-
+// function BasicButtons() {
+//   return (
+//     <Stack spacing={2} direction="row">
+//       <Button variant="contained">Submit</Button>
+//     </Stack>
+//   );
+// }
 
 export default function BugForm() {
   const [name, setName] = useState("");
   const [issues, setIssues] = useState("");
   const [priority, setPriority] = useState("");
   const [estimate, setEstimate] = useState("");
-  const [dateDue, setDateDue] = useState(new Date('2014-08-18T21:11:54'));
+  const [dateDue, setDateDue] = useState(new Date("2014-08-18T21:11:54"));
   const [assigned, setAssigned] = useState("");
+  const desktop = false;
 
   const handleNameChange = (event) => {
     setName(event.target.value);
@@ -35,7 +36,7 @@ export default function BugForm() {
   const handleIssuesChange = (event) => {
     setIssues(event.target.value);
   };
-  
+
   const handlePriorityChange = (event) => {
     setPriority(event.target.value);
   };
@@ -47,11 +48,29 @@ export default function BugForm() {
   const handleDateChange = (event) => {
     console.log(event);
     setDateDue(event);
-    console.log(dateDue)
+    console.log(dateDue);
   };
 
   const handleAssignedChange = (event) => {
-      setAssigned(event.target.value);
+    setAssigned(event.target.value);
+  };
+  
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    fetch(`${apiUrl}/bugs/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ bugName: name, issues: issues, priority: priority, timeEstimate: estimate, dateDue: dateDue, assigned: assigned }),
+    }).then(() => {
+      setName("");
+      setIssues("");
+      setPriority("");
+      setEstimate("");
+      setDateDue(null);
+      setAssigned("");
+
+    //   fetchBugs();
+    });
   };
 
   return (
@@ -63,10 +82,18 @@ export default function BugForm() {
       noValidate
       autoComplete="off"
     >
-      <TextField required id="outlined-basic" label="Name" variant="outlined" onChange={handleNameChange} />
       <TextField
         required
         id="outlined-basic"
+        label="Name"
+        value={name}
+        variant="outlined"
+        onChange={handleNameChange}
+      />
+      <TextField
+        required
+        id="outlined-basic"
+        value={issues}
         label="Issues"
         variant="outlined"
         onChange={handleIssuesChange}
@@ -82,40 +109,44 @@ export default function BugForm() {
           label="Priority"
           onChange={handlePriorityChange}
         >
-          <MenuItem value={1}>One</MenuItem>
-          <MenuItem value={2}>Two</MenuItem>
-          <MenuItem value={3}>Three</MenuItem>
+          <MenuItem value={1}>High</MenuItem>
+          <MenuItem value={2}>Medium</MenuItem>
+          <MenuItem value={3}>Low</MenuItem>
         </Select>
       </FormControl>
       <TextField
         required
         id="outlined-basic"
+        value={estimate}
         label="Estimate"
         variant="outlined"
         onChange={handleEstimateChange}
       />
-      {/* <DesktopDatePicker
+      {desktop ? (
+        <DesktopDatePicker
           label="Date desktop"
           inputFormat="MM/dd/yyyy"
-          value={value}
-          onChange={handleChange}
+          value={dateDue}
+          onChange={handleDateChange}
           renderInput={(params) => <TextField {...params} />}
-        /> */}
-      <MobileDatePicker
-        label="Date Due"
-        inputFormat="MM/dd/yyyy"
-        value={dateDue}
-        onChange={handleDateChange}
-        renderInput={(params) => <TextField {...params} />}
-      />
+        />
+      ) : (
+        <MobileDatePicker
+          label="Date Due"
+          inputFormat="MM/dd/yyyy"
+          value={dateDue}
+          onChange={handleDateChange}
+          renderInput={(params) => <TextField {...params} />}
+        />
+      )}
       <TextField
-        required
         id="outlined-basic"
+        value={assigned}
         label="Assigned"
         variant="outlined"
         onChange={handleAssignedChange}
       />
-      <BasicButtons></BasicButtons>
+      <Button variant="contained" onClick={handleSubmit}>Submit</Button>
     </Box>
   );
 }
