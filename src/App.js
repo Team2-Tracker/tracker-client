@@ -13,6 +13,8 @@ import {
 import useMediaQuery from '@mui/material/useMediaQuery'
 import BugForm from './Components/BugForm'
 import apiUrl from './apiUrl'
+import Users from './Components/Users'
+import Details from './Components/Details'
 
 function App() {
 	// All Data from fetch request
@@ -48,6 +50,7 @@ function App() {
 		<div className="App">
 			<TopNavBar />
 			<Routes>
+
 				<Route
 					path="/"
 					element={
@@ -82,6 +85,10 @@ function App() {
 						/>
 					}
 				/>
+
+				<Route path="/" element={<BugHome />} />
+				<Route path="/details" element={<Details />} />
+				<Route path="/users" element={<Users />} />
 				<Route path="/about" element={<About />} />
 				<Route path="/form" element={<BugForm />} />
 			</Routes>
