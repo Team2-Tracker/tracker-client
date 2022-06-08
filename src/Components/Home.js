@@ -8,7 +8,6 @@ import TablePagination from '@mui/material/TablePagination'
 import Paper from '@mui/material/Paper'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
-import apiUrl from '../apiUrl'
 import {
 	getComparator,
 	stableSort,
@@ -25,10 +24,21 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 
-const BugHome = (props) => {
-	const { dataName, tableHeadCells, tablet, desktop, homeTitle, menuArray } =
-		props
+const Home = (props) => {
+	const {
+		dataName,
+		tableHeadCells,
+		tablet,
+		desktop,
+		homeTitle,
+		menuArray,
+		allBugs,
+		allUsers,
+		fetchAllBugs,
+		fetchAllUsers
+	} = props
 	// States for controlling the Table
+	const [rows, setRows] = React.useState([])
 	const [order, setOrder] = React.useState('asc')
 	const [orderBy, setOrderBy] = React.useState('calories')
 	const [selected, setSelected] = React.useState([])
@@ -36,10 +46,6 @@ const BugHome = (props) => {
 	const [dense, setDense] = React.useState(false)
 	const [rowsPerPage, setRowsPerPage] = React.useState(5)
 	const [title, setTitle] = React.useState(homeTitle)
-	// Table row data to display
-	const [rows, setRows] = React.useState([])
-	// All bugs from fetch request
-	const [allData, setAllData] = React.useState([])
 	// State for controlling filter menu
 	const [anchorEl, setAnchorEl] = React.useState(null)
 	const menuOpen = Boolean(anchorEl)
@@ -47,7 +53,7 @@ const BugHome = (props) => {
 	const [addDialogOpen, setAddDialogOpen] = React.useState(false)
 	const [editDialogOpen, setEditDialogOpen] = React.useState(false)
 	const [detailsDialogOpen, setDetailsDialogOpen] = React.useState(false)
-	// Variable to track location inside app for reloading between Bugs and Users
+	// Variable to track location to load state properly
 	let location = useLocation().pathname
 
 	// Event handlers for menu open and close
@@ -70,22 +76,12 @@ const BugHome = (props) => {
 		setDetailsDialogOpen(!detailsDialogOpen)
 	}
 
-	// Function to fetch all bugs from database
-	const fetchAllData = () => {
-		fetch(apiUrl + `/${dataName}/`)
-			.then((res) => res.json())
-			.then((data) => {
-				setAllData(data[dataName])
-				setRows(data[dataName])
-			})
-	}
-
-	// On page load: Set allData and rows = fetched bugs
 	React.useEffect(() => {
-		fetchAllData()
 		setTitle(homeTitle)
-	}, [location])
+		setRows(dataName === 'bugs' ? allBugs : allUsers)
+	}, [location, allBugs, allUsers])
 
+	// Adding propTypes for the EnhancedTableHead Component
 	EnhancedTableHead.propTypes = {
 		onRequestSort: PropTypes.func.isRequired,
 		order: PropTypes.oneOf(['asc', 'desc']).isRequired,
@@ -103,7 +99,7 @@ const BugHome = (props) => {
 				menuOpen={menuOpen}
 				onClose={handleMenuClose}
 				handleMenuClose={handleMenuClose}
-				allData={allData}
+				allData={dataName === 'bugs' ? allBugs : allUsers}
 				setRows={setRows}
 				setTitle={setTitle}
 				menuArray={menuArray}
@@ -194,4 +190,4 @@ const BugHome = (props) => {
 	)
 }
 
-export default BugHome
+export default Home

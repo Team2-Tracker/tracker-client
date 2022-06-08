@@ -1,3 +1,4 @@
+import * as React from 'react'
 import './App.css'
 import { Routes, Route } from 'react-router-dom'
 import Home from './Components/Home'
@@ -11,11 +12,37 @@ import {
 } from './Components/TableConfig'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import BugForm from './Components/BugForm'
+import apiUrl from './apiUrl'
 
 function App() {
+	// All Data from fetch request
+	const [allBugs, setAllBugs] = React.useState([])
+	const [allUsers, setAllUsers] = React.useState([])
 	// Media queries to set width
 	let tablet = useMediaQuery('(min-width:600px)')
 	let desktop = useMediaQuery('(min-width:900px)')
+
+	// Functions to fetch all data from database
+	const fetchAllBugs = () => {
+		fetch(apiUrl + `/bugs/`)
+			.then((res) => res.json())
+			.then((data) => {
+				setAllBugs(data.bugs)
+			})
+	}
+	const fetchAllUsers = () => {
+		fetch(apiUrl + `/users/`)
+			.then((res) => res.json())
+			.then((data) => {
+				setAllUsers(data.users)
+			})
+	}
+
+	// On app load: Set allBugs and allUsers
+	React.useEffect(() => {
+		fetchAllBugs()
+		fetchAllUsers()
+	}, [])
 
 	return (
 		<div className="App">
@@ -31,6 +58,10 @@ function App() {
 							desktop={desktop}
 							homeTitle="All Bugs"
 							menuArray={bugMenu}
+							allBugs={allBugs}
+							allUsers={allUsers}
+							fetchAllBugs={fetchAllBugs}
+							fetchAllUsers={fetchAllUsers}
 						/>
 					}
 				/>
@@ -44,6 +75,10 @@ function App() {
 							desktop={desktop}
 							homeTitle="All Users"
 							menuArray={usersMenu}
+							allBugs={allBugs}
+							allUsers={allUsers}
+							fetchAllBugs={fetchAllBugs}
+							fetchAllUsers={fetchAllUsers}
 						/>
 					}
 				/>
