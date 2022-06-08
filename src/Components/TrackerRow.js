@@ -88,17 +88,22 @@ const TrackerRow = (props) => {
 					hover
 					onClick={() => {
 						handleSelectOneRow(row._id, selected, setSelected)
-						setOpen(!open)
+						setRowCollapseOpen(!rowCollapseOpen)
 					}}
 					aria-checked={isItemSelected}
 					selected={isItemSelected}
+					sx={{ '& > *': { borderBottom: 'unset' } }}
 				>
 					<TableCell>
 						<IconButton aria-label="expand row" size="small">
-							{open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+							{rowCollapseOpen ? (
+								<KeyboardArrowUpIcon />
+							) : (
+								<KeyboardArrowDownIcon />
+							)}
 						</IconButton>
 					</TableCell>
-					<TableCell component="th" scope="row" padding="none">
+					<TableCell component="th" scope="row">
 						{row.userName}
 					</TableCell>
 					<TableCell align="left">{row.firstName}</TableCell>
@@ -106,7 +111,11 @@ const TrackerRow = (props) => {
 					{bugNumberCell}
 					{bugHoursCell}
 				</TableRow>
-				<TableControlls open={open} dataName={dataName} />
+				<TableRow selected={true}>
+					<TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+						<TableControlls open={rowCollapseOpen} dataName={dataName} />
+					</TableCell>
+				</TableRow>
 			</React.Fragment>
 		)
 	}
