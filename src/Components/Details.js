@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
-import AddIcon from '@mui/icons-material/Add';
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import StyledFab from '@mui/material/Fab';
 import Grid from '@mui/material/Grid';
 
@@ -73,11 +73,11 @@ function Details() {
     </div>
     <Toolbar>
     <CardActions>
-              <Button size="small" href="https://alexandracrvz.github.io/Portfolio/">Portfolio</Button>
+              <Button variant="outlined" size="small">Edit</Button>
               <StyledFab color="secondary" aria-label="add">
-            <AddIcon />
+            <AssignmentIndIcon type="submit" />
           </StyledFab>
-              <Button size="small" href="https://github.com/alexandracrvz">Github</Button>
+              <Button type="submit" variant="outlined" size="small">Close</Button>
             </CardActions>
             </Toolbar>
   </Box>
