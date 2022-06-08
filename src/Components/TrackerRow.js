@@ -24,8 +24,9 @@ const TrackerRow = (props) => {
 	const [rowCollapseOpen, setRowCollapseOpen] = React.useState(false)
 
 	// Selects whichever row is entered as name
-	const isSelected = (name) => selected.indexOf(name) !== -1
-	const isItemSelected = isSelected(row._id)
+	// const isSelected = (name) => selected.indexOf(name) !== -1
+	// const isItemSelected = isSelected(row._id)
+	const isItemSelected = selected._id === row.id ? true : false
 
 	if (dataName === 'bugs') {
 		// Populate Issues at 600px
@@ -46,7 +47,7 @@ const TrackerRow = (props) => {
 				<TableRow
 					hover
 					onClick={() => {
-						handleSelectOneRow(row._id, selected, setSelected)
+						handleSelectOneRow(row, selected, setSelected)
 						setRowCollapseOpen(!rowCollapseOpen)
 					}}
 					aria-checked={isItemSelected}

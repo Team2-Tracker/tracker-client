@@ -50,12 +50,11 @@ function App() {
 		<div className="App">
 			<TopNavBar />
 			<Routes>
-
 				<Route
 					path="/"
 					element={
 						<Home
-							dataName="bugs"
+							dataName="Bug"
 							tableHeadCells={() => bugTableHeadCells(tablet, desktop)}
 							tablet={tablet}
 							desktop={desktop}
@@ -72,7 +71,7 @@ function App() {
 					path="/users"
 					element={
 						<Home
-							dataName="users"
+							dataName="User"
 							tableHeadCells={() => userTableHeadCells(tablet, desktop)}
 							tablet={tablet}
 							desktop={desktop}
@@ -85,8 +84,6 @@ function App() {
 						/>
 					}
 				/>
-
-				<Route path="/" element={<BugHome />} />
 				<Route path="/details" element={<Details />} />
 				<Route path="/users" element={<Users />} />
 				<Route path="/about" element={<About />} />
