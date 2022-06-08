@@ -10,6 +10,7 @@ import Stack from "@mui/material/Stack";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import Button from "@mui/material/Button";
+import apiUrl from './../apiUrl';
 
 // function BasicButtons() {
 //   return (
@@ -56,7 +57,7 @@ export default function BugForm() {
   
   const handleSubmit = (event) => {
     event.preventDefault();
-    fetch('${apiUrl}/bugs', {
+    fetch(`${apiUrl}/bugs/`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ bugName: name, issues: issues, priority: priority, timeEstimate: estimate, dateDue: dateDue, assigned: assigned }),
