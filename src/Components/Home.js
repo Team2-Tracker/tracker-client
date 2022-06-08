@@ -23,6 +23,8 @@ import { useLocation } from 'react-router-dom'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
+import Details from './Details'
+import BugForm from './BugForm'
 
 const Home = (props) => {
 	const {
@@ -55,6 +57,8 @@ const Home = (props) => {
 	const [detailsDialogOpen, setDetailsDialogOpen] = React.useState(false)
 	// Variable to track location to load state properly
 	let location = useLocation().pathname
+
+	console.log(selected)
 
 	// Event handlers for menu open and close
 	const handleMenuOpen = (event) => {
@@ -185,6 +189,21 @@ const Home = (props) => {
 					/>
 				}
 				label="Dense padding"
+			/>
+			<Details
+				open={detailsDialogOpen}
+				handleToggle={handleDetailsDialogToggle}
+				// Replace 'bug' with state
+				dataName={dataName}
+				selected={selected}
+			/>
+			<BugForm open={addDialogOpen} handleToggle={handleAddDialogToggle} />
+			{/* Recycle form for Edit */}
+			<BugForm
+				open={editDialogOpen}
+				handleToggle={handleEditDialogToggle}
+				type="edit"
+				selected={selected}
 			/>
 		</Box>
 	)

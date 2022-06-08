@@ -97,8 +97,8 @@ const handleSelectAllClick = (event, rows, setSelected) => {
 }
 
 // Handles selecting one item from the list
-const handleSelectOneRow = (name, selected, setSelected) => {
-	name === selected ? setSelected([]) : setSelected(name)
+const handleSelectOneRow = (row, selected, setSelected) => {
+	row === selected ? setSelected([]) : setSelected(row)
 }
 
 // Changes which page is being displayed

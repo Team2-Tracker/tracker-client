@@ -1,7 +1,8 @@
 let apiUrl
 const apiUrls = {
-	production: 'https://nameless-bastion-53048.herokuapp.com',
-	development: 'http://localhost:3000'
+	production: 'https://vast-tundra-01728.herokuapp.com',
+	// development: 'http://localhost:3000'
+	development: 'https://vast-tundra-01728.herokuapp.com'
 }
 
 if (window.location.hostname === 'localhost') {

@@ -16,8 +16,8 @@ const EnhancedTableToolbar = (props) => {
 				pr: { xs: 1, sm: 1 }
 			}}
 		>
-			<Tooltip title="Add bug" onClick={handleAddDialogToggle}>
-				<IconButton>
+			<Tooltip title="Add bug">
+				<IconButton onClick={handleAddDialogToggle}>
 					<AddIcon />
 				</IconButton>
 			</Tooltip>
