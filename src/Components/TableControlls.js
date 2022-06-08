@@ -6,13 +6,23 @@ const TableControlls = (props) => {
 	const { open, dataName } = props
 	return (
 		<Collapse in={open} timeout="auto" unmountOnExit>
-			<Box sx={{ margin: 1 }}>
-				<Button variant="contained">Details</Button>
-				<Button variant="contained">Edit</Button>
-				<Button variant="contained">
+			<Box sx={{ margin: 1, justifyContent: 'center' }}>
+				<Button variant="contained" sx={{ mx: 1 }}>
+					Details
+				</Button>
+				<Button variant="contained" sx={{ mx: 1 }}>
+					Edit
+				</Button>
+				<Button variant="contained" sx={{ mx: 1 }}>
 					{dataName === 'bugs' ? 'Assign Bugs' : 'Assign User'}
 				</Button>
-				{dataName === 'bugs' ? <Button variant="contained">Close</Button> : ''}
+				{dataName === 'bugs' ? (
+					<Button variant="contained" sx={{ mx: 1 }}>
+						Close
+					</Button>
+				) : (
+					''
+				)}
 			</Box>
 		</Collapse>
 	)

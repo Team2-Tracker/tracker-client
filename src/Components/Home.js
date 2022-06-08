@@ -2,7 +2,7 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 import Box from '@mui/material/Box'
 import Table from '@mui/material/Table'
-import TrackerTableBody from './TrackerTableBody'
+import TrackerRow from './TrackerRow'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
 import Paper from '@mui/material/Paper'
@@ -10,6 +10,8 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
 import apiUrl from '../apiUrl'
 import {
+	getComparator,
+	stableSort,
 	handleRequestSort,
 	handleChangePage,
 	handleChangeRowsPerPage,
@@ -19,6 +21,9 @@ import EnhancedTableHead from './EnhancedTableHead'
 import FilterMenu from './FilterMenu'
 import EnhancedTableToolbar from './EnhancedTableToolbar'
 import { useLocation } from 'react-router-dom'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableRow from '@mui/material/TableRow'
 
 const BugHome = (props) => {
 	const { dataName, tableHeadCells, tablet, desktop, homeTitle, menuArray } =
@@ -82,9 +87,6 @@ const BugHome = (props) => {
 		orderBy: PropTypes.string.isRequired
 	}
 
-	// Selects whichever row is entered as name
-	const isSelected = (name) => selected.indexOf(name) !== -1
-
 	// Avoid a layout jump when reaching the last page with empty rows.
 	const emptyRows =
 		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0
@@ -128,21 +130,34 @@ const BugHome = (props) => {
 							}
 							tableHeadCells={tableHeadCells}
 						/>
-						<TrackerTableBody
-							order={order}
-							orderBy={orderBy}
-							page={page}
-							rowsPerPage={rowsPerPage}
-							isSelected={isSelected}
-							tablet={tablet}
-							desktop={desktop}
-							selected={selected}
-							emptyRows={emptyRows}
-							dense={dense}
-							setSelected={setSelected}
-							rows={rows}
-							dataName={dataName}
-						/>
+						<TableBody>
+							{
+								/* if you don't need to support IE11, you can replace the `stableSort` call with:
+                                rows.slice().sort(getComparator(order, orderBy)) */
+								stableSort(rows, getComparator(order, orderBy))
+									.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+									.map((row) => (
+										<TrackerRow
+											key={row._id}
+											row={row}
+											selected={selected}
+											setSelected={setSelected}
+											tablet={tablet}
+											desktop={desktop}
+											dataName={dataName}
+										/>
+									))
+							}
+							{emptyRows > 0 && (
+								<TableRow
+									style={{
+										height: (dense ? 33 : 53) * emptyRows
+									}}
+								>
+									<TableCell colSpan={6} />
+								</TableRow>
+							)}
+						</TableBody>
 					</Table>
 				</TableContainer>
 				<TablePagination
