@@ -1,20 +1,17 @@
 import Collapse from '@mui/material/Collapse'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
+import { handleBugClose } from './Utils'
 
 const TableControls = (props) => {
 	const {
 		open,
 		dataName,
-		handleEditDialogToggle,
+		handleBugDialogToggle,
+		handleUserDialogToggle,
 		handleDetailsDialogToggle,
 		handleMenuOpen
 	} = props
-
-	const handleBugClose = () => {
-		// Send PATCH request to DB to change active status to FALSE
-		// GET request to update all bugs
-	}
 
 	return (
 		<Collapse in={open} timeout="auto" unmountOnExit>
@@ -31,7 +28,9 @@ const TableControls = (props) => {
 					key="edit"
 					variant="contained"
 					sx={{ mx: 1 }}
-					onClick={handleEditDialogToggle}
+					onClick={
+						dataName === 'Bug' ? handleBugDialogToggle : handleUserDialogToggle
+					}
 				>
 					Edit
 				</Button>

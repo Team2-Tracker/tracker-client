@@ -1,9 +1,7 @@
 import * as React from 'react'
-
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 import moment from 'moment'
-import { handleSelectOneRow } from './Utils'
 import IconButton from '@mui/material/IconButton'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
@@ -17,7 +15,8 @@ const TrackerRow = (props) => {
 		setSelected,
 		dataName,
 		row,
-		handleEditDialogToggle,
+		handleBugDialogToggle,
+		handleUserDialogToggle,
 		handleDetailsDialogToggle,
 		handleMenuOpen
 	} = props
@@ -82,7 +81,8 @@ const TrackerRow = (props) => {
 						<TableControls
 							open={rowCollapseOpen}
 							dataName={dataName}
-							handleEditDialogToggle={handleEditDialogToggle}
+							handleBugDialogToggle={handleBugDialogToggle}
+							handleUserDialogToggle={handleUserDialogToggle}
 							handleDetailsDialogToggle={handleDetailsDialogToggle}
 							handleMenuOpen={handleMenuOpen}
 						/>
@@ -136,7 +136,8 @@ const TrackerRow = (props) => {
 						<TableControls
 							open={rowCollapseOpen}
 							dataName={dataName}
-							handleEditDialogToggle={handleEditDialogToggle}
+							handleBugDialogToggle={handleBugDialogToggle}
+							handleUserDialogToggle={handleUserDialogToggle}
 							handleDetailsDialogToggle={handleDetailsDialogToggle}
 							handleMenuOpen={handleMenuOpen}
 						/>

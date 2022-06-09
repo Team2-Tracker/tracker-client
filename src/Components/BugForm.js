@@ -1,219 +1,199 @@
-import * as React from "react";
-import { useState } from "react";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
-import Button from "@mui/material/Button";
-import apiUrl from "./../apiUrl";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import { now } from "moment";
+import * as React from 'react'
+import { useState } from 'react'
+import Box from '@mui/material/Box'
+import TextField from '@mui/material/TextField'
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl'
+import Select from '@mui/material/Select'
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker'
+import Button from '@mui/material/Button'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogTitle from '@mui/material/DialogTitle'
+import { now } from 'moment'
+import { handleBugSubmit } from './Utils'
 
-export default function BugForm(props) {
-  const { open, handleToggle, name, type, selected } = props;
-  const [nameForm, setNameForm] = useState(
-    type === "edit" ? selected.bugName : ""
-  );
-  const [issues, setIssues] = useState(type === "edit" ? selected.issues : "");
-  const [priority, setPriority] = useState(
-    type === "edit" ? selected.priority : ""
-  );
-  const [estimate, setEstimate] = useState(
-    type === "edit" ? selected.timeEstimate : ""
-  );
-  const [dateDue, setDateDue] = useState(new Date(now()),
-    type === "edit" ? selected.dateDue : ""
-  );
+const BugForm = (props) => {
+	const { open, handleToggle, name, type, selected, desktop } = props
 
-  const [dateCreated, setDateCreated] = useState(
-    type === "edit" ? selected.dateCreated : ""
-  );
-  const [assigned, setAssigned] = useState(
-    type === "edit" ? selected.assigned : ""
-  );
-  const desktop = false;
+	// State to track form input - Ternary functions add default values for edit forms
+	const [formData, setFormData] = useState({
+		formName: type === 'edit' ? selected.bugName : '',
+		issues: type === 'edit' ? selected.issues : '',
+		priority: type === 'edit' ? selected.priority : '',
+		estimate: type === 'edit' ? selected.timeEstimate : '',
+		dateDue: type === 'edit' ? selected.dateDue : new Date(now()),
+		dateCreated: type === 'edit' ? selected.dateCreated : '',
+		assigned: type === 'edit' ? selected.assigned : ''
+	})
 
-  const handleNameChange = (event) => {
-    setNameForm(event.target.value);
-  };
+	// Handle functions set state to form values
+	const handleNameChange = (event) => {
+		const newData = { ...formData }
+		newData.formName = event.target.value
+		setFormData(newData)
+	}
+	const handleIssuesChange = (event) => {
+		const newData = { ...formData }
+		newData.issues = event.target.value
+		setFormData(newData)
+	}
+	const handlePriorityChange = (event) => {
+		const newData = { ...formData }
+		newData.priority = event.target.value
+		setFormData(newData)
+	}
+	const handleEstimateChange = (event) => {
+		const newData = { ...formData }
+		newData.estimate = event.target.value
+		setFormData(newData)
+	}
+	const handleDateChange = (event) => {
+		const newData = { ...formData }
+		newData.dateDue = event
+		setFormData(newData)
+	}
+	const handleDateCreatedChange = (event) => {
+		const newData = { ...formData }
+		newData.dateCreated = event
+		setFormData(newData)
+	}
+	const handleAssignedChange = (event) => {
+		const newData = { ...formData }
+		newData.assigned = event.target.value
+		setFormData(newData)
+	}
 
-  const handleIssuesChange = (event) => {
-    setIssues(event.target.value);
-  };
+	// Choose mobile or desktop picker based on screen size
+	let editDateCreated = ''
+	if (type === 'edit') {
+		editDateCreated = (
+			<MobileDatePicker
+				label="Date Created"
+				inputFormat="MM/DD/yyyy"
+				value={formData.dateCreated}
+				onChange={handleDateCreatedChange}
+				renderInput={(params) => <TextField {...params} />}
+			/>
+		)
+	}
+	if (type == 'edit' && desktop) {
+		editDateCreated = (
+			<DesktopDatePicker
+				label="Date Created"
+				inputFormat="MM/DD/yyyy"
+				value={formData.dateCreated}
+				onChange={handleDateCreatedChange}
+				renderInput={(params) => <TextField {...params} />}
+			/>
+		)
+	}
 
-  const handlePriorityChange = (event) => {
-    setPriority(event.target.value);
-  };
-
-  const handleEstimateChange = (event) => {
-    setEstimate(event.target.value);
-  };
-
-  const handleDateChange = (event) => {
-    setDateDue(event);
-  };
-
-  const handleDateCreatedChange = (event) => {
-    setDateCreated(event);
-  };
-
-  const handleAssignedChange = (event) => {
-    setAssigned(event.target.value);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    fetch(`${apiUrl}/bugs/`, {
-      method: type === "edit" ? "PATCH" : "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        bugName: nameForm,
-        issues: issues,
-        priority: priority,
-        timeEstimate: estimate,
-        dateDue: dateDue,
-        dateCreated: type === "edit" ? dateCreated : new Date(now()),
-        assigned: assigned,
-      }),
-    }).then(() => {
-      setNameForm("");
-      setIssues("");
-      setPriority("");
-      setEstimate("");
-      setDateDue(null);
-      setAssigned("");
-      handleToggle();
-
-      //   fetchBugs();
-    });
-  };
-
-  let editDateCreated = "";
-  if (type === "edit") {
-    editDateCreated = (
-      <MobileDatePicker
-        label="Date Created"
-        inputFormat="MM/DD/yyyy"
-        value={dateCreated}
-        onChange={handleDateCreatedChange}
-        renderInput={(params) => <TextField {...params} />}
-      />
-    );
-  }
-  if (type == "edit" && desktop) {
-    editDateCreated = (
-      <DesktopDatePicker
-        label="Date Created"
-        inputFormat="MM/DD/yyyy"
-        value={dateCreated}
-        onChange={handleDateCreatedChange}
-        renderInput={(params) => <TextField {...params} />}
-      />
-    );
-  }
-
-  return (
-    <Dialog open={open} onClose={handleToggle}>
-      <DialogTitle>{name} Details</DialogTitle>
-      <DialogContent>
-        <Box
-          component="form"
-          sx={{
-            "& > :not(style)": { m: 1, width: "25ch" },
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          <TextField
-            required
-            id="outlined-basic"
-            label="Name"
-            value={nameForm}
-            variant="outlined"
-            onChange={handleNameChange}
-          />
-          <TextField
-            required
-            id="outlined-basic"
-            value={issues}
-            label="Issues"
-            variant="outlined"
-            onChange={handleIssuesChange}
-          />
-          <FormControl fullWidth>
-            <InputLabel required id="demo-simple-select-label">
-              Priority
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={priority}
-              label="Priority"
-              onChange={handlePriorityChange}
-            >
-              <MenuItem value={1}>High</MenuItem>
-              <MenuItem value={2}>Medium</MenuItem>
-              <MenuItem value={3}>Low</MenuItem>
-            </Select>
-          </FormControl>
-          <TextField
-            required
-            id="outlined-basic"
-            value={estimate}
-            label="Estimated Hours"
-            variant="outlined"
-            onChange={handleEstimateChange}
-          />
-          {desktop ? (
-            <DesktopDatePicker
-              label="Date Due"
-              inputFormat="MM/DD/yyyy"
-              value={dateDue}
-              onChange={handleDateChange}
-              renderInput={(params) => <TextField {...params} />}
-            />
-          ) : (
-            <MobileDatePicker
-              label="Date Due"
-              inputFormat="MM/DD/yyyy"
-              value={dateDue}
-              onChange={handleDateChange}
-              renderInput={(params) => <TextField {...params} />}
-            />
-          )}
-          {editDateCreated}
-          <TextField
-            id="outlined-basic"
-            value={assigned}
-            label="Assigned"
-            variant="outlined"
-            onChange={handleAssignedChange}
-          />
-        </Box>
-      </DialogContent>
-      <DialogActions>
-        <Button variant="contained" onClick={handleSubmit}>
-          Submit
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
+	return (
+		<Dialog open={open} onClose={handleToggle}>
+			<DialogTitle>{name} Details</DialogTitle>
+			<DialogContent>
+				<Box
+					component="form"
+					sx={{
+						'& > :not(style)': { m: 1, width: '100%' }
+					}}
+					noValidate
+					autoComplete="off"
+				>
+					<TextField
+						required
+						id="name"
+						label="Name"
+						value={formData.nameForm}
+						variant="outlined"
+						onChange={handleNameChange}
+					/>
+					<TextField
+						required
+						id="issues"
+						value={formData.issues}
+						label="Issues"
+						variant="outlined"
+						onChange={handleIssuesChange}
+					/>
+					<FormControl fullWidth>
+						<InputLabel required id="priority-label">
+							Priority
+						</InputLabel>
+						<Select
+							labelId="priority"
+							id="priority"
+							value={formData.priority}
+							label="Priority"
+							onChange={handlePriorityChange}
+						>
+							<MenuItem value={1}>High</MenuItem>
+							<MenuItem value={2}>Medium</MenuItem>
+							<MenuItem value={3}>Low</MenuItem>
+						</Select>
+					</FormControl>
+					<TextField
+						required
+						id="estimated-hours"
+						value={formData.estimate}
+						label="Estimated Hours"
+						variant="outlined"
+						onChange={handleEstimateChange}
+					/>
+					{desktop ? (
+						<DesktopDatePicker
+							label="Date Due"
+							inputFormat="MM/DD/yyyy"
+							value={formData.dateDue}
+							onChange={handleDateChange}
+							renderInput={(params) => <TextField {...params} />}
+						/>
+					) : (
+						<MobileDatePicker
+							label="Date Due"
+							inputFormat="MM/DD/yyyy"
+							value={formData.dateDue}
+							onChange={handleDateChange}
+							renderInput={(params) => <TextField {...params} />}
+						/>
+					)}
+					{editDateCreated}
+					<TextField
+						id="assigned"
+						value={formData.assigned}
+						label="Assigned"
+						variant="outlined"
+						onChange={handleAssignedChange}
+						disabled
+					/>
+				</Box>
+			</DialogContent>
+			<DialogActions>
+				<Button variant="contained" onClick={handleToggle}>
+					Cancel
+				</Button>
+				<Button
+					variant="contained"
+					onClick={(event) =>
+						handleBugSubmit(
+							event,
+							type,
+							selected,
+							formData,
+							setFormData,
+							handleToggle
+						)
+					}
+				>
+					Submit
+				</Button>
+			</DialogActions>
+		</Dialog>
+	)
 }
 
-//  export default function BugForm() {
-//     const [bugform, setBugForm] = useState([]);
-//     if (bugform.length == 0)
-//     {
-//         console.log(apiUrl)
-//         fetch(`${apiUrl}/bugs`)
-//         .then(response => response.json())
-//         .then(rep => console.log(rep));
-//         bugform[0] = 1;
-//     }
+export default BugForm

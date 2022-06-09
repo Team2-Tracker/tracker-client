@@ -8,7 +8,13 @@ import AddIcon from '@mui/icons-material/Add'
 import FilterListIcon from '@mui/icons-material/FilterList'
 
 const EnhancedTableToolbar = (props) => {
-	const { title, handleMenuOpen, handleAddDialogToggle } = props
+	const {
+		title,
+		dataName,
+		handleMenuOpen,
+		handleBugDialogToggle,
+		handleUserDialogToggle
+	} = props
 
 	return (
 		// This toolbar contains the table header OR the selected bugs feature
@@ -19,7 +25,11 @@ const EnhancedTableToolbar = (props) => {
 			}}
 		>
 			<Tooltip title="Add bug">
-				<IconButton onClick={handleAddDialogToggle}>
+				<IconButton
+					onClick={
+						dataName === 'Bug' ? handleBugDialogToggle : handleUserDialogToggle
+					}
+				>
 					<AddIcon />
 				</IconButton>
 			</Tooltip>

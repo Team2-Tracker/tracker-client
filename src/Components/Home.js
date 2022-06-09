@@ -25,6 +25,7 @@ import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 import Details from './Details'
 import BugForm from './BugForm'
+import UserForm from './UserForm'
 
 const Home = (props) => {
 	const {
@@ -52,8 +53,8 @@ const Home = (props) => {
 	const [menuType, setMenuType] = React.useState('')
 	const menuOpen = Boolean(anchorEl)
 	// State for controlling the Dialogs
-	const [addDialogOpen, setAddDialogOpen] = React.useState(false)
-	const [editDialogOpen, setEditDialogOpen] = React.useState(false)
+	const [bugDialogOpen, setBugDialogOpen] = React.useState(false)
+	const [userDialogOpen, setUserDialogOpen] = React.useState(false)
 	const [detailsDialogOpen, setDetailsDialogOpen] = React.useState(false)
 	// Variable to track location to load state properly
 	let location = useLocation().pathname
@@ -67,12 +68,12 @@ const Home = (props) => {
 		setAnchorEl(null)
 	}
 	// Open and close the Add Form
-	const handleAddDialogToggle = () => {
-		setAddDialogOpen(!addDialogOpen)
+	const handleBugDialogToggle = () => {
+		setBugDialogOpen(!bugDialogOpen)
 	}
 	// Open and close the Edit Form
-	const handleEditDialogToggle = () => {
-		setEditDialogOpen(!editDialogOpen)
+	const handleUserDialogToggle = () => {
+		setUserDialogOpen(!userDialogOpen)
 	}
 	// Open and close the Details Dialog
 	const handleDetailsDialogToggle = () => {
@@ -116,7 +117,9 @@ const Home = (props) => {
 				<EnhancedTableToolbar
 					handleMenuOpen={handleMenuOpen}
 					title={title}
-					handleAddDialogToggle={handleAddDialogToggle}
+					dataName={dataName}
+					handleBugDialogToggle={handleBugDialogToggle}
+					handleUserDialogToggle={handleUserDialogToggle}
 				/>
 				<TableContainer>
 					<Table
@@ -154,7 +157,8 @@ const Home = (props) => {
 											tablet={tablet}
 											desktop={desktop}
 											dataName={dataName}
-											handleEditDialogToggle={handleEditDialogToggle}
+											handleBugDialogToggle={handleBugDialogToggle}
+											handleUserDialogToggle={handleUserDialogToggle}
 											handleDetailsDialogToggle={handleDetailsDialogToggle}
 											handleMenuOpen={handleMenuOpen}
 										/>
@@ -203,13 +207,18 @@ const Home = (props) => {
 				selected={selected}
 				handleMenuOpen={handleMenuOpen}
 			/>
-			<BugForm open={addDialogOpen} handleToggle={handleAddDialogToggle} />
-			{/* Recycle form for Edit */}
 			<BugForm
-				open={editDialogOpen}
-				handleToggle={handleEditDialogToggle}
+				open={bugDialogOpen}
+				handleToggle={handleBugDialogToggle}
+				desktop={desktop}
+			/>
+			{/* Recycle form for Edit */}
+			<UserForm
+				open={userDialogOpen}
+				handleToggle={handleUserDialogToggle}
 				type="edit"
 				selected={selected}
+				desktop={desktop}
 			/>
 		</Box>
 	)

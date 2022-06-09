@@ -1,4 +1,5 @@
 import apiUrl from '../apiUrl'
+import { now } from 'moment'
 
 // *** CRUD Functions ****
 
@@ -26,7 +27,7 @@ const handleAssignUser = (
 	setAllUsers
 ) => {
 	if (userId && bugId) {
-		fetch(`${apiUrl}/users/:${userId}/bugs/:${bugId}`, {
+		fetch(`${apiUrl}/users/${userId}/bugs/${bugId}`, {
 			method: 'PATCH',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({})
@@ -38,6 +39,81 @@ const handleAssignUser = (
 	} else {
 		console.log('something went wrong', 'userId:', userId, 'bugId:', bugId)
 	}
+}
+// Bug Add / Edit: Calls fetch request to create OR update based on form type
+const handleBugSubmit = (
+	event,
+	type,
+	selected,
+	formData,
+	setFormData,
+	handleToggle
+) => {
+	event.preventDefault()
+	fetch(`${apiUrl}/bugs/`, {
+		method: type === 'edit' ? 'PATCH' : 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({
+			bugName: formData.nameForm,
+			issues: formData.issues,
+			priority: formData.priority,
+			timeEstimate: formData.estimate,
+			dateDue: formData.dateDue,
+			dateCreated: type === 'edit' ? formData.dateCreated : new Date(now()),
+			assigned: false
+		})
+	}).then(() => {
+		setFormData({
+			formName: type === 'edit' ? selected.bugName : '',
+			issues: type === 'edit' ? selected.issues : '',
+			priority: type === 'edit' ? selected.priority : '',
+			estimate: type === 'edit' ? selected.timeEstimate : '',
+			dateDue: type === 'edit' ? selected.dateDue : new Date(now()),
+			dateCreated: type === 'edit' ? selected.dateCreated : '',
+			assigned: type === 'edit' ? selected.assigned : ''
+		})
+		handleToggle()
+	})
+}
+// User Add / Edit: Calls fetch request to create OR update based on form type
+const handleUserSubmit = (
+	event,
+	type,
+	selected,
+	formData,
+	setFormData,
+	handleToggle
+) => {
+	event.preventDefault()
+	fetch(`${apiUrl}/bugs/`, {
+		method: type === 'edit' ? 'PATCH' : 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({
+			bugName: formData.nameForm,
+			issues: formData.issues,
+			priority: formData.priority,
+			timeEstimate: formData.estimate,
+			dateDue: formData.dateDue,
+			dateCreated: type === 'edit' ? formData.dateCreated : new Date(now()),
+			assigned: false
+		})
+	}).then(() => {
+		setFormData({
+			formName: type === 'edit' ? selected.bugName : '',
+			issues: type === 'edit' ? selected.issues : '',
+			priority: type === 'edit' ? selected.priority : '',
+			estimate: type === 'edit' ? selected.timeEstimate : '',
+			dateDue: type === 'edit' ? selected.dateDue : new Date(now()),
+			dateCreated: type === 'edit' ? selected.dateCreated : '',
+			assigned: type === 'edit' ? selected.assigned : ''
+		})
+		handleToggle()
+	})
+}
+// Close a bug by ID
+const handleBugClose = () => {
+	// Send PATCH request to DB to change active status to FALSE
+	// GET request to update all bugs
 }
 
 // *** Table Functions ****
@@ -150,6 +226,9 @@ export {
 	fetchAllBugs,
 	fetchAllUsers,
 	handleAssignUser,
+	handleBugSubmit,
+	handleUserSubmit,
+	handleBugClose,
 	handleFilterRowsBy,
 	getComparator,
 	stableSort,
