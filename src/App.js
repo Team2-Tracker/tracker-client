@@ -11,10 +11,8 @@ import {
 	usersMenu
 } from './Components/TableConfig'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import BugForm from './Components/BugForm'
 import apiUrl from './apiUrl'
-import Users from './Components/Users'
-import Details from './Components/Details'
+
 
 function App() {
 	// All Data from fetch request
@@ -84,10 +82,7 @@ function App() {
 						/>
 					}
 				/>
-				<Route path="/details" element={<Details />} />
-				<Route path="/users" element={<Users />} />
 				<Route path="/about" element={<About />} />
-				<Route path="/form" element={<BugForm />} />
 			</Routes>
 		</div>
 	)
