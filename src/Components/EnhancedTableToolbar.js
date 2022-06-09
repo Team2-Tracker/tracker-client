@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { alpha } from '@mui/material/styles'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
@@ -10,6 +11,7 @@ const EnhancedTableToolbar = (props) => {
 	const { title, handleMenuOpen, handleAddDialogToggle } = props
 
 	return (
+		// This toolbar contains the table header OR the selected bugs feature
 		<Toolbar
 			sx={{
 				pl: { sm: 2 },

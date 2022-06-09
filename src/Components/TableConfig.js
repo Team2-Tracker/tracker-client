@@ -47,25 +47,25 @@ const bugTableHeadCells = (tablet, desktop) => {
 const userTableHeadCells = (tablet, desktop) => {
 	let headCells = [
 		{
-			id: 'userName',
+			id: 'name',
 			align: 'left',
 			disablePadding: true,
 			label: 'User Name'
 		},
 		{
 			id: 'firstName',
-			align: 'left',
+			align: 'center',
 			disablePadding: true,
 			label: 'First Name'
 		},
 		{
 			id: 'lastName',
-			align: 'left',
+			align: 'right',
 			disablePadding: false,
 			label: 'Last Name'
 		}
 	]
-	// Add "Number of Bugs" column at 600px
+	// Add "Issues" column at 600px
 	if (tablet) {
 		headCells.push({
 			id: 'bugNumber',
@@ -74,7 +74,7 @@ const userTableHeadCells = (tablet, desktop) => {
 			label: 'Number of Bugs'
 		})
 	}
-	// Add "Total Estimated Hours" column at 900px
+	// Add "Date created" column at 900px
 	if (desktop) {
 		headCells.push({
 			id: 'bugHours',
