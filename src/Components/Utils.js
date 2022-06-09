@@ -1,3 +1,47 @@
+import apiUrl from '../apiUrl'
+
+// *** CRUD Functions ****
+
+// Functions to fetch all data from database
+const fetchAllBugs = (setAllBugs) => {
+	fetch(apiUrl + `/bugs/`)
+		.then((res) => res.json())
+		.then((data) => {
+			setAllBugs(data.bugs)
+		})
+}
+const fetchAllUsers = (setAllUsers) => {
+	fetch(apiUrl + `/users/`)
+		.then((res) => res.json())
+		.then((data) => {
+			setAllUsers(data.users)
+		})
+}
+// This function updates bugs by ID to add the user by ID
+const handleAssignUser = (
+	userId,
+	bugId,
+	handleMenuClose,
+	setAllBugs,
+	setAllUsers
+) => {
+	if (userId && bugId) {
+		fetch(`${apiUrl}/users/:${userId}/bugs/:${bugId}`, {
+			method: 'PATCH',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({})
+		}).then(() => {
+			handleMenuClose()
+			fetchAllBugs(setAllBugs)
+			fetchAllUsers(setAllUsers)
+		})
+	} else {
+		console.log('something went wrong', 'userId:', userId, 'bugId:', bugId)
+	}
+}
+
+// *** Table Functions ****
+
 // Filter rows by filter
 const handleFilterRowsBy = (filter, allRows, setRows, setTitle) => {
 	if (filter === 'allBugs') {
@@ -86,22 +130,7 @@ const handleRequestSort = (
 	setOrderBy(property)
 }
 
-// Handles selecting all rows in the table header
-// const handleSelectAllClick = (event, rows, setSelected) => {
-// 	if (event.target.checked) {
-// 		const newSelecteds = rows.map((n) => n.name)
-// 		setSelected(newSelecteds)
-// 		return
-// 	}
-// 	setSelected([])
-// }
-
-// Handles selecting one item from the list
-const handleSelectOneRow = (row, selected, setSelected) => {
-	row === selected ? setSelected({}) : setSelected(row)
-}
-
-// Changes which page is being displayed
+// Changes which page of the table is being displayed
 const handleChangePage = (event, newPage, setPage) => {
 	setPage(newPage)
 }
@@ -118,11 +147,13 @@ const handleChangeDense = (event, setDense) => {
 }
 
 export {
+	fetchAllBugs,
+	fetchAllUsers,
+	handleAssignUser,
 	handleFilterRowsBy,
 	getComparator,
 	stableSort,
 	handleRequestSort,
-	handleSelectOneRow,
 	handleChangePage,
 	handleChangeRowsPerPage,
 	handleChangeDense

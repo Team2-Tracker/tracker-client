@@ -7,7 +7,7 @@ import { handleSelectOneRow } from './Utils'
 import IconButton from '@mui/material/IconButton'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
-import TableControlls from './TableControlls'
+import TableControlls from './TableControls'
 
 const TrackerRow = (props) => {
 	const {
@@ -18,7 +18,8 @@ const TrackerRow = (props) => {
 		dataName,
 		row,
 		handleEditDialogToggle,
-		handleDetailsDialogToggle
+		handleDetailsDialogToggle,
+		handleMenuOpen
 	} = props
 
 	const [rowCollapseOpen, setRowCollapseOpen] = React.useState(false)
@@ -46,7 +47,7 @@ const TrackerRow = (props) => {
 				<TableRow
 					hover
 					onClick={() => {
-						handleSelectOneRow(row, selected, setSelected)
+						row === selected ? setSelected({}) : setSelected(row)
 						setRowCollapseOpen(!rowCollapseOpen)
 					}}
 					aria-checked={isItemSelected}
@@ -83,6 +84,7 @@ const TrackerRow = (props) => {
 							dataName={dataName}
 							handleEditDialogToggle={handleEditDialogToggle}
 							handleDetailsDialogToggle={handleDetailsDialogToggle}
+							handleMenuOpen={handleMenuOpen}
 						/>
 					</TableCell>
 				</TableRow>
@@ -105,7 +107,7 @@ const TrackerRow = (props) => {
 				<TableRow
 					hover
 					onClick={() => {
-						handleSelectOneRow(row._id, selected, setSelected)
+						row === selected ? setSelected({}) : setSelected(row)
 						setRowCollapseOpen(!rowCollapseOpen)
 					}}
 					aria-checked={isItemSelected}
@@ -136,6 +138,7 @@ const TrackerRow = (props) => {
 							dataName={dataName}
 							handleEditDialogToggle={handleEditDialogToggle}
 							handleDetailsDialogToggle={handleDetailsDialogToggle}
+							handleMenuOpen={handleMenuOpen}
 						/>
 					</TableCell>
 				</TableRow>

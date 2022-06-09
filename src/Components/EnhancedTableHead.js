@@ -4,10 +4,13 @@ import TableSortLabel from '@mui/material/TableSortLabel'
 import Box from '@mui/material/Box'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
+import { bugTableHeadCells, userTableHeadCells } from './TableConfig'
 
 // Creates the Table Heading with sort and list functionality
 export default function EnhancedTableHead(props) {
-	const { order, orderBy, onRequestSort, tableHeadCells } = props
+	const { order, orderBy, onRequestSort, dataName } = props
+	let tableHeadCells =
+		dataName === 'Bug' ? bugTableHeadCells : userTableHeadCells
 
 	const createSortHandler = (property) => (event) => {
 		onRequestSort(event, property)

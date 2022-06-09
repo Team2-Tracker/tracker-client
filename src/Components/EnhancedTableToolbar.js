@@ -31,7 +31,10 @@ const EnhancedTableToolbar = (props) => {
 			>
 				{title}
 			</Typography>
-			<Tooltip title="Filter list" onClick={handleMenuOpen}>
+			<Tooltip
+				title="Filter list"
+				onClick={(event) => handleMenuOpen(event, 'filter')}
+			>
 				<IconButton>
 					<FilterListIcon />
 				</IconButton>

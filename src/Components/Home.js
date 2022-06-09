@@ -33,11 +33,10 @@ const Home = (props) => {
 		tablet,
 		desktop,
 		homeTitle,
-		menuArray,
 		allBugs,
 		allUsers,
-		fetchAllBugs,
-		fetchAllUsers
+		setAllBugs,
+		setAllUsers
 	} = props
 	// States for controlling the Table
 	const [rows, setRows] = React.useState([])
@@ -50,6 +49,7 @@ const Home = (props) => {
 	const [title, setTitle] = React.useState(homeTitle)
 	// State for controlling filter menu
 	const [anchorEl, setAnchorEl] = React.useState(null)
+	const [menuType, setMenuType] = React.useState('')
 	const menuOpen = Boolean(anchorEl)
 	// State for controlling the Dialogs
 	const [addDialogOpen, setAddDialogOpen] = React.useState(false)
@@ -59,8 +59,9 @@ const Home = (props) => {
 	let location = useLocation().pathname
 
 	// Event handlers for menu open and close
-	const handleMenuOpen = (event) => {
+	const handleMenuOpen = (event, menuType) => {
 		setAnchorEl(event.currentTarget)
+		setMenuType(menuType)
 	}
 	const handleMenuClose = () => {
 		setAnchorEl(null)
@@ -101,10 +102,15 @@ const Home = (props) => {
 				menuOpen={menuOpen}
 				onClose={handleMenuClose}
 				handleMenuClose={handleMenuClose}
-				allData={dataName === 'Bug' ? allBugs : allUsers}
+				allBugs={allBugs}
+				allUsers={allUsers}
 				setRows={setRows}
 				setTitle={setTitle}
-				menuArray={menuArray}
+				setAllBugs={setAllBugs}
+				setAllUsers={setAllUsers}
+				dataName={dataName}
+				menuType={menuType}
+				selected={selected}
 			/>
 			<Paper sx={{ width: '100%', mb: 2 }}>
 				<EnhancedTableToolbar
@@ -131,7 +137,7 @@ const Home = (props) => {
 									setOrderBy
 								)
 							}
-							tableHeadCells={tableHeadCells}
+							dataName={dataName}
 						/>
 						<TableBody>
 							{
@@ -150,6 +156,7 @@ const Home = (props) => {
 											dataName={dataName}
 											handleEditDialogToggle={handleEditDialogToggle}
 											handleDetailsDialogToggle={handleDetailsDialogToggle}
+											handleMenuOpen={handleMenuOpen}
 										/>
 									))
 							}
@@ -194,6 +201,7 @@ const Home = (props) => {
 				// Replace 'bug' with state
 				dataName={dataName}
 				selected={selected}
+				handleMenuOpen={handleMenuOpen}
 			/>
 			<BugForm open={addDialogOpen} handleToggle={handleAddDialogToggle} />
 			{/* Recycle form for Edit */}
