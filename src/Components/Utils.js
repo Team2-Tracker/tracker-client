@@ -87,18 +87,18 @@ const handleRequestSort = (
 }
 
 // Handles selecting all rows in the table header
-const handleSelectAllClick = (event, rows, setSelected) => {
-	if (event.target.checked) {
-		const newSelecteds = rows.map((n) => n.name)
-		setSelected(newSelecteds)
-		return
-	}
-	setSelected([])
-}
+// const handleSelectAllClick = (event, rows, setSelected) => {
+// 	if (event.target.checked) {
+// 		const newSelecteds = rows.map((n) => n.name)
+// 		setSelected(newSelecteds)
+// 		return
+// 	}
+// 	setSelected([])
+// }
 
 // Handles selecting one item from the list
-const handleSelectOneRow = (name, selected, setSelected) => {
-	name === selected ? setSelected([]) : setSelected(name)
+const handleSelectOneRow = (row, selected, setSelected) => {
+	row === selected ? setSelected({}) : setSelected(row)
 }
 
 // Changes which page is being displayed
@@ -122,7 +122,6 @@ export {
 	getComparator,
 	stableSort,
 	handleRequestSort,
-	handleSelectAllClick,
 	handleSelectOneRow,
 	handleChangePage,
 	handleChangeRowsPerPage,

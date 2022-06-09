@@ -9,7 +9,6 @@ import IconButton from '@mui/material/IconButton'
 import PetsIcon from '@mui/icons-material/Pets'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
-import About from '../Components/About'
 
 const TopNavBar = () => {
 	const [anchorEl, setAnchorEl] = React.useState(null)
@@ -54,7 +53,6 @@ const TopNavBar = () => {
 							About
 						</MenuItem>
 					</Menu>
-
 					<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
 						Tracker
 					</Typography>

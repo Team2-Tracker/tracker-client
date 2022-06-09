@@ -2,14 +2,15 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 import Box from '@mui/material/Box'
 import Table from '@mui/material/Table'
-import TrackerTableBody from './TrackerTableBody'
+import TrackerRow from './TrackerRow'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
 import Paper from '@mui/material/Paper'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
-import apiUrl from '../apiUrl'
 import {
+	getComparator,
+	stableSort,
 	handleRequestSort,
 	handleChangePage,
 	handleChangeRowsPerPage,
@@ -19,29 +20,42 @@ import EnhancedTableHead from './EnhancedTableHead'
 import FilterMenu from './FilterMenu'
 import EnhancedTableToolbar from './EnhancedTableToolbar'
 import { useLocation } from 'react-router-dom'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableRow from '@mui/material/TableRow'
+import Details from './Details'
+import BugForm from './BugForm'
 
-const BugHome = (props) => {
-	const { dataName, tableHeadCells, tablet, desktop, homeTitle, menuArray } =
-		props
+const Home = (props) => {
+	const {
+		dataName,
+		tableHeadCells,
+		tablet,
+		desktop,
+		homeTitle,
+		menuArray,
+		allBugs,
+		allUsers,
+		fetchAllBugs,
+		fetchAllUsers
+	} = props
 	// States for controlling the Table
+	const [rows, setRows] = React.useState([])
 	const [order, setOrder] = React.useState('asc')
 	const [orderBy, setOrderBy] = React.useState('calories')
-	const [selected, setSelected] = React.useState([])
+	const [selected, setSelected] = React.useState({})
 	const [page, setPage] = React.useState(0)
 	const [dense, setDense] = React.useState(false)
 	const [rowsPerPage, setRowsPerPage] = React.useState(5)
 	const [title, setTitle] = React.useState(homeTitle)
-	// Table row data to display
-	const [rows, setRows] = React.useState([])
-	// All bugs from fetch request
-	const [allData, setAllData] = React.useState([])
 	// State for controlling filter menu
 	const [anchorEl, setAnchorEl] = React.useState(null)
 	const menuOpen = Boolean(anchorEl)
-	// State for controlling the Add Bug and Edit Bug form dialogs
-	const [addBugOpen, setAddBugOpen] = React.useState(false)
-	const [editBugOpen, setEditBugOpen] = React.useState(false)
-	// Variable to track location inside app for reloading between Bugs and Users
+	// State for controlling the Dialogs
+	const [addDialogOpen, setAddDialogOpen] = React.useState(false)
+	const [editDialogOpen, setEditDialogOpen] = React.useState(false)
+	const [detailsDialogOpen, setDetailsDialogOpen] = React.useState(false)
+	// Variable to track location to load state properly
 	let location = useLocation().pathname
 
 	// Event handlers for menu open and close
@@ -51,39 +65,30 @@ const BugHome = (props) => {
 	const handleMenuClose = () => {
 		setAnchorEl(null)
 	}
-	// Open and close the Add Bug Form
-	const handleAddBugToggle = () => {
-		setAddBugOpen(!addBugOpen)
+	// Open and close the Add Form
+	const handleAddDialogToggle = () => {
+		setAddDialogOpen(!addDialogOpen)
 	}
-	// Open and close the Edit Bug Form
-	const handleEditBugToggle = () => {
-		setEditBugOpen(!editBugOpen)
+	// Open and close the Edit Form
+	const handleEditDialogToggle = () => {
+		setEditDialogOpen(!editDialogOpen)
 	}
-
-	// Function to fetch all bugs from database
-	const fetchAllBugs = () => {
-		fetch(apiUrl + `/${dataName}/`)
-			.then((res) => res.json())
-			.then((data) => {
-				setAllData(data[dataName])
-				setRows(data[dataName])
-			})
+	// Open and close the Details Dialog
+	const handleDetailsDialogToggle = () => {
+		setDetailsDialogOpen(!detailsDialogOpen)
 	}
 
-	// On page load: Set allData and rows = fetched bugs
 	React.useEffect(() => {
-		fetchAllBugs()
 		setTitle(homeTitle)
-	}, [location])
+		setRows(dataName === 'Bug' ? allBugs : allUsers)
+	}, [location, allBugs, allUsers])
 
+	// Adding propTypes for the EnhancedTableHead Component
 	EnhancedTableHead.propTypes = {
 		onRequestSort: PropTypes.func.isRequired,
 		order: PropTypes.oneOf(['asc', 'desc']).isRequired,
 		orderBy: PropTypes.string.isRequired
 	}
-
-	// Selects whichever row is entered as name
-	const isSelected = (name) => selected.indexOf(name) !== -1
 
 	// Avoid a layout jump when reaching the last page with empty rows.
 	const emptyRows =
@@ -96,7 +101,7 @@ const BugHome = (props) => {
 				menuOpen={menuOpen}
 				onClose={handleMenuClose}
 				handleMenuClose={handleMenuClose}
-				allData={allData}
+				allData={dataName === 'Bug' ? allBugs : allUsers}
 				setRows={setRows}
 				setTitle={setTitle}
 				menuArray={menuArray}
@@ -105,7 +110,7 @@ const BugHome = (props) => {
 				<EnhancedTableToolbar
 					handleMenuOpen={handleMenuOpen}
 					title={title}
-					handleAddBugToggle={handleAddBugToggle}
+					handleAddDialogToggle={handleAddDialogToggle}
 				/>
 				<TableContainer>
 					<Table
@@ -128,20 +133,36 @@ const BugHome = (props) => {
 							}
 							tableHeadCells={tableHeadCells}
 						/>
-						<TrackerTableBody
-							order={order}
-							orderBy={orderBy}
-							page={page}
-							rowsPerPage={rowsPerPage}
-							isSelected={isSelected}
-							tablet={tablet}
-							desktop={desktop}
-							selected={selected}
-							emptyRows={emptyRows}
-							dense={dense}
-							setSelected={setSelected}
-							rows={rows}
-						/>
+						<TableBody>
+							{
+								/* if you don't need to support IE11, you can replace the `stableSort` call with:
+                                rows.slice().sort(getComparator(order, orderBy)) */
+								stableSort(rows, getComparator(order, orderBy))
+									.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+									.map((row) => (
+										<TrackerRow
+											key={row._id}
+											row={row}
+											selected={selected}
+											setSelected={setSelected}
+											tablet={tablet}
+											desktop={desktop}
+											dataName={dataName}
+											handleEditDialogToggle={handleEditDialogToggle}
+											handleDetailsDialogToggle={handleDetailsDialogToggle}
+										/>
+									))
+							}
+							{emptyRows > 0 && (
+								<TableRow
+									style={{
+										height: (dense ? 33 : 53) * emptyRows
+									}}
+								>
+									<TableCell colSpan={6} />
+								</TableRow>
+							)}
+						</TableBody>
 					</Table>
 				</TableContainer>
 				<TablePagination
@@ -167,8 +188,23 @@ const BugHome = (props) => {
 				}
 				label="Dense padding"
 			/>
+			<Details
+				open={detailsDialogOpen}
+				handleToggle={handleDetailsDialogToggle}
+				// Replace 'bug' with state
+				dataName={dataName}
+				selected={selected}
+			/>
+			<BugForm open={addDialogOpen} handleToggle={handleAddDialogToggle} />
+			{/* Recycle form for Edit */}
+			<BugForm
+				open={editDialogOpen}
+				handleToggle={handleEditDialogToggle}
+				type="edit"
+				selected={selected}
+			/>
 		</Box>
 	)
 }
 
-export default BugHome
+export default Home

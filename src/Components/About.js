@@ -2,6 +2,7 @@ import React from "react";
 import img1 from '../Images/alexandra.jpeg';
 import img2 from '../Images/Shanti-Headshot.jpeg';
 import img3 from '../Images/Alex-Becker.jpeg';
+import img4 from '../Images/Irais.jpg';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -11,6 +12,11 @@ import Grid from '@mui/material/Grid';
 
 
 function About() {
+
+  const cardStyle = {
+    height: "100vw"
+  };
+
     return (
 
         <div className="about">
@@ -19,7 +25,7 @@ function About() {
           
           <Grid container>
             <Grid item xs={12} sm={6} md={3}>
-          <Card sx={{ minWidth: 345 }}>
+          <Card style={cardStyle} sx={{ minWidth: 345 }}>
        <img src={img2} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
@@ -45,7 +51,7 @@ function About() {
    
     <Grid item xs={12} sm={6} md={3}>
         
-    <Card sx={{ minWidth: 345 }}>
+    <Card style={cardStyle} sx={{ minWidth: 345 }}>
        <img src={img3} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
@@ -69,27 +75,29 @@ function About() {
 
     <Grid item xs={12} sm={6} md={3}>
           
-    <Card sx={{ minWidth: 345 }}>
-       <img src="" />
+    <Card style={cardStyle} sx={{ minWidth: 345 }}>
+       <img src={img4} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           Irais Avila
         </Typography>
         <Typography variant="body2" color="text.secondary">
-      Words
+        A creative and detail-oriented Software Engineer with a background 
+        in banking and finance. Invested in solving problems by building solutions 
+        to help teams, businesses, and people. 
 
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Portfolio</Button>
-        <Button size="small">Github</Button>
+        <Button size="small" href="https://iraisavila.github.io/Project1/">Portfolio</Button>
+        <Button size="small" href="https://github.com/IraisAvila">Github</Button>
       </CardActions>
     </Card>
     </Grid>
 
     <Grid item xs={12} sm={6} md={3}>
           
-          <Card sx={{ minWidth: 345 }}>
+          <Card style={cardStyle} sx={{ minWidth: 345 }}>
              <img src={img1} />
             <CardContent>
               <Typography gutterBottom variant="h5" component="div">
