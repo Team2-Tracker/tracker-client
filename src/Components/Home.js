@@ -56,6 +56,7 @@ const Home = (props) => {
 	const [bugDialogOpen, setBugDialogOpen] = React.useState(false)
 	const [userDialogOpen, setUserDialogOpen] = React.useState(false)
 	const [detailsDialogOpen, setDetailsDialogOpen] = React.useState(false)
+	const [dialogType, setDialogType] = React.useState('')
 	// Variable to track location to load state properly
 	let location = useLocation().pathname
 	console.log(rows)
@@ -68,12 +69,14 @@ const Home = (props) => {
 		setAnchorEl(null)
 	}
 	// Open and close the Add Form
-	const handleBugDialogToggle = () => {
+	const handleBugDialogToggle = (dialogType) => {
 		setBugDialogOpen(!bugDialogOpen)
+		setDialogType(dialogType)
 	}
 	// Open and close the Edit Form
-	const handleUserDialogToggle = () => {
+	const handleUserDialogToggle = (dialogType) => {
 		setUserDialogOpen(!userDialogOpen)
+		setDialogType(dialogType)
 	}
 	// Open and close the Details Dialog
 	const handleDetailsDialogToggle = () => {
@@ -201,10 +204,10 @@ const Home = (props) => {
 				}
 				label="Dense padding"
 			/>
+			{/*  */}
 			<Details
 				open={detailsDialogOpen}
 				handleToggle={handleDetailsDialogToggle}
-				// Replace 'bug' with state
 				dataName={dataName}
 				selected={selected}
 				handleMenuOpen={handleMenuOpen}
@@ -213,12 +216,13 @@ const Home = (props) => {
 				open={bugDialogOpen}
 				handleToggle={handleBugDialogToggle}
 				desktop={desktop}
+				type={dialogType}
 			/>
 			{/* Recycle form for Edit */}
 			<UserForm
 				open={userDialogOpen}
 				handleToggle={handleUserDialogToggle}
-				type="edit"
+				type={dialogType}
 				selected={selected}
 				desktop={desktop}
 			/>

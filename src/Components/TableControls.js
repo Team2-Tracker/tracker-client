@@ -28,9 +28,11 @@ const TableControls = (props) => {
 					key="edit"
 					variant="contained"
 					sx={{ mx: 1 }}
-					onClick={
-						dataName === 'Bug' ? handleBugDialogToggle : handleUserDialogToggle
-					}
+					onClick={() => {
+						dataName === 'Bug'
+							? handleBugDialogToggle('edit')
+							: handleUserDialogToggle('edit')
+					}}
 				>
 					Edit
 				</Button>

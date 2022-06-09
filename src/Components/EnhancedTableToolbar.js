@@ -26,9 +26,11 @@ const EnhancedTableToolbar = (props) => {
 		>
 			<Tooltip title="Add bug">
 				<IconButton
-					onClick={
-						dataName === 'Bug' ? handleBugDialogToggle : handleUserDialogToggle
-					}
+					onClick={() => {
+						dataName === 'Bug'
+							? handleBugDialogToggle('new')
+							: handleUserDialogToggle('new')
+					}}
 				>
 					<AddIcon />
 				</IconButton>
