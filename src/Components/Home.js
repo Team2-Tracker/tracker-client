@@ -30,7 +30,6 @@ import UserForm from './UserForm'
 const Home = (props) => {
 	const {
 		dataName,
-		tableHeadCells,
 		tablet,
 		desktop,
 		homeTitle,
@@ -56,10 +55,11 @@ const Home = (props) => {
 	const [bugDialogOpen, setBugDialogOpen] = React.useState(false)
 	const [userDialogOpen, setUserDialogOpen] = React.useState(false)
 	const [detailsDialogOpen, setDetailsDialogOpen] = React.useState(false)
+	const [dialogData, setDialogData] = React.useState({})
 	const [dialogType, setDialogType] = React.useState('')
 	// Variable to track location to load state properly
 	let location = useLocation().pathname
-	console.log(rows)
+
 	// Event handlers for menu open and close
 	const handleMenuOpen = (event, menuType) => {
 		setAnchorEl(event.currentTarget)
@@ -69,18 +69,21 @@ const Home = (props) => {
 		setAnchorEl(null)
 	}
 	// Open and close the Add Form
-	const handleBugDialogToggle = (dialogType) => {
+	const handleBugDialogToggle = (dialogData, dialogType) => {
 		setBugDialogOpen(!bugDialogOpen)
+		setDialogData(dialogData)
 		setDialogType(dialogType)
 	}
 	// Open and close the Edit Form
-	const handleUserDialogToggle = (dialogType) => {
+	const handleUserDialogToggle = (dialogData, dialogType) => {
 		setUserDialogOpen(!userDialogOpen)
+		setDialogData(dialogData)
 		setDialogType(dialogType)
 	}
 	// Open and close the Details Dialog
-	const handleDetailsDialogToggle = () => {
+	const handleDetailsDialogToggle = (dialogData) => {
 		setDetailsDialogOpen(!detailsDialogOpen)
+		setDialogData(dialogData)
 	}
 
 	React.useEffect(() => {
@@ -204,27 +207,32 @@ const Home = (props) => {
 				}
 				label="Dense padding"
 			/>
-			{/*  */}
+			{/* Works for users or bugs based on DataName */}
 			<Details
 				open={detailsDialogOpen}
 				handleToggle={handleDetailsDialogToggle}
 				dataName={dataName}
-				selected={selected}
+				dialogData={dialogData}
 				handleMenuOpen={handleMenuOpen}
 			/>
+			{/* Works for Edit or New based on type */}
 			<BugForm
 				open={bugDialogOpen}
-				handleToggle={handleBugDialogToggle}
+				bugDialogOpen={bugDialogOpen}
+				dataName={dataName}
+				handleToggle={() => handleBugDialogToggle({}, '')}
 				desktop={desktop}
 				type={dialogType}
+				dialogData={dialogData}
 			/>
-			{/* Recycle form for Edit */}
+			{/* Works for Edit or New based on type */}
 			<UserForm
 				open={userDialogOpen}
-				handleToggle={handleUserDialogToggle}
+				userDialogOpen={userDialogOpen}
+				dataName={dataName}
+				handleToggle={() => handleUserDialogToggle({}, '')}
 				type={dialogType}
-				selected={selected}
-				desktop={desktop}
+				dialogData={dialogData}
 			/>
 		</Box>
 	)

@@ -41,20 +41,13 @@ const handleAssignUser = (
 	}
 }
 // Bug Add / Edit: Calls fetch request to create OR update based on form type
-const handleBugSubmit = (
-	event,
-	type,
-	selected,
-	formData,
-	setFormData,
-	handleToggle
-) => {
+const handleBugSubmit = (event, type, formData, setFormData, handleToggle) => {
 	event.preventDefault()
 	fetch(`${apiUrl}/bugs/`, {
 		method: type === 'edit' ? 'PATCH' : 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({
-			bugName: formData.nameForm,
+			bugName: formData.bugName,
 			issues: formData.issues,
 			priority: formData.priority,
 			timeEstimate: formData.estimate,
@@ -64,48 +57,33 @@ const handleBugSubmit = (
 		})
 	}).then(() => {
 		setFormData({
-			formName: type === 'edit' ? selected.bugName : '',
-			issues: type === 'edit' ? selected.issues : '',
-			priority: type === 'edit' ? selected.priority : '',
-			estimate: type === 'edit' ? selected.timeEstimate : '',
-			dateDue: type === 'edit' ? selected.dateDue : new Date(now()),
-			dateCreated: type === 'edit' ? selected.dateCreated : '',
-			assigned: type === 'edit' ? selected.assigned : ''
+			bugName: '',
+			issues: '',
+			priority: 1,
+			estimate: null,
+			dateDue: new Date(now()),
+			dateCreated: null,
+			assigned: ''
 		})
 		handleToggle()
 	})
 }
 // User Add / Edit: Calls fetch request to create OR update based on form type
-const handleUserSubmit = (
-	event,
-	type,
-	selected,
-	formData,
-	setFormData,
-	handleToggle
-) => {
+const handleUserSubmit = (event, type, formData, setFormData, handleToggle) => {
 	event.preventDefault()
-	fetch(`${apiUrl}/bugs/`, {
+	fetch(`${apiUrl}/users/`, {
 		method: type === 'edit' ? 'PATCH' : 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({
-			bugName: formData.nameForm,
-			issues: formData.issues,
-			priority: formData.priority,
-			timeEstimate: formData.estimate,
-			dateDue: formData.dateDue,
-			dateCreated: type === 'edit' ? formData.dateCreated : new Date(now()),
-			assigned: false
+			bugName: formData.userName,
+			firstName: formData.lastName,
+			lastName: formData.lastName
 		})
 	}).then(() => {
 		setFormData({
-			formName: type === 'edit' ? selected.bugName : '',
-			issues: type === 'edit' ? selected.issues : '',
-			priority: type === 'edit' ? selected.priority : '',
-			estimate: type === 'edit' ? selected.timeEstimate : '',
-			dateDue: type === 'edit' ? selected.dateDue : new Date(now()),
-			dateCreated: type === 'edit' ? selected.dateCreated : '',
-			assigned: type === 'edit' ? selected.assigned : ''
+			userName: '',
+			firstName: '',
+			lastName: ''
 		})
 		handleToggle()
 	})

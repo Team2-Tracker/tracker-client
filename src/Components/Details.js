@@ -1,5 +1,4 @@
 import React from 'react'
-import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
@@ -10,52 +9,55 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
 
 function Details(props) {
-	const { open, handleToggle, dataName, selected, handleMenuOpen } = props
+	const { open, handleToggle, dataName, dialogData, handleMenuOpen } = props
 
 	let textFieldList = ''
 	let displayList = ''
-	if (dataName === 'Bug' && Object.keys(selected).length > 0) {
+	if (dataName === 'Bug' && Object.keys(dialogData).length > 0) {
 		displayList = [
-			{ label: 'Name', defaultValue: selected.bugName },
-			{ label: 'Issue', defaultValue: selected.issues },
-			{ label: 'Priority', defaultValue: selected.priority },
-			{ label: 'Time Estimate', defaultValue: selected.timeEstimate },
-			{ label: 'Date Due', defaultValue: selected.dateDue },
-			{ label: 'Date Created', defaultValue: selected.dateCreated },
-			{ label: 'User Assigned', defaultValue: 'In Progress' }
+			{ label: 'Name', value: dialogData.bugName },
+			{ label: 'Issue', value: dialogData.issues },
+			{ label: 'Priority', value: dialogData.priority },
+			{ label: 'Time Estimate', value: dialogData.timeEstimate },
+			{ label: 'Date Due', value: dialogData.dateDue },
+			{ label: 'Date Created', value: dialogData.dateCreated },
+			{ label: 'User Assigned', value: 'In Progress' }
 		]
 	}
-	if (dataName === 'User' && Object.keys(selected).length > 0) {
+	if (dataName === 'User' && Object.keys(dialogData).length > 0) {
 		displayList = [
-			{ label: 'UserName', defaultValue: selected.userName },
-			{ label: 'First Name', defaultValue: selected.firstName },
-			{ label: 'Last Name', defaultValue: selected.lastName },
+			{ label: 'UserName', value: dialogData.userName },
+			{ label: 'First Name', value: dialogData.firstName },
+			{ label: 'Last Name', value: dialogData.lastName },
 			{
 				label: 'Bugs',
-				defaultValue:
-					selected.bugs.length === 0
+				value:
+					dialogData.bugs.length === 0
 						? 'None'
-						: selected.bugs.reduce(
+						: dialogData.bugs.reduce(
 								(previous, current) => previous.bugName + ' ' + current.bugName
 						  )
 			},
-			{ label: 'Number of Bugs Assigned', defaultValue: selected.bugs.length },
+			{
+				label: 'Number of Bugs Assigned',
+				value: dialogData.bugs.length
+			},
 			{
 				label: 'Total Estimated Hours Assigned',
-				defaultValue: selected.bugs.reduce(
+				value: dialogData.bugs.reduce(
 					(previous, current) => previous.timeEstimate + current.timeEstimate,
 					0
 				)
 			}
 		]
 	}
-	if (Object.keys(selected).length > 0) {
+	if (Object.keys(dialogData).length > 0) {
 		textFieldList = displayList.map((item) => {
 			return (
 				<TextField
 					id="outlined-read-only-input"
 					label={item.label}
-					defaultValue={item.defaultValue}
+					value={item.value}
 					InputProps={{
 						readOnly: true
 					}}
@@ -65,7 +67,7 @@ function Details(props) {
 		})
 	}
 	return (
-		<Dialog open={open} onClose={handleToggle}>
+		<Dialog open={open} onClose={() => handleToggle({})}>
 			<DialogTitle>{dataName} Details</DialogTitle>
 			<DialogContent>{textFieldList}</DialogContent>
 			<DialogActions>

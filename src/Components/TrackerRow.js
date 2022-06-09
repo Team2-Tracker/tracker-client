@@ -85,6 +85,7 @@ const TrackerRow = (props) => {
 							handleUserDialogToggle={handleUserDialogToggle}
 							handleDetailsDialogToggle={handleDetailsDialogToggle}
 							handleMenuOpen={handleMenuOpen}
+							row={row}
 						/>
 					</TableCell>
 				</TableRow>
@@ -95,7 +96,9 @@ const TrackerRow = (props) => {
 		// Populate Issues at 600px
 		let bugNumberCell = ''
 		if (tablet) {
-			bugNumberCell = <TableCell align="center">{row.bugs.length}</TableCell>
+			bugNumberCell = (
+				<TableCell align="center">{row.bugs ? row.bugs.length : 0}</TableCell>
+			)
 		}
 		let bugHoursCell = ''
 		if (desktop) {
@@ -153,6 +156,7 @@ const TrackerRow = (props) => {
 							handleUserDialogToggle={handleUserDialogToggle}
 							handleDetailsDialogToggle={handleDetailsDialogToggle}
 							handleMenuOpen={handleMenuOpen}
+							row={row}
 						/>
 					</TableCell>
 				</TableRow>

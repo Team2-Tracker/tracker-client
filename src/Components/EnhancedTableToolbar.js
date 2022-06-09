@@ -28,8 +28,8 @@ const EnhancedTableToolbar = (props) => {
 				<IconButton
 					onClick={() => {
 						dataName === 'Bug'
-							? handleBugDialogToggle('new')
-							: handleUserDialogToggle('new')
+							? handleBugDialogToggle({}, 'new')
+							: handleUserDialogToggle({}, 'new')
 					}}
 				>
 					<AddIcon />

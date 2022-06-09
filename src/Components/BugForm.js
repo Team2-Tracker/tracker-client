@@ -17,18 +17,34 @@ import { now } from 'moment'
 import { handleBugSubmit } from './Utils'
 
 const BugForm = (props) => {
-	const { open, handleToggle, name, type, selected, desktop } = props
+	const { open, bugDialogOpen, handleToggle, name, type, dialogData, desktop } =
+		props
 
 	// State to track form input - Ternary functions add default values for edit forms
 	const [formData, setFormData] = useState({
-		formName: type === 'edit' ? selected.bugName : '',
-		issues: type === 'edit' ? selected.issues : '',
-		priority: type === 'edit' ? selected.priority : '',
-		estimate: type === 'edit' ? selected.timeEstimate : '',
-		dateDue: type === 'edit' ? selected.dateDue : new Date(now()),
-		dateCreated: type === 'edit' ? selected.dateCreated : '',
-		assigned: type === 'edit' ? selected.assigned : ''
+		bugName: '',
+		issues: '',
+		priority: 1,
+		estimate: null,
+		dateDue: new Date(now()),
+		dateCreated: null,
+		assigned: ''
 	})
+
+	// Use effect to only set state when data is available
+	React.useEffect(() => {
+		if (type === 'edit' && bugDialogOpen) {
+			setFormData({
+				bugName: dialogData.bugName,
+				issues: dialogData.issues,
+				priority: dialogData.priority,
+				estimate: dialogData.dateDue,
+				dateDue: dialogData.priority,
+				dateCreated: dialogData.dateCreated,
+				assigned: dialogData.assigned
+			})
+		}
+	}, [dialogData])
 
 	// Handle functions set state to form values
 	const handleNameChange = (event) => {
@@ -108,7 +124,7 @@ const BugForm = (props) => {
 						required
 						id="name"
 						label="Name"
-						value={formData.nameForm}
+						value={formData.bugName}
 						variant="outlined"
 						onChange={handleNameChange}
 					/>
@@ -173,20 +189,13 @@ const BugForm = (props) => {
 				</Box>
 			</DialogContent>
 			<DialogActions>
-				<Button variant="contained" onClick={handleToggle}>
+				<Button variant="contained" onClick={() => handleToggle({}, '')}>
 					Cancel
 				</Button>
 				<Button
 					variant="contained"
 					onClick={(event) =>
-						handleBugSubmit(
-							event,
-							type,
-							selected,
-							formData,
-							setFormData,
-							handleToggle
-						)
+						handleBugSubmit(event, type, formData, setFormData, handleToggle)
 					}
 				>
 					Submit

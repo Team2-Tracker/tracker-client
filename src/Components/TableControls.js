@@ -10,7 +10,8 @@ const TableControls = (props) => {
 		handleBugDialogToggle,
 		handleUserDialogToggle,
 		handleDetailsDialogToggle,
-		handleMenuOpen
+		handleMenuOpen,
+		row
 	} = props
 
 	return (
@@ -20,7 +21,7 @@ const TableControls = (props) => {
 					key="details"
 					variant="contained"
 					sx={{ mx: 1 }}
-					onClick={handleDetailsDialogToggle}
+					onClick={() => handleDetailsDialogToggle(row)}
 				>
 					Details
 				</Button>
@@ -30,8 +31,8 @@ const TableControls = (props) => {
 					sx={{ mx: 1 }}
 					onClick={() => {
 						dataName === 'Bug'
-							? handleBugDialogToggle('edit')
-							: handleUserDialogToggle('edit')
+							? handleBugDialogToggle(row, 'edit')
+							: handleUserDialogToggle(row, 'edit')
 					}}
 				>
 					Edit

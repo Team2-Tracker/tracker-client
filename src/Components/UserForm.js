@@ -10,14 +10,25 @@ import DialogTitle from '@mui/material/DialogTitle'
 import { handleUserSubmit } from './Utils'
 
 const BugForm = (props) => {
-	const { open, handleToggle, name, type, selected, desktop } = props
+	const { open, handleToggle, name, type, dialogData, userDialogOpen } = props
 
-	// State to track form input - Ternary functions add default values for edit forms
+	// State to track form input
 	const [formData, setFormData] = useState({
-		userName: type === 'edit' ? selected.userName : '',
-		firstName: type === 'edit' ? selected.firstName : '',
-		lastName: type === 'edit' ? selected.lastName : ''
+		userName: '',
+		firstName: '',
+		lastName: ''
 	})
+
+	// Use Effect populates state when an edit opesn
+	React.useEffect(() => {
+		if (type === 'edit' && userDialogOpen) {
+			setFormData({
+				userName: dialogData.userName,
+				firstName: dialogData.firstName,
+				lastName: dialogData.lastName
+			})
+		}
+	}, [dialogData])
 
 	// Handle functions set state to form values
 	const handleUserNameChange = (event) => {
@@ -35,21 +46,20 @@ const BugForm = (props) => {
 		newData.lastName = event.target.value
 		setFormData(newData)
 	}
+
+	// Array to create form elements
 	const formArray = [
 		{
-			id: 'userName',
 			label: 'UserName',
 			value: formData.userName,
 			onChange: handleUserNameChange
 		},
 		{
-			id: 'firstName',
 			label: 'First Name',
-			value: formData.fistName,
+			value: formData.firstName,
 			onChange: handleFirstNameChange
 		},
 		{
-			id: 'lastName',
 			label: 'Last Name',
 			value: formData.lastName,
 			onChange: handleLastNameChange
@@ -72,9 +82,9 @@ const BugForm = (props) => {
 						return (
 							<TextField
 								required
-								id={field.id}
+								id={field.label}
 								label={field.label}
-								value={field.userName}
+								value={field.value}
 								variant="outlined"
 								onChange={field.onChange}
 							/>
@@ -83,20 +93,13 @@ const BugForm = (props) => {
 				</Box>
 			</DialogContent>
 			<DialogActions>
-				<Button variant="contained" onClick={handleToggle}>
+				<Button variant="contained" onClick={() => handleToggle({}, '')}>
 					Cancel
 				</Button>
 				<Button
 					variant="contained"
 					onClick={(event) =>
-						handleUserSubmit(
-							event,
-							type,
-							selected,
-							formData,
-							setFormData,
-							handleToggle
-						)
+						handleUserSubmit(event, type, formData, setFormData, handleToggle)
 					}
 				>
 					Submit
