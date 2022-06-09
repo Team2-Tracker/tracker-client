@@ -175,6 +175,7 @@ const Home = (props) => {
 											handleUserDialogToggle={handleUserDialogToggle}
 											handleDetailsDialogToggle={handleDetailsDialogToggle}
 											handleMenuOpen={handleMenuOpen}
+											setAllBugs={setAllBugs}
 										/>
 									))
 							}
@@ -222,6 +223,7 @@ const Home = (props) => {
 				handleMenuOpen={handleMenuOpen}
 				handleBugDialogToggle={handleBugDialogToggle}
 				handleUserDialogToggle={handleUserDialogToggle}
+				setAllBugs={setAllBugs}
 			/>
 			{/* Works for Edit or New based on type */}
 			<BugForm

@@ -7,6 +7,7 @@ import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
+import { handleBugToggle, handleBugDelete } from './Utils'
 
 function Details(props) {
 	const {
@@ -16,7 +17,8 @@ function Details(props) {
 		dialogData,
 		handleMenuOpen,
 		handleBugDialogToggle,
-		handleUserDialogToggle
+		handleUserDialogToggle,
+		setAllBugs
 	} = props
 
 	let textFieldList = ''
@@ -92,6 +94,20 @@ function Details(props) {
 				>
 					Edit
 				</Button>
+				{dataName === 'Bug' ? (
+					<Button
+						variant="outlined"
+						size="small"
+						onClick={() => {
+							handleBugToggle(dialogData)
+							handleToggle()
+						}}
+					>
+						{dialogData.isActive ? 'Close Bug' : 'Open Bug'}
+					</Button>
+				) : (
+					''
+				)}
 				<StyledFab
 					color="secondary"
 					aria-label="add"
@@ -104,8 +120,22 @@ function Details(props) {
 				>
 					<AssignmentIndIcon />
 				</StyledFab>
+				{dataName === 'Bug' ? (
+					<Button
+						variant="outlined"
+						size="small"
+						onClick={() => {
+							handleBugDelete(dialogData)
+							handleToggle()
+						}}
+					>
+						Delete
+					</Button>
+				) : (
+					''
+				)}
 				<Button variant="outlined" size="small" onClose={handleToggle}>
-					Close
+					Done
 				</Button>
 			</DialogActions>
 		</Dialog>

@@ -18,7 +18,8 @@ const TrackerRow = (props) => {
 		handleBugDialogToggle,
 		handleUserDialogToggle,
 		handleDetailsDialogToggle,
-		handleMenuOpen
+		handleMenuOpen,
+		setAllBugs
 	} = props
 
 	const [rowCollapseOpen, setRowCollapseOpen] = React.useState(false)
@@ -86,6 +87,7 @@ const TrackerRow = (props) => {
 							handleDetailsDialogToggle={handleDetailsDialogToggle}
 							handleMenuOpen={handleMenuOpen}
 							row={row}
+							setAllBugs={setAllBugs}
 						/>
 					</TableCell>
 				</TableRow>
@@ -157,6 +159,7 @@ const TrackerRow = (props) => {
 							handleDetailsDialogToggle={handleDetailsDialogToggle}
 							handleMenuOpen={handleMenuOpen}
 							row={row}
+							setAllBugs={setAllBugs}
 						/>
 					</TableCell>
 				</TableRow>

@@ -93,7 +93,7 @@ const BugForm = (props) => {
 			<MobileDatePicker
 				label="Date Created"
 				inputFormat="MM/DD/yyyy"
-				value={moment(formData.dateCreated).format('MM/DD/yyyy')}
+				value={formData.dateCreated}
 				onChange={handleDateCreatedChange}
 				renderInput={(params) => <TextField {...params} />}
 			/>
@@ -104,7 +104,7 @@ const BugForm = (props) => {
 			<DesktopDatePicker
 				label="Date Created"
 				inputFormat="MM/DD/yyyy"
-				value={moment(formData.dateCreated).format('MM/DD/yyyy')}
+				value={formData.dateCreated}
 				onChange={handleDateCreatedChange}
 				renderInput={(params) => <TextField {...params} />}
 			/>
@@ -156,7 +156,7 @@ const BugForm = (props) => {
 						<DesktopDatePicker
 							label="Date Due"
 							inputFormat="MM/DD/yyyy"
-							value={moment(formData.dateCreated).format('MM/DD/yyyy')}
+							value={formData.dateCreated}
 							onChange={handleDateChange}
 							renderInput={(params) => <TextField {...params} />}
 						/>
@@ -164,7 +164,7 @@ const BugForm = (props) => {
 						<MobileDatePicker
 							label="Date Due"
 							inputFormat="MM/DD/yyyy"
-							value={moment(formData.dateCreated).format('MM/DD/yyyy')}
+							value={formData.dateCreated}
 							onChange={handleDateChange}
 							renderInput={(params) => <TextField {...params} />}
 						/>

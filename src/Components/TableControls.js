@@ -1,7 +1,7 @@
 import Collapse from '@mui/material/Collapse'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
-import { handleBugClose } from './Utils'
+import { handleBugToggle } from './Utils'
 
 const TableControls = (props) => {
 	const {
@@ -11,7 +11,8 @@ const TableControls = (props) => {
 		handleUserDialogToggle,
 		handleDetailsDialogToggle,
 		handleMenuOpen,
-		row
+		row,
+		setAllBugs
 	} = props
 
 	return (
@@ -55,7 +56,7 @@ const TableControls = (props) => {
 						key="close"
 						variant="contained"
 						sx={{ mx: 1 }}
-						onClick={handleBugClose}
+						onClick={() => handleBugToggle(row, setAllBugs)}
 					>
 						Close Bug
 					</Button>

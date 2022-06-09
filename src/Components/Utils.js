@@ -40,15 +40,13 @@ const handleAssignUser = (
 		console.log('something went wrong', 'userId:', userId, 'bugId:', bugId)
 	}
 }
-// Bug Add / Edit: Calls fetch request to create OR update based on form type
+// Bug Add: Calls fetch request to CREATE
 const handleNewBugSubmit = (
-	event,
-	type,
 	formData,
 	setFormData,
-	handleToggle
+	handleToggle,
+	setAllBugs
 ) => {
-	event.preventDefault()
 	fetch(`${apiUrl}/bugs/`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
@@ -73,18 +71,17 @@ const handleNewBugSubmit = (
 			assigned: ''
 		})
 		handleToggle()
+		fetchAllBugs(setAllBugs)
 	})
 }
 // Bug Edit: Calls fetch request to create OR update based on form type
 const handleEditBugSubmit = (
-	event,
-	type,
 	formData,
 	setFormData,
 	handleToggle,
-	dialogData
+	dialogData,
+	setAllBugs
 ) => {
-	event.preventDefault()
 	fetch(`${apiUrl}/bugs/${dialogData._id}`, {
 		method: 'PATCH',
 		headers: { 'Content-Type': 'application/json' },
@@ -108,11 +105,11 @@ const handleEditBugSubmit = (
 			assigned: ''
 		})
 		handleToggle()
+		fetchAllBugs(setAllBugs)
 	})
 }
 // User Add / Edit: Calls fetch request to create OR update based on form type
-const handleUserSubmit = (event, type, formData, setFormData, handleToggle) => {
-	event.preventDefault()
+const handleUserSubmit = (type, formData, setFormData, handleToggle) => {
 	fetch(`${apiUrl}/users/`, {
 		method: type === 'edit' ? 'PATCH' : 'POST',
 		headers: { 'Content-Type': 'application/json' },
@@ -130,10 +127,21 @@ const handleUserSubmit = (event, type, formData, setFormData, handleToggle) => {
 		handleToggle()
 	})
 }
+// Remove a bug by ID
+const handleBugDelete = (dialogData) => {
+	fetch(`${apiUrl}/bugs/${dialogData._id}`, {
+		method: 'DELETE'
+	})
+}
 // Close a bug by ID
-const handleBugClose = () => {
-	// Send PATCH request to DB to change active status to FALSE
-	// GET request to update all bugs
+const handleBugToggle = (dialogData, setAllBugs) => {
+	fetch(`${apiUrl}/bugs/${dialogData._id}`, {
+		method: 'PATCH',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({
+			isActive: !dialogData.isActive
+		})
+	}).then(() => fetchAllBugs(setAllBugs))
 }
 
 // *** Table Functions ****
@@ -249,7 +257,8 @@ export {
 	handleNewBugSubmit,
 	handleEditBugSubmit,
 	handleUserSubmit,
-	handleBugClose,
+	handleBugDelete,
+	handleBugToggle,
 	handleFilterRowsBy,
 	getComparator,
 	stableSort,
