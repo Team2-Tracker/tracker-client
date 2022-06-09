@@ -11,54 +11,37 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
 
 function Details(props) {
-	const { open, handleDetailsDialogToggle, dataName, selected } = props
-    
-    
-    
-    let textFieldList = ''
-        if (dataName === 'Bug' && Object.keys(selected).length > 0) {
-            let bugList = [{label: 'Name', defaultValue: selected.bugName},
-    {label: 'Issue', defaultValue: selected.issues},
-    {label: 'Priority', defaultValue: selected.priority},
-    {label: 'Time Estimate', defaultValue: selected.timeEstimate},
-    {label: 'Date Due', defaultValue: selected.dateDue},
-    {label: 'Date Created', defaultValue: selected.dateCreated},
-    {label: 'User', defaultValue: selected.user[0].userName},]
-            textFieldList = bugList.map((bug)=> {
-                return ( <TextField
-                    id="outlined-read-only-input"
-                    label={bug.label}
-                    defaultValue={bug.defaultValue}
-                    InputProps={{
-                        readOnly: true
-                    }}
-                />)
-            })
-        }
+	const { open, handleToggle, dataName, selected } = props
 
-       
-    
+	let textFieldList = ''
+	if (dataName === 'Bug' && Object.keys(selected).length > 0) {
+		let bugList = [
+			{ label: 'Name', defaultValue: selected.bugName },
+			{ label: 'Issue', defaultValue: selected.issues },
+			{ label: 'Priority', defaultValue: selected.priority },
+			{ label: 'Time Estimate', defaultValue: selected.timeEstimate },
+			{ label: 'Date Due', defaultValue: selected.dateDue },
+			{ label: 'Date Created', defaultValue: selected.dateCreated }
+			// { label: 'User', defaultValue: selected.user[0].userName }
+		]
+		textFieldList = bugList.map((bug) => {
+			return (
+				<TextField
+					id="outlined-read-only-input"
+					label={bug.label}
+					defaultValue={bug.defaultValue}
+					InputProps={{
+						readOnly: true
+					}}
+				/>
+			)
+		})
+	}
 
 	return (
-		<Dialog open={open} onClose={handleDetailsDialogToggle}>
+		<Dialog open={open} onClose={handleToggle}>
 			<DialogTitle>{dataName} Details</DialogTitle>
-			<DialogContent>
-				<Grid container>
-					<Grid item xs={12} sm={9.7} md={4.7}>
-						<Box
-							component="form"
-							display="flex"
-							sx={{
-								'& .MuiTextField-root': { m: 1, maxWidth: '25ch' }
-							}}
-							noValidate
-							autoComplete="off"
-						>
-						{textFieldList}	
-						</Box>
-					</Grid>
-				</Grid>
-			</DialogContent>
+			<DialogContent>{textFieldList}</DialogContent>
 			<DialogActions>
 				<Button variant="outlined" size="small">
 					Edit

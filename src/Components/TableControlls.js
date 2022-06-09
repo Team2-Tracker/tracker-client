@@ -29,9 +29,9 @@ const TableControlls = (props) => {
 					Edit
 				</Button>
 				<Button variant="contained" sx={{ mx: 1 }}>
-					{dataName === 'bugs' ? 'Assign Bugs' : 'Assign User'}
+					{dataName === 'Bug' ? 'Assign Bugs' : 'Assign User'}
 				</Button>
-				{dataName === 'bugs' ? (
+				{dataName === 'Bug' ? (
 					<Button variant="contained" sx={{ mx: 1 }} onClick={handleBugClose}>
 						Close Bug
 					</Button>
