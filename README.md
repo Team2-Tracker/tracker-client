@@ -1,70 +1,113 @@
-# Getting Started with Create React App
+# Project Overview
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Tracker
 
-## Available Scripts
+## Project Schedule
 
-In the project directory, you can run:
+|  Day | Deliverable | Status
+|---|---| ---|
+|Friday / Saturday / Sunday| Project Worksheet, Wireframes, Time /Priority Matrix | Complete
+|Monday| Initialize repos, Create API, Create skeleton React App components | Complete
+|Tuesday| Finish API MVP, Build out all React bug bomponents (No styling), Stretch - Get users to reuse bug components  | Complete
+|Wednesday| Build out React User components, Style App, Host Back-End and Front-End | Complete
+|Thursday| Resolve bugs, More styling, Post MVP goals | Partially Complete
+|Friday| Present | Incomplete
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Project Description
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+An interactive app that tracks bugs/issues and can assign them to users for comments and resolution. A clean, modern interface using MUI components and reactive styling to provide a seamless mobile-first experience.
 
-### `npm test`
+## Wireframes
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Include images of wireframe with a description of the specific wireframe.   
 
-### `npm run build`
+- [Mobile](https://i.imgur.com/P3iBEZf.jpg)
+- [Desktop](https://i.imgur.com/xpOWo0E.jpg)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Wireframing Resources:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- [Figma](https://www.figma.com/)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## Time/Priority Matrix 
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+|  Key | Feature | Time | Priority
+|---|---|---|---|
+| A | Create React | 30 min | 9
+| B | Create skeleton of React components, successful API fetch | 1 hr | 8
+| C | React Bug Home component  | 4 hr | 7
+| D | React Bug Details component | 4 hr | 7
+| E | React User component | 4 hr | 7
+| F | React User Details component | 4 hr | 7
+| G | React About page with pictures, bios & links | 4 hr | 6
+| H | React MVP styling | 8 hr | 6
+| I | React Dashboard component | 8 hr | 4
+| J | React dynamic styling to color bugs by priority | 2 hr | 5
+| K | React Search form | 2 hr | 2
+| L | React Comment functionality| 4 hr | 3
+| M | React Desktop styling changes | 8 hr | 5
+| N | React Sign-In functionality | 4 hr | 1
+ 
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### MVP
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. Create React
+2. Create skeleton of React components, successful API fetch
+3. React Bug Home component
+4. React Bug Details component
+5. React User component
+6. React User Details component
+7. React About page with pictures, bios & links
+8. React MVP styling
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+#### PostMVP 
 
-## Learn More
+1. Add comments to bugs that display in bug details
+2. Dashboard page that displays bug metrics
+    A. New bugs this week
+    B. Bugs closed this week
+    C. Bug hours assigned per user
+    D. Bug hours by area / subject
+3. Add dynamic styling to color bugs by priority
+4. Add countdown timer / past due status to bugs -> makes highest priority
+5. Add authorization / sign in to require credentials for editing
+6. Add search form
+7. Add desktop styling changes:
+    A. Change from table rows to cards?
+    B. Add avatar by user assigned
+    C. Link to bug details displays in detail area instead of new page
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Functional Components
 
-### Code Splitting
+About: This component renders pictures and bios of team with links to every member's Personal Portfolio and Github.
+BugForm: 
+Details: This component contains the code that allows users to read, assign, edit, and close a created bugs details.
+Enhanced Table Head: 
+Enhanced Table Toolbar:
+Filter Menu:
+Home: This component renders the Homepage of the Tracker App which contains the Top Nav Bar and Issues table.
+Table Config:
+Table Controls:
+Top Nav Bar: This component contains the code for the Top Nav
+Tracker Row:
+Users:
+Utils: 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Code Snippet
 
-### Analyzing the Bundle Size
+Use this section to include a brief code snippet of functionality that you are proud of an a brief description  
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```
+function reverse(string) {
+	// here is the code to reverse a string of text
+}
+```
 
-### Making a Progressive Web App
+## Issues and Resolutions
+ Use this section to list of all major issues encountered and their resolution.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+#### SAMPLE.....
+**ERROR**: app.js:34 Uncaught SyntaxError: Unexpected identifier                                
+**RESOLUTION**: Missing comma after first object in sources {} object
