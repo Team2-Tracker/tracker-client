@@ -46,7 +46,6 @@ const TopNavBar = () => {
 						<MenuItem onClick={handleClose} component={RouterLink} to="/">
 							Bugs
 						</MenuItem>
-						<MenuItem onClick={handleClose} component={RouterLink} to="/details">Details</MenuItem>
 						<MenuItem onClick={handleClose} component={RouterLink} to="/users">
 							Users
 						</MenuItem>

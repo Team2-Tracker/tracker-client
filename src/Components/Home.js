@@ -43,7 +43,7 @@ const Home = (props) => {
 	const [rows, setRows] = React.useState([])
 	const [order, setOrder] = React.useState('asc')
 	const [orderBy, setOrderBy] = React.useState('calories')
-	const [selected, setSelected] = React.useState([])
+	const [selected, setSelected] = React.useState({})
 	const [page, setPage] = React.useState(0)
 	const [dense, setDense] = React.useState(false)
 	const [rowsPerPage, setRowsPerPage] = React.useState(5)
