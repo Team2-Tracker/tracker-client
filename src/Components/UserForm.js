@@ -7,10 +7,18 @@ import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
-import { handleUserSubmit } from './Utils'
+import { handleNewUserSubmit, handleEditUserSubmit } from './Utils'
 
 const BugForm = (props) => {
-	const { open, handleToggle, name, type, dialogData, userDialogOpen } = props
+	const {
+		open,
+		handleToggle,
+		name,
+		type,
+		dialogData,
+		userDialogOpen,
+		setAllUsers
+	} = props
 
 	// State to track form input
 	const [formData, setFormData] = useState({
@@ -99,8 +107,21 @@ const BugForm = (props) => {
 				</Button>
 				<Button
 					variant="contained"
-					onClick={(event) =>
-						handleUserSubmit(event, type, formData, setFormData, handleToggle)
+					onClick={() =>
+						type === 'edit'
+							? handleEditUserSubmit(
+									formData,
+									setFormData,
+									handleToggle,
+									dialogData,
+									setAllUsers
+							  )
+							: handleNewUserSubmit(
+									formData,
+									setFormData,
+									handleToggle,
+									setAllUsers
+							  )
 					}
 				>
 					Submit

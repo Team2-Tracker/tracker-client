@@ -99,7 +99,7 @@ function Details(props) {
 						variant="outlined"
 						size="small"
 						onClick={() => {
-							handleBugToggle(dialogData)
+							handleBugToggle(dialogData, setAllBugs)
 							handleToggle()
 						}}
 					>
@@ -125,7 +125,7 @@ function Details(props) {
 						variant="outlined"
 						size="small"
 						onClick={() => {
-							handleBugDelete(dialogData)
+							handleBugDelete(dialogData, setAllBugs)
 							handleToggle()
 						}}
 					>

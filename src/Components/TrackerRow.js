@@ -19,7 +19,9 @@ const TrackerRow = (props) => {
 		handleUserDialogToggle,
 		handleDetailsDialogToggle,
 		handleMenuOpen,
-		setAllBugs
+		setAllBugs,
+		setDialogData,
+		setDialogType
 	} = props
 
 	const [rowCollapseOpen, setRowCollapseOpen] = React.useState(false)
@@ -27,6 +29,21 @@ const TrackerRow = (props) => {
 	// Sets whichever row is selected by ID
 	const isItemSelected = selected._id === row._id ? true : false
 	let priorityBackground = ''
+
+	const tableControlls = (
+		<TableControls
+			open={rowCollapseOpen}
+			dataName={dataName}
+			handleBugDialogToggle={handleBugDialogToggle}
+			handleUserDialogToggle={handleUserDialogToggle}
+			handleDetailsDialogToggle={handleDetailsDialogToggle}
+			handleMenuOpen={handleMenuOpen}
+			row={row}
+			setAllBugs={setAllBugs}
+			setDialogData={setDialogData}
+			setDialogType={setDialogType}
+		/>
+	)
 
 	if (dataName === 'Bug') {
 		// Populate Issues at 600px
@@ -79,16 +96,7 @@ const TrackerRow = (props) => {
 				</TableRow>
 				<TableRow selected={true}>
 					<TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-						<TableControls
-							open={rowCollapseOpen}
-							dataName={dataName}
-							handleBugDialogToggle={handleBugDialogToggle}
-							handleUserDialogToggle={handleUserDialogToggle}
-							handleDetailsDialogToggle={handleDetailsDialogToggle}
-							handleMenuOpen={handleMenuOpen}
-							row={row}
-							setAllBugs={setAllBugs}
-						/>
+						{tableControlls}
 					</TableCell>
 				</TableRow>
 			</React.Fragment>
@@ -151,16 +159,7 @@ const TrackerRow = (props) => {
 				</TableRow>
 				<TableRow selected={true}>
 					<TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-						<TableControls
-							open={rowCollapseOpen}
-							dataName={dataName}
-							handleBugDialogToggle={handleBugDialogToggle}
-							handleUserDialogToggle={handleUserDialogToggle}
-							handleDetailsDialogToggle={handleDetailsDialogToggle}
-							handleMenuOpen={handleMenuOpen}
-							row={row}
-							setAllBugs={setAllBugs}
-						/>
+						{tableControlls}
 					</TableCell>
 				</TableRow>
 			</React.Fragment>

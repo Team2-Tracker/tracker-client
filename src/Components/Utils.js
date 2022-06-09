@@ -47,6 +47,7 @@ const handleNewBugSubmit = (
 	handleToggle,
 	setAllBugs
 ) => {
+	console.log('formData:', formData)
 	fetch(`${apiUrl}/bugs/`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
@@ -82,6 +83,7 @@ const handleEditBugSubmit = (
 	dialogData,
 	setAllBugs
 ) => {
+	console.log('formData:', formData)
 	fetch(`${apiUrl}/bugs/${dialogData._id}`, {
 		method: 'PATCH',
 		headers: { 'Content-Type': 'application/json' },
@@ -108,14 +110,19 @@ const handleEditBugSubmit = (
 		fetchAllBugs(setAllBugs)
 	})
 }
-// User Add / Edit: Calls fetch request to create OR update based on form type
-const handleUserSubmit = (type, formData, setFormData, handleToggle) => {
+// User Add
+const handleNewUserSubmit = (
+	formData,
+	setFormData,
+	handleToggle,
+	setAllUsers
+) => {
 	fetch(`${apiUrl}/users/`, {
-		method: type === 'edit' ? 'PATCH' : 'POST',
+		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({
-			bugName: formData.userName,
-			firstName: formData.lastName,
+			userName: formData.userName,
+			firstName: formData.firstName,
 			lastName: formData.lastName
 		})
 	}).then(() => {
@@ -125,12 +132,41 @@ const handleUserSubmit = (type, formData, setFormData, handleToggle) => {
 			lastName: ''
 		})
 		handleToggle()
+		fetchAllUsers(setAllUsers)
+	})
+}
+// User Edit
+const handleEditUserSubmit = (
+	formData,
+	setFormData,
+	handleToggle,
+	dialogData,
+	setAllUsers
+) => {
+	fetch(`${apiUrl}/users/${dialogData._id}`, {
+		method: 'PATCH',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({
+			userName: formData.userName,
+			firstName: formData.firstName,
+			lastName: formData.lastName
+		})
+	}).then(() => {
+		setFormData({
+			userName: '',
+			firstName: '',
+			lastName: ''
+		})
+		handleToggle()
+		fetchAllUsers(setAllUsers)
 	})
 }
 // Remove a bug by ID
-const handleBugDelete = (dialogData) => {
+const handleBugDelete = (dialogData, setAllBugs) => {
 	fetch(`${apiUrl}/bugs/${dialogData._id}`, {
 		method: 'DELETE'
+	}).then(() => {
+		fetchAllBugs(setAllBugs)
 	})
 }
 // Close a bug by ID
@@ -256,7 +292,8 @@ export {
 	handleAssignUser,
 	handleNewBugSubmit,
 	handleEditBugSubmit,
-	handleUserSubmit,
+	handleNewUserSubmit,
+	handleEditUserSubmit,
 	handleBugDelete,
 	handleBugToggle,
 	handleFilterRowsBy,

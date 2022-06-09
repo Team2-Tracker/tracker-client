@@ -17,8 +17,16 @@ import moment from 'moment'
 import { handleNewBugSubmit, handleEditBugSubmit } from './Utils'
 
 const BugForm = (props) => {
-	const { open, bugDialogOpen, handleToggle, name, type, dialogData, desktop } =
-		props
+	const {
+		open,
+		bugDialogOpen,
+		handleToggle,
+		name,
+		type,
+		dialogData,
+		desktop,
+		setAllBugs
+	} = props
 
 	// State to track form input - Ternary functions add default values for edit forms
 	const [formData, setFormData] = useState({
@@ -178,24 +186,23 @@ const BugForm = (props) => {
 				</Button>
 				<Button
 					variant="contained"
-					onClick={(event) =>
+					onClick={() => {
 						type === 'edit'
 							? handleEditBugSubmit(
-									event,
-									type,
 									formData,
 									setFormData,
 									handleToggle,
-									dialogData
+									dialogData,
+									setAllBugs
 							  )
 							: handleNewBugSubmit(
-									event,
-									type,
 									formData,
 									setFormData,
-									handleToggle
+									handleToggle,
+									setAllBugs
 							  )
-					}
+						console.log(formData, dialogData)
+					}}
 				>
 					Submit
 				</Button>

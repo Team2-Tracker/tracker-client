@@ -69,32 +69,22 @@ const Home = (props) => {
 		setAnchorEl(null)
 	}
 	// Open and close the Add Form
-	const handleBugDialogToggle = (dialogData, dialogType) => {
-		if (!bugDialogOpen) {
-			setDialogData(dialogData)
-			setDialogType(dialogType)
-		}
+	const handleBugDialogToggle = () => {
 		setBugDialogOpen(!bugDialogOpen)
 	}
 	// Open and close the Edit Form
-	const handleUserDialogToggle = (dialogData, dialogType) => {
-		if (!userDialogOpen) {
-			setDialogData(dialogData)
-			setDialogType(dialogType)
-		}
+	const handleUserDialogToggle = () => {
 		setUserDialogOpen(!userDialogOpen)
 	}
 	// Open and close the Details Dialog
-	const handleDetailsDialogToggle = (dialogData) => {
-		if (!detailsDialogOpen) {
-			setDialogData(dialogData)
-		}
+	const handleDetailsDialogToggle = () => {
 		setDetailsDialogOpen(!detailsDialogOpen)
 	}
 
 	React.useEffect(() => {
 		setTitle(homeTitle)
 		setRows(dataName === 'Bug' ? allBugs : allUsers)
+		setDialogData({})
 	}, [location, allBugs, allUsers])
 
 	// Adding propTypes for the EnhancedTableHead Component
@@ -132,6 +122,8 @@ const Home = (props) => {
 					dataName={dataName}
 					handleBugDialogToggle={handleBugDialogToggle}
 					handleUserDialogToggle={handleUserDialogToggle}
+					setDialogData={setDialogData}
+					setDialogType={setDialogType}
 				/>
 				<TableContainer>
 					<Table
@@ -176,6 +168,8 @@ const Home = (props) => {
 											handleDetailsDialogToggle={handleDetailsDialogToggle}
 											handleMenuOpen={handleMenuOpen}
 											setAllBugs={setAllBugs}
+											setDialogData={setDialogData}
+											setDialogType={setDialogType}
 										/>
 									))
 							}
@@ -234,6 +228,7 @@ const Home = (props) => {
 				desktop={desktop}
 				type={dialogType}
 				dialogData={dialogData}
+				setAllBugs={setAllBugs}
 			/>
 			{/* Works for Edit or New based on type */}
 			<UserForm
@@ -243,6 +238,7 @@ const Home = (props) => {
 				handleToggle={handleUserDialogToggle}
 				type={dialogType}
 				dialogData={dialogData}
+				setAllUsers={setAllUsers}
 			/>
 		</Box>
 	)

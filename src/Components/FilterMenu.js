@@ -40,7 +40,7 @@ const FilterMenu = (props) => {
 		})
 	}
 	if (menuType === 'unassignedBugs') {
-		const unassignedBugs = allBugs.filter((bug) => bug.assigned === 'none')
+		const unassignedBugs = allBugs.filter((bug) => !bug.assigned)
 		menuArray = unassignedBugs.map((bug) => {
 			return {
 				id: bug._id,
