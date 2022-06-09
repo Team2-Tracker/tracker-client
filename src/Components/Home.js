@@ -70,20 +70,26 @@ const Home = (props) => {
 	}
 	// Open and close the Add Form
 	const handleBugDialogToggle = (dialogData, dialogType) => {
+		if (!bugDialogOpen) {
+			setDialogData(dialogData)
+			setDialogType(dialogType)
+		}
 		setBugDialogOpen(!bugDialogOpen)
-		setDialogData(dialogData)
-		setDialogType(dialogType)
 	}
 	// Open and close the Edit Form
 	const handleUserDialogToggle = (dialogData, dialogType) => {
+		if (!userDialogOpen) {
+			setDialogData(dialogData)
+			setDialogType(dialogType)
+		}
 		setUserDialogOpen(!userDialogOpen)
-		setDialogData(dialogData)
-		setDialogType(dialogType)
 	}
 	// Open and close the Details Dialog
 	const handleDetailsDialogToggle = (dialogData) => {
+		if (!detailsDialogOpen) {
+			setDialogData(dialogData)
+		}
 		setDetailsDialogOpen(!detailsDialogOpen)
-		setDialogData(dialogData)
 	}
 
 	React.useEffect(() => {
@@ -214,13 +220,15 @@ const Home = (props) => {
 				dataName={dataName}
 				dialogData={dialogData}
 				handleMenuOpen={handleMenuOpen}
+				handleBugDialogToggle={handleBugDialogToggle}
+				handleUserDialogToggle={handleUserDialogToggle}
 			/>
 			{/* Works for Edit or New based on type */}
 			<BugForm
 				open={bugDialogOpen}
 				bugDialogOpen={bugDialogOpen}
 				dataName={dataName}
-				handleToggle={() => handleBugDialogToggle({}, '')}
+				handleToggle={handleBugDialogToggle}
 				desktop={desktop}
 				type={dialogType}
 				dialogData={dialogData}
@@ -230,7 +238,7 @@ const Home = (props) => {
 				open={userDialogOpen}
 				userDialogOpen={userDialogOpen}
 				dataName={dataName}
-				handleToggle={() => handleUserDialogToggle({}, '')}
+				handleToggle={handleUserDialogToggle}
 				type={dialogType}
 				dialogData={dialogData}
 			/>

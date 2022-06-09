@@ -81,6 +81,7 @@ const BugForm = (props) => {
 					{formArray.map((field) => {
 						return (
 							<TextField
+								key={field.label}
 								required
 								id={field.label}
 								label={field.label}
@@ -93,7 +94,7 @@ const BugForm = (props) => {
 				</Box>
 			</DialogContent>
 			<DialogActions>
-				<Button variant="contained" onClick={() => handleToggle({}, '')}>
+				<Button variant="contained" onClick={handleToggle}>
 					Cancel
 				</Button>
 				<Button

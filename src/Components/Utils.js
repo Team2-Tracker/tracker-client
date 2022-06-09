@@ -41,10 +41,16 @@ const handleAssignUser = (
 	}
 }
 // Bug Add / Edit: Calls fetch request to create OR update based on form type
-const handleBugSubmit = (event, type, formData, setFormData, handleToggle) => {
+const handleNewBugSubmit = (
+	event,
+	type,
+	formData,
+	setFormData,
+	handleToggle
+) => {
 	event.preventDefault()
 	fetch(`${apiUrl}/bugs/`, {
-		method: type === 'edit' ? 'PATCH' : 'POST',
+		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({
 			bugName: formData.bugName,
@@ -52,7 +58,43 @@ const handleBugSubmit = (event, type, formData, setFormData, handleToggle) => {
 			priority: formData.priority,
 			timeEstimate: formData.estimate,
 			dateDue: formData.dateDue,
-			dateCreated: type === 'edit' ? formData.dateCreated : new Date(now()),
+			dateCreated: new Date(now()),
+			assigned: false,
+			isActive: true
+		})
+	}).then(() => {
+		setFormData({
+			bugName: '',
+			issues: '',
+			priority: 1,
+			estimate: null,
+			dateDue: new Date(now()),
+			dateCreated: null,
+			assigned: ''
+		})
+		handleToggle()
+	})
+}
+// Bug Edit: Calls fetch request to create OR update based on form type
+const handleEditBugSubmit = (
+	event,
+	type,
+	formData,
+	setFormData,
+	handleToggle,
+	dialogData
+) => {
+	event.preventDefault()
+	fetch(`${apiUrl}/bugs/${dialogData._id}`, {
+		method: 'PATCH',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({
+			bugName: formData.bugName,
+			issues: formData.issues,
+			priority: formData.priority,
+			timeEstimate: formData.estimate,
+			dateDue: formData.dateDue,
+			dateCreated: formData.dateCreated,
 			assigned: false
 		})
 	}).then(() => {
@@ -204,7 +246,8 @@ export {
 	fetchAllBugs,
 	fetchAllUsers,
 	handleAssignUser,
-	handleBugSubmit,
+	handleNewBugSubmit,
+	handleEditBugSubmit,
 	handleUserSubmit,
 	handleBugClose,
 	handleFilterRowsBy,

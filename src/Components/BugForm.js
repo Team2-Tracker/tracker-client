@@ -13,8 +13,8 @@ import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
-import { now } from 'moment'
-import { handleBugSubmit } from './Utils'
+import moment from 'moment'
+import { handleNewBugSubmit, handleEditBugSubmit } from './Utils'
 
 const BugForm = (props) => {
 	const { open, bugDialogOpen, handleToggle, name, type, dialogData, desktop } =
@@ -26,9 +26,8 @@ const BugForm = (props) => {
 		issues: '',
 		priority: 1,
 		estimate: null,
-		dateDue: new Date(now()),
-		dateCreated: null,
-		assigned: ''
+		dateDue: new Date(moment.now()),
+		dateCreated: null
 	})
 
 	// Use effect to only set state when data is available
@@ -40,8 +39,7 @@ const BugForm = (props) => {
 				priority: dialogData.priority,
 				estimate: dialogData.dateDue,
 				dateDue: dialogData.priority,
-				dateCreated: dialogData.dateCreated,
-				assigned: dialogData.assigned
+				dateCreated: dialogData.dateCreated
 			})
 		}
 	}, [dialogData])
@@ -49,7 +47,7 @@ const BugForm = (props) => {
 	// Handle functions set state to form values
 	const handleNameChange = (event) => {
 		const newData = { ...formData }
-		newData.formName = event.target.value
+		newData.bugName = event.target.value
 		setFormData(newData)
 	}
 	const handleIssuesChange = (event) => {
@@ -77,20 +75,25 @@ const BugForm = (props) => {
 		newData.dateCreated = event
 		setFormData(newData)
 	}
-	const handleAssignedChange = (event) => {
-		const newData = { ...formData }
-		newData.assigned = event.target.value
-		setFormData(newData)
-	}
+	// Array to create form elements
+	const formArray = [
+		{ label: 'Name', value: formData.bugName, onChange: handleNameChange },
+		{ label: 'Issues', value: formData.issues, onChange: handleIssuesChange },
+		{
+			label: 'Estimated Hours',
+			value: formData.estimate,
+			onChange: handleEstimateChange
+		}
+	]
 
-	// Choose mobile or desktop picker based on screen size
+	// Mobile or desktop picker based on screen size
 	let editDateCreated = ''
 	if (type === 'edit') {
 		editDateCreated = (
 			<MobileDatePicker
 				label="Date Created"
 				inputFormat="MM/DD/yyyy"
-				value={formData.dateCreated}
+				value={moment(formData.dateCreated).format('MM/DD/yyyy')}
 				onChange={handleDateCreatedChange}
 				renderInput={(params) => <TextField {...params} />}
 			/>
@@ -101,7 +104,7 @@ const BugForm = (props) => {
 			<DesktopDatePicker
 				label="Date Created"
 				inputFormat="MM/DD/yyyy"
-				value={formData.dateCreated}
+				value={moment(formData.dateCreated).format('MM/DD/yyyy')}
 				onChange={handleDateCreatedChange}
 				renderInput={(params) => <TextField {...params} />}
 			/>
@@ -120,22 +123,19 @@ const BugForm = (props) => {
 					noValidate
 					autoComplete="off"
 				>
-					<TextField
-						required
-						id="name"
-						label="Name"
-						value={formData.bugName}
-						variant="outlined"
-						onChange={handleNameChange}
-					/>
-					<TextField
-						required
-						id="issues"
-						value={formData.issues}
-						label="Issues"
-						variant="outlined"
-						onChange={handleIssuesChange}
-					/>
+					{formArray.map((field) => {
+						return (
+							<TextField
+								key={field.label}
+								required
+								id={field.label}
+								label={field.label}
+								value={field.value}
+								variant="outlined"
+								onChange={field.onChange}
+							/>
+						)
+					})}
 					<FormControl fullWidth>
 						<InputLabel required id="priority-label">
 							Priority
@@ -152,19 +152,11 @@ const BugForm = (props) => {
 							<MenuItem value={3}>Low</MenuItem>
 						</Select>
 					</FormControl>
-					<TextField
-						required
-						id="estimated-hours"
-						value={formData.estimate}
-						label="Estimated Hours"
-						variant="outlined"
-						onChange={handleEstimateChange}
-					/>
 					{desktop ? (
 						<DesktopDatePicker
 							label="Date Due"
 							inputFormat="MM/DD/yyyy"
-							value={formData.dateDue}
+							value={moment(formData.dateCreated).format('MM/DD/yyyy')}
 							onChange={handleDateChange}
 							renderInput={(params) => <TextField {...params} />}
 						/>
@@ -172,30 +164,37 @@ const BugForm = (props) => {
 						<MobileDatePicker
 							label="Date Due"
 							inputFormat="MM/DD/yyyy"
-							value={formData.dateDue}
+							value={moment(formData.dateCreated).format('MM/DD/yyyy')}
 							onChange={handleDateChange}
 							renderInput={(params) => <TextField {...params} />}
 						/>
 					)}
 					{editDateCreated}
-					<TextField
-						id="assigned"
-						value={formData.assigned}
-						label="Assigned"
-						variant="outlined"
-						onChange={handleAssignedChange}
-						disabled
-					/>
 				</Box>
 			</DialogContent>
 			<DialogActions>
-				<Button variant="contained" onClick={() => handleToggle({}, '')}>
+				<Button variant="contained" onClick={handleToggle}>
 					Cancel
 				</Button>
 				<Button
 					variant="contained"
 					onClick={(event) =>
-						handleBugSubmit(event, type, formData, setFormData, handleToggle)
+						type === 'edit'
+							? handleEditBugSubmit(
+									event,
+									type,
+									formData,
+									setFormData,
+									handleToggle,
+									dialogData
+							  )
+							: handleNewBugSubmit(
+									event,
+									type,
+									formData,
+									setFormData,
+									handleToggle
+							  )
 					}
 				>
 					Submit

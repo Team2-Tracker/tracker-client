@@ -9,7 +9,15 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
 
 function Details(props) {
-	const { open, handleToggle, dataName, dialogData, handleMenuOpen } = props
+	const {
+		open,
+		handleToggle,
+		dataName,
+		dialogData,
+		handleMenuOpen,
+		handleBugDialogToggle,
+		handleUserDialogToggle
+	} = props
 
 	let textFieldList = ''
 	let displayList = ''
@@ -55,6 +63,7 @@ function Details(props) {
 		textFieldList = displayList.map((item) => {
 			return (
 				<TextField
+					key={item.label}
 					id="outlined-read-only-input"
 					label={item.label}
 					value={item.value}
@@ -67,11 +76,20 @@ function Details(props) {
 		})
 	}
 	return (
-		<Dialog open={open} onClose={() => handleToggle({})}>
+		<Dialog open={open} onClose={handleToggle}>
 			<DialogTitle>{dataName} Details</DialogTitle>
 			<DialogContent>{textFieldList}</DialogContent>
 			<DialogActions>
-				<Button variant="outlined" size="small">
+				<Button
+					variant="outlined"
+					size="small"
+					onClick={() => {
+						dataName === 'Bug'
+							? handleBugDialogToggle(dialogData, 'edit')
+							: handleUserDialogToggle(dialogData, 'edit')
+						handleToggle()
+					}}
+				>
 					Edit
 				</Button>
 				<StyledFab
@@ -86,7 +104,7 @@ function Details(props) {
 				>
 					<AssignmentIndIcon />
 				</StyledFab>
-				<Button variant="outlined" size="small">
+				<Button variant="outlined" size="small" onClose={handleToggle}>
 					Close
 				</Button>
 			</DialogActions>
