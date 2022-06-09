@@ -30,7 +30,23 @@ function Details(props) {
 			{ label: 'UserName', defaultValue: selected.userName },
 			{ label: 'First Name', defaultValue: selected.firstName },
 			{ label: 'Last Name', defaultValue: selected.lastName },
-			{ label: 'Bugs', defaultValue: 'In Progress' }
+			{
+				label: 'Bugs',
+				defaultValue:
+					selected.bugs.length === 0
+						? 'None'
+						: selected.bugs.reduce(
+								(previous, current) => previous.bugName + ' ' + current.bugName
+						  )
+			},
+			{ label: 'Number of Bugs Assigned', defaultValue: selected.bugs.length },
+			{
+				label: 'Total Estimated Hours Assigned',
+				defaultValue: selected.bugs.reduce(
+					(previous, current) => previous.timeEstimate + current.timeEstimate,
+					0
+				)
+			}
 		]
 	}
 	if (Object.keys(selected).length > 0) {

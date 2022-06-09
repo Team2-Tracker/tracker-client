@@ -47,18 +47,18 @@ const userTableHeadCells = (tablet, desktop) => {
 		{
 			id: 'name',
 			align: 'left',
-			disablePadding: true,
+			disablePadding: false,
 			label: 'User Name'
 		},
 		{
 			id: 'firstName',
-			align: 'center',
-			disablePadding: true,
+			align: 'left',
+			disablePadding: false,
 			label: 'First Name'
 		},
 		{
 			id: 'lastName',
-			align: 'right',
+			align: 'left',
 			disablePadding: false,
 			label: 'Last Name'
 		}

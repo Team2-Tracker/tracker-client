@@ -95,13 +95,26 @@ const TrackerRow = (props) => {
 		// Populate Issues at 600px
 		let bugNumberCell = ''
 		if (tablet) {
-			bugNumberCell = <TableCell align="center">Add sum</TableCell>
+			bugNumberCell = <TableCell align="center">{row.bugs.length}</TableCell>
 		}
 		let bugHoursCell = ''
 		if (desktop) {
-			bugHoursCell = <TableCell align="center">Add sum</TableCell>
+			let bugHours = 0
+			row.bugs.forEach((bug) => {
+				bugHours = bugHours + bug.timeEstimate
+			})
+			bugHoursCell = (
+				<TableCell align="center">
+					{
+						(row.bugs.reduce(
+							(previous, current) =>
+								previous.timeEstimate + current.timeEstimate
+						),
+						0)
+					}
+				</TableCell>
+			)
 		}
-
 		return (
 			<React.Fragment>
 				<TableRow

@@ -58,7 +58,7 @@ const Home = (props) => {
 	const [detailsDialogOpen, setDetailsDialogOpen] = React.useState(false)
 	// Variable to track location to load state properly
 	let location = useLocation().pathname
-
+	console.log(rows)
 	// Event handlers for menu open and close
 	const handleMenuOpen = (event, menuType) => {
 		setAnchorEl(event.currentTarget)
@@ -141,6 +141,8 @@ const Home = (props) => {
 								)
 							}
 							dataName={dataName}
+							tablet={tablet}
+							desktop={desktop}
 						/>
 						<TableBody>
 							{
