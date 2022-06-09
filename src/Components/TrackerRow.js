@@ -23,12 +23,11 @@ const TrackerRow = (props) => {
 
 	const [rowCollapseOpen, setRowCollapseOpen] = React.useState(false)
 
-	// Selects whichever row is entered as name
-	// const isSelected = (name) => selected.indexOf(name) !== -1
-	// const isItemSelected = isSelected(row._id)
-	const isItemSelected = selected._id === row.id ? true : false
+	// Sets whichever row is selected by ID
+	const isItemSelected = selected._id === row._id ? true : false
+	let priorityBackground = ''
 
-	if (dataName === 'bugs') {
+	if (dataName === 'Bug') {
 		// Populate Issues at 600px
 		let issuesCell = ''
 		if (tablet) {
@@ -52,7 +51,11 @@ const TrackerRow = (props) => {
 					}}
 					aria-checked={isItemSelected}
 					selected={isItemSelected}
-					sx={{ '& > *': { borderBottom: 'unset' } }}
+					sx={{
+						'& > *': { borderBottom: 'unset' },
+						'textDecoration': row.isActive ? 'none' : 'line-through',
+						'backgroundColor': priorityBackground
+					}}
 				>
 					<TableCell>
 						<IconButton aria-label="expand row" size="small">
@@ -86,7 +89,7 @@ const TrackerRow = (props) => {
 			</React.Fragment>
 		)
 	}
-	if (dataName === 'users') {
+	if (dataName === 'User') {
 		// Populate Issues at 600px
 		let bugNumberCell = ''
 		if (tablet) {

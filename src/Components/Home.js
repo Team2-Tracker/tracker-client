@@ -58,8 +58,6 @@ const Home = (props) => {
 	// Variable to track location to load state properly
 	let location = useLocation().pathname
 
-	console.log(selected)
-
 	// Event handlers for menu open and close
 	const handleMenuOpen = (event) => {
 		setAnchorEl(event.currentTarget)
@@ -82,7 +80,7 @@ const Home = (props) => {
 
 	React.useEffect(() => {
 		setTitle(homeTitle)
-		setRows(dataName === 'bugs' ? allBugs : allUsers)
+		setRows(dataName === 'Bug' ? allBugs : allUsers)
 	}, [location, allBugs, allUsers])
 
 	// Adding propTypes for the EnhancedTableHead Component
@@ -103,7 +101,7 @@ const Home = (props) => {
 				menuOpen={menuOpen}
 				onClose={handleMenuClose}
 				handleMenuClose={handleMenuClose}
-				allData={dataName === 'bugs' ? allBugs : allUsers}
+				allData={dataName === 'Bug' ? allBugs : allUsers}
 				setRows={setRows}
 				setTitle={setTitle}
 				menuArray={menuArray}
