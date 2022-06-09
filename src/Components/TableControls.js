@@ -2,7 +2,7 @@ import Collapse from '@mui/material/Collapse'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 
-const TableControlls = (props) => {
+const TableControls = (props) => {
 	const {
 		open,
 		dataName,
@@ -65,4 +65,4 @@ const TableControlls = (props) => {
 	)
 }
 
-export default TableControlls
+export default TableControls

@@ -7,7 +7,7 @@ import { handleSelectOneRow } from './Utils'
 import IconButton from '@mui/material/IconButton'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
-import TableControlls from './TableControls'
+import TableControls from './TableControls'
 
 const TrackerRow = (props) => {
 	const {
@@ -79,7 +79,7 @@ const TrackerRow = (props) => {
 				</TableRow>
 				<TableRow selected={true}>
 					<TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-						<TableControlls
+						<TableControls
 							open={rowCollapseOpen}
 							dataName={dataName}
 							handleEditDialogToggle={handleEditDialogToggle}
@@ -133,7 +133,7 @@ const TrackerRow = (props) => {
 				</TableRow>
 				<TableRow selected={true}>
 					<TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-						<TableControlls
+						<TableControls
 							open={rowCollapseOpen}
 							dataName={dataName}
 							handleEditDialogToggle={handleEditDialogToggle}
