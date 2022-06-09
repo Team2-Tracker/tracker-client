@@ -11,7 +11,7 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
 
 function Details(props) {
-	const { open, handleToggle, dataName, selected } = props
+	const { open, handleToggle, dataName, selected, handleMenuOpen } = props
 
 	let textFieldList = ''
 	if (dataName === 'Bug' && Object.keys(selected).length > 0) {
@@ -46,8 +46,17 @@ function Details(props) {
 				<Button variant="outlined" size="small">
 					Edit
 				</Button>
-				<StyledFab color="secondary" aria-label="add">
-					<AssignmentIndIcon type="submit" />
+				<StyledFab
+					color="secondary"
+					aria-label="add"
+					onClick={(event) =>
+						handleMenuOpen(
+							event,
+							dataName === 'Bug' ? 'allUsers' : 'unassignedBugs'
+						)
+					}
+				>
+					<AssignmentIndIcon />
 				</StyledFab>
 				<Button variant="outlined" size="small">
 					Close

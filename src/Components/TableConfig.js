@@ -1,5 +1,3 @@
-import { PropaneTankSharp } from '@mui/icons-material'
-
 // List of Column Names for Bugs, starting with 3 to display at mobile:
 const bugTableHeadCells = (tablet, desktop) => {
 	let headCells = [
@@ -86,18 +84,19 @@ const userTableHeadCells = (tablet, desktop) => {
 	return headCells
 }
 
-const bugMenu = [
-	{ id: 'allBugs', name: 'All Bugs' },
-	{ id: 'activeBugs', name: 'Active Bugs' },
-	{ id: 'closedBugs', name: 'Closed Bugs' },
-	{ id: 'assignedBugs', name: 'Assigned Bugs' },
-	{ id: 'unassignedBugs', name: 'Unassigned Bugs' }
-]
+const menuList = {
+	bugMenu: [
+		{ id: 'allBugs', name: 'All Bugs' },
+		{ id: 'activeBugs', name: 'Active Bugs' },
+		{ id: 'closedBugs', name: 'Closed Bugs' },
+		{ id: 'assignedBugs', name: 'Assigned Bugs' },
+		{ id: 'unassignedBugs', name: 'Unassigned Bugs' }
+	],
+	userMenu: [
+		{ id: 'allUsers', name: 'All Users' },
+		{ id: 'assignedUsers', name: 'Users with Bugs' },
+		{ id: 'unassignedUsers', name: 'Users with no Bugs' }
+	]
+}
 
-const usersMenu = [
-	{ id: 'allUsers', name: 'All Users' },
-	{ id: 'assignedUsers', name: 'Users with Bugs' },
-	{ id: 'unassignedUsers', name: 'Users with no Bugs' }
-]
-
-export { bugTableHeadCells, userTableHeadCells, bugMenu, usersMenu }
+export { bugTableHeadCells, userTableHeadCells, menuList }
