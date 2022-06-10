@@ -214,12 +214,12 @@ const handleFilterRowsBy = (filter, allRows, setRows, setTitle) => {
 		setTitle('All Users')
 	}
 	if (filter === 'assignedUsers') {
-		const activeRows = allRows.filter((row) => row.assigned !== 'none')
+		const activeRows = allRows.filter((row) => row.bugs.length > 0)
 		setRows(activeRows)
 		setTitle('Users with Bugs')
 	}
 	if (filter === 'unassignedUsers') {
-		const activeRows = allRows.filter((row) => row.assigned === 'none')
+		const activeRows = allRows.filter((row) => row.bugs.length === 0)
 		setRows(activeRows)
 		setTitle('Users with no Bugs')
 	}

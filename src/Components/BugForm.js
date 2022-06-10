@@ -52,7 +52,7 @@ const BugForm = (props) => {
 			})
 		}
 	}, [bugDialogOpen])
-	console.log('formData: ', formData, 'type', type)
+
 	// Handle functions set state to form values
 	const handleNameChange = (event) => {
 		const newData = { ...formData }
