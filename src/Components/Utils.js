@@ -24,7 +24,8 @@ const handleAssignUser = (
 	bugId,
 	handleMenuClose,
 	setAllBugs,
-	setAllUsers
+	setAllUsers,
+	setDetailsDialogOpen
 ) => {
 	if (userId && bugId) {
 		fetch(`${apiUrl}/users/${userId}/bugs/${bugId}`, {
@@ -35,6 +36,7 @@ const handleAssignUser = (
 			handleMenuClose()
 			fetchAllBugs(setAllBugs)
 			fetchAllUsers(setAllUsers)
+			setDetailsDialogOpen(false)
 		})
 	} else {
 		console.log('something went wrong', 'userId:', userId, 'bugId:', bugId)

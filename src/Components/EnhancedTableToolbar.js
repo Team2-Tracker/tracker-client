@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { alpha } from '@mui/material/styles'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
@@ -24,7 +23,7 @@ const EnhancedTableToolbar = (props) => {
 				pr: { xs: 1, sm: 1 }
 			}}
 		>
-			<Tooltip title="Add bug">
+			<Tooltip title={dataName === 'Bug' ? 'Add Bug' : 'Add User'}>
 				<IconButton
 					onClick={() => {
 						dataName === 'Bug'
