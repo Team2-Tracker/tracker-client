@@ -17,10 +17,17 @@ import moment from 'moment'
 import { handleNewBugSubmit, handleEditBugSubmit } from './Utils'
 
 const BugForm = (props) => {
-	const { bugDialogOpen, handleToggle, type, dialogData, desktop, setAllBugs } =
-		props
+	const {
+		bugDialogOpen,
+		handleToggle,
+		type,
+		dialogData,
+		desktop,
+		setAllBugs,
+		setDialogType
+	} = props
 	// Empty formData to reset to
-	const emptyDialogData = {
+	const emptyFormData = {
 		bugName: '',
 		issues: '',
 		priority: '',
@@ -30,8 +37,8 @@ const BugForm = (props) => {
 	}
 
 	// State to track form input - Ternary functions add default values for edit forms
-	const [formData, setFormData] = useState(emptyDialogData)
-	console.log(formData)
+	const [formData, setFormData] = useState(emptyFormData)
+
 	// Use effect to only set state when data is available
 	React.useEffect(() => {
 		if (type === 'edit' && bugDialogOpen) {
@@ -45,7 +52,7 @@ const BugForm = (props) => {
 			})
 		}
 	}, [bugDialogOpen])
-
+	console.log('formData: ', formData, 'type', type)
 	// Handle functions set state to form values
 	const handleNameChange = (event) => {
 		const newData = { ...formData }
@@ -114,7 +121,14 @@ const BugForm = (props) => {
 	}
 
 	return (
-		<Dialog open={bugDialogOpen} onClose={handleToggle}>
+		<Dialog
+			open={bugDialogOpen}
+			onClose={() => {
+				setFormData(emptyFormData)
+				setDialogType('')
+				handleToggle()
+			}}
+		>
 			<DialogTitle>{type === 'edit' ? 'Edit Bug' : 'Add Bug'}</DialogTitle>
 			<DialogContent>
 				<Box
@@ -175,7 +189,14 @@ const BugForm = (props) => {
 				</Box>
 			</DialogContent>
 			<DialogActions>
-				<Button variant="contained" onClick={handleToggle}>
+				<Button
+					variant="contained"
+					onClick={() => {
+						setFormData(emptyFormData)
+						setDialogType('')
+						handleToggle()
+					}}
+				>
 					Cancel
 				</Button>
 				<Button
@@ -184,18 +205,20 @@ const BugForm = (props) => {
 						type === 'edit'
 							? handleEditBugSubmit(
 									formData,
-									setFormData,
+									setDialogType,
 									handleToggle,
 									dialogData,
 									setAllBugs,
-									emptyDialogData
+									setFormData,
+									emptyFormData
 							  )
 							: handleNewBugSubmit(
 									formData,
-									setFormData,
+									setDialogType,
 									handleToggle,
 									setAllBugs,
-									emptyDialogData
+									setFormData,
+									emptyFormData
 							  )
 					}}
 				>

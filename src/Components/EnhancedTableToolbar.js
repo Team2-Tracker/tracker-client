@@ -12,8 +12,7 @@ const EnhancedTableToolbar = (props) => {
 		dataName,
 		handleMenuOpen,
 		handleBugDialogToggle,
-		handleUserDialogToggle,
-		setDialogType
+		handleUserDialogToggle
 	} = props
 
 	return (
@@ -27,7 +26,6 @@ const EnhancedTableToolbar = (props) => {
 			<Tooltip title={dataName === 'Bug' ? 'Add Bug' : 'Add User'}>
 				<IconButton
 					onClick={() => {
-						setDialogType('')
 						dataName === 'Bug'
 							? handleBugDialogToggle()
 							: handleUserDialogToggle()

@@ -47,10 +47,11 @@ const handleAssignUser = (
 // Bug Add: Calls fetch request to CREATE
 const handleNewBugSubmit = (
 	formData,
-	setFormData,
+	setDialogType,
 	handleToggle,
 	setAllBugs,
-	emptyDialogData
+	setFormData,
+	emptyFormData
 ) => {
 	fetch(`${apiUrl}/bugs/`, {
 		method: 'POST',
@@ -67,7 +68,8 @@ const handleNewBugSubmit = (
 		})
 	})
 		.then(() => {
-			setFormData(emptyDialogData)
+			setFormData(emptyFormData)
+			setDialogType('')
 			handleToggle()
 			fetchAllBugs(setAllBugs)
 		})
@@ -76,11 +78,12 @@ const handleNewBugSubmit = (
 // Bug Edit: Calls fetch request to create OR update based on form type
 const handleEditBugSubmit = (
 	formData,
-	setFormData,
+	setDialogType,
 	handleToggle,
 	dialogData,
 	setAllBugs,
-	emptyDialogData
+	setFormData,
+	emptyFormData
 ) => {
 	fetch(`${apiUrl}/bugs/${dialogData._id}`, {
 		method: 'PATCH',
@@ -95,7 +98,8 @@ const handleEditBugSubmit = (
 		})
 	})
 		.then(() => {
-			setFormData(emptyDialogData)
+			setFormData(emptyFormData)
+			setDialogType('')
 			handleToggle()
 			fetchAllBugs(setAllBugs)
 		})
@@ -104,10 +108,11 @@ const handleEditBugSubmit = (
 // User Add
 const handleNewUserSubmit = (
 	formData,
-	setFormData,
+	setDialogType,
 	handleToggle,
 	setAllUsers,
-	emptyDialogData
+	setFormData,
+	emptyFormData
 ) => {
 	fetch(`${apiUrl}/users/`, {
 		method: 'POST',
@@ -119,7 +124,8 @@ const handleNewUserSubmit = (
 		})
 	})
 		.then(() => {
-			setFormData(emptyDialogData)
+			setFormData(emptyFormData)
+			setDialogType('')
 			handleToggle()
 			fetchAllUsers(setAllUsers)
 		})
@@ -128,11 +134,12 @@ const handleNewUserSubmit = (
 // User Edit
 const handleEditUserSubmit = (
 	formData,
-	setFormData,
+	setDialogType,
 	handleToggle,
 	dialogData,
 	setAllUsers,
-	emptyDialogData
+	setFormData,
+	emptyFormData
 ) => {
 	fetch(`${apiUrl}/users/${dialogData._id}`, {
 		method: 'PATCH',
@@ -144,7 +151,8 @@ const handleEditUserSubmit = (
 		})
 	})
 		.then(() => {
-			setFormData(emptyDialogData)
+			setFormData(emptyFormData)
+			setDialogType('')
 			handleToggle()
 			fetchAllUsers(setAllUsers)
 		})

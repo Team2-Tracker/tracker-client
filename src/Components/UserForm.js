@@ -10,17 +10,24 @@ import DialogTitle from '@mui/material/DialogTitle'
 import { handleNewUserSubmit, handleEditUserSubmit } from './Utils'
 
 const BugForm = (props) => {
-	const { handleToggle, type, dialogData, userDialogOpen, setAllUsers } = props
+	const {
+		handleToggle,
+		type,
+		dialogData,
+		userDialogOpen,
+		setAllUsers,
+		setDialogType
+	} = props
 
 	// Empty formData to reset to
-	const emptyDialogData = {
+	const emptyFormData = {
 		userName: '',
 		firstName: '',
 		lastName: ''
 	}
 
 	// State to track form input
-	const [formData, setFormData] = useState(emptyDialogData)
+	const [formData, setFormData] = useState(emptyFormData)
 
 	// Use Effect populates state when an edit opesn
 	React.useEffect(() => {
@@ -70,7 +77,14 @@ const BugForm = (props) => {
 	]
 
 	return (
-		<Dialog open={userDialogOpen} onClose={handleToggle}>
+		<Dialog
+			open={userDialogOpen}
+			onClose={() => {
+				setFormData(emptyFormData)
+				setDialogType('')
+				handleToggle()
+			}}
+		>
 			<DialogTitle>{type === 'edit' ? 'Edit User' : 'Add User'}</DialogTitle>
 			<DialogContent>
 				<Box
@@ -97,7 +111,14 @@ const BugForm = (props) => {
 				</Box>
 			</DialogContent>
 			<DialogActions>
-				<Button variant="contained" onClick={handleToggle}>
+				<Button
+					variant="contained"
+					onClick={() => {
+						setFormData(emptyFormData)
+						setDialogType('')
+						handleToggle()
+					}}
+				>
 					Cancel
 				</Button>
 				<Button
@@ -110,14 +131,16 @@ const BugForm = (props) => {
 									handleToggle,
 									dialogData,
 									setAllUsers,
-									emptyDialogData
+									setFormData,
+									emptyFormData
 							  )
 							: handleNewUserSubmit(
 									formData,
 									setFormData,
 									handleToggle,
 									setAllUsers,
-									emptyDialogData
+									setFormData,
+									emptyFormData
 							  )
 					}
 				>

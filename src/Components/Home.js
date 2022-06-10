@@ -93,7 +93,7 @@ const Home = (props) => {
 	const handleDetailsDialogToggle = () => {
 		setDetailsDialogOpen(!detailsDialogOpen)
 	}
-
+	// console.log('dialogData: ', dialogData, 'dialogType: ', dialogType)
 	// Use Effect resets state data on navigation to make sure bugs / users display properly
 	React.useEffect(() => {
 		setTitle(homeTitle)
@@ -137,8 +137,6 @@ const Home = (props) => {
 					dataName={dataName}
 					handleBugDialogToggle={handleBugDialogToggle}
 					handleUserDialogToggle={handleUserDialogToggle}
-					setDialogData={setDialogData}
-					setDialogType={setDialogType}
 				/>
 				<TableContainer>
 					<Table
@@ -243,6 +241,7 @@ const Home = (props) => {
 				type={dialogType}
 				dialogData={dialogData}
 				setAllBugs={setAllBugs}
+				setDialogType={setDialogType}
 			/>
 			{/* Works for Edit or New based on type */}
 			<UserForm
@@ -252,6 +251,7 @@ const Home = (props) => {
 				type={dialogType}
 				dialogData={dialogData}
 				setAllUsers={setAllUsers}
+				setDialogType={setDialogType}
 			/>
 		</Box>
 	)
