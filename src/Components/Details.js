@@ -41,23 +41,25 @@ function Details(props) {
 			{ label: 'Last Name', value: dialogData.lastName },
 			{
 				label: 'Bugs',
-				value:
-					dialogData.bugs.length === 0
-						? 'None'
-						: dialogData.bugs.reduce(
-								(previous, current) => previous.bugName + ' ' + current.bugName
-						  )
+				value: dialogData.bugs
+					? dialogData.bugs.reduce(
+							(previous, current) => previous.bugName + ' ' + current.bugName
+					  )
+					: 'None'
 			},
 			{
 				label: 'Number of Bugs Assigned',
-				value: dialogData.bugs.length
+				value: dialogData.bugs ? dialogData.bugs.length : 0
 			},
 			{
 				label: 'Total Estimated Hours Assigned',
-				value: dialogData.bugs.reduce(
-					(previous, current) => previous.timeEstimate + current.timeEstimate,
-					0
-				)
+				value: dialogData.bugs
+					? dialogData.bugs.reduce(
+							(previous, current) =>
+								previous.timeEstimate + current.timeEstimate,
+							0
+					  )
+					: 0
 			}
 		]
 	}
