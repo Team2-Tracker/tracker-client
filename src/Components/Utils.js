@@ -47,7 +47,8 @@ const handleNewBugSubmit = (
 	formData,
 	setFormData,
 	handleToggle,
-	setAllBugs
+	setAllBugs,
+	emptyDialogData
 ) => {
 	console.log('formData:', formData)
 	fetch(`${apiUrl}/bugs/`, {
@@ -57,22 +58,14 @@ const handleNewBugSubmit = (
 			bugName: formData.bugName,
 			issues: formData.issues,
 			priority: formData.priority,
-			timeEstimate: formData.estimate,
+			timeEstimate: formData.timeEstimate,
 			dateDue: formData.dateDue,
 			dateCreated: new Date(now()),
 			assigned: false,
 			isActive: true
 		})
 	}).then(() => {
-		setFormData({
-			bugName: '',
-			issues: '',
-			priority: 1,
-			estimate: null,
-			dateDue: new Date(now()),
-			dateCreated: null,
-			assigned: ''
-		})
+		setFormData(emptyDialogData)
 		handleToggle()
 		fetchAllBugs(setAllBugs)
 	})
@@ -83,9 +76,9 @@ const handleEditBugSubmit = (
 	setFormData,
 	handleToggle,
 	dialogData,
-	setAllBugs
+	setAllBugs,
+	emptyDialogData
 ) => {
-	console.log('formData:', formData)
 	fetch(`${apiUrl}/bugs/${dialogData._id}`, {
 		method: 'PATCH',
 		headers: { 'Content-Type': 'application/json' },
@@ -93,21 +86,12 @@ const handleEditBugSubmit = (
 			bugName: formData.bugName,
 			issues: formData.issues,
 			priority: formData.priority,
-			timeEstimate: formData.estimate,
+			timeEstimate: formData.timeEstimate,
 			dateDue: formData.dateDue,
-			dateCreated: formData.dateCreated,
-			assigned: false
+			dateCreated: formData.dateCreated
 		})
 	}).then(() => {
-		setFormData({
-			bugName: '',
-			issues: '',
-			priority: 1,
-			estimate: null,
-			dateDue: new Date(now()),
-			dateCreated: null,
-			assigned: ''
-		})
+		setFormData(emptyDialogData)
 		handleToggle()
 		fetchAllBugs(setAllBugs)
 	})
@@ -117,7 +101,8 @@ const handleNewUserSubmit = (
 	formData,
 	setFormData,
 	handleToggle,
-	setAllUsers
+	setAllUsers,
+	emptyDialogData
 ) => {
 	fetch(`${apiUrl}/users/`, {
 		method: 'POST',
@@ -128,11 +113,7 @@ const handleNewUserSubmit = (
 			lastName: formData.lastName
 		})
 	}).then(() => {
-		setFormData({
-			userName: '',
-			firstName: '',
-			lastName: ''
-		})
+		setFormData(emptyDialogData)
 		handleToggle()
 		fetchAllUsers(setAllUsers)
 	})
@@ -143,7 +124,8 @@ const handleEditUserSubmit = (
 	setFormData,
 	handleToggle,
 	dialogData,
-	setAllUsers
+	setAllUsers,
+	emptyDialogData
 ) => {
 	fetch(`${apiUrl}/users/${dialogData._id}`, {
 		method: 'PATCH',
@@ -154,11 +136,7 @@ const handleEditUserSubmit = (
 			lastName: formData.lastName
 		})
 	}).then(() => {
-		setFormData({
-			userName: '',
-			firstName: '',
-			lastName: ''
-		})
+		setFormData(emptyDialogData)
 		handleToggle()
 		fetchAllUsers(setAllUsers)
 	})

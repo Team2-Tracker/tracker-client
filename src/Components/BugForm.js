@@ -19,16 +19,17 @@ import { handleNewBugSubmit, handleEditBugSubmit } from './Utils'
 const BugForm = (props) => {
 	const { bugDialogOpen, handleToggle, type, dialogData, desktop, setAllBugs } =
 		props
-
-	// State to track form input - Ternary functions add default values for edit forms
-	const [formData, setFormData] = useState({
+	// Empty formData to reset to
+	const emptyDialogData = {
 		bugName: '',
 		issues: '',
 		priority: 1,
-		estimate: null,
-		dateDue: new Date(moment.now()),
-		dateCreated: null
-	})
+		timeEstimate: 0,
+		dateDue: '',
+		dateCreated: ''
+	}
+	// State to track form input - Ternary functions add default values for edit forms
+	const [formData, setFormData] = useState(emptyDialogData)
 
 	// Use effect to only set state when data is available
 	React.useEffect(() => {
@@ -37,8 +38,8 @@ const BugForm = (props) => {
 				bugName: dialogData.bugName,
 				issues: dialogData.issues,
 				priority: dialogData.priority,
-				estimate: dialogData.dateDue,
-				dateDue: dialogData.priority,
+				timeEstimate: dialogData.timeEstimate,
+				dateDue: dialogData.dateDue,
 				dateCreated: dialogData.dateCreated
 			})
 		}
@@ -62,7 +63,7 @@ const BugForm = (props) => {
 	}
 	const handleEstimateChange = (event) => {
 		const newData = { ...formData }
-		newData.estimate = event.target.value
+		newData.timeEstimate = event.target.value
 		setFormData(newData)
 	}
 	const handleDateChange = (event) => {
@@ -81,7 +82,7 @@ const BugForm = (props) => {
 		{ label: 'Issues', value: formData.issues, onChange: handleIssuesChange },
 		{
 			label: 'Estimated Hours',
-			value: formData.estimate,
+			value: formData.timeEstimate,
 			onChange: handleEstimateChange
 		}
 	]
@@ -185,15 +186,16 @@ const BugForm = (props) => {
 									setFormData,
 									handleToggle,
 									dialogData,
-									setAllBugs
+									setAllBugs,
+									emptyDialogData
 							  )
 							: handleNewBugSubmit(
 									formData,
 									setFormData,
 									handleToggle,
-									setAllBugs
+									setAllBugs,
+									emptyDialogData
 							  )
-						console.log(formData, dialogData)
 					}}
 				>
 					Submit

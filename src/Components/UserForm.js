@@ -12,12 +12,15 @@ import { handleNewUserSubmit, handleEditUserSubmit } from './Utils'
 const BugForm = (props) => {
 	const { handleToggle, type, dialogData, userDialogOpen, setAllUsers } = props
 
-	// State to track form input
-	const [formData, setFormData] = useState({
+	// Empty formData to reset to
+	const emptyDialogData = {
 		userName: '',
 		firstName: '',
 		lastName: ''
-	})
+	}
+
+	// State to track form input
+	const [formData, setFormData] = useState(emptyDialogData)
 
 	// Use Effect populates state when an edit opesn
 	React.useEffect(() => {
@@ -106,13 +109,15 @@ const BugForm = (props) => {
 									setFormData,
 									handleToggle,
 									dialogData,
-									setAllUsers
+									setAllUsers,
+									emptyDialogData
 							  )
 							: handleNewUserSubmit(
 									formData,
 									setFormData,
 									handleToggle,
-									setAllUsers
+									setAllUsers,
+									emptyDialogData
 							  )
 					}
 				>

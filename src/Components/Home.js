@@ -38,11 +38,24 @@ const Home = (props) => {
 		setAllBugs,
 		setAllUsers
 	} = props
+	// Create an object to reset dialogData
+	const emptyDialogData = {
+		bugName: '',
+		issues: '',
+		priority: 1,
+		timeEstimate: 0,
+		dateDue: '',
+		dateCreated: '',
+		userName: '',
+		firstName: '',
+		lastName: ''
+	}
+
 	// States for controlling the Table
 	const [rows, setRows] = React.useState([])
 	const [order, setOrder] = React.useState('asc')
 	const [orderBy, setOrderBy] = React.useState('calories')
-	const [selected, setSelected] = React.useState({})
+	const [selected, setSelected] = React.useState('')
 	const [page, setPage] = React.useState(0)
 	const [dense, setDense] = React.useState(false)
 	const [rowsPerPage, setRowsPerPage] = React.useState(5)
@@ -55,7 +68,7 @@ const Home = (props) => {
 	const [bugDialogOpen, setBugDialogOpen] = React.useState(false)
 	const [userDialogOpen, setUserDialogOpen] = React.useState(false)
 	const [detailsDialogOpen, setDetailsDialogOpen] = React.useState(false)
-	const [dialogData, setDialogData] = React.useState({})
+	const [dialogData, setDialogData] = React.useState(emptyDialogData)
 	const [dialogType, setDialogType] = React.useState('')
 	// Variable to track location to load state properly
 	let location = useLocation().pathname
@@ -81,10 +94,12 @@ const Home = (props) => {
 		setDetailsDialogOpen(!detailsDialogOpen)
 	}
 
+	console.log('dialogData: ', dialogData)
+
 	React.useEffect(() => {
 		setTitle(homeTitle)
 		setRows(dataName === 'Bug' ? allBugs : allUsers)
-		setDialogData({})
+		setDialogData(emptyDialogData)
 	}, [location, allBugs, allUsers])
 
 	// Adding propTypes for the EnhancedTableHead Component
