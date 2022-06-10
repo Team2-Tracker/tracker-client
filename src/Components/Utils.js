@@ -1,3 +1,188 @@
+import apiUrl from '../apiUrl'
+import { now } from 'moment'
+
+// *** CRUD Functions ****
+
+// Functions to fetch all data from database
+const fetchAllBugs = (setAllBugs) => {
+	fetch(apiUrl + `/bugs/`)
+		.then((res) => res.json())
+		.then((data) => {
+			setAllBugs(data.bugs)
+		})
+		.catch((err) => console.log('something went wrong', err))
+}
+const fetchAllUsers = (setAllUsers) => {
+	fetch(apiUrl + `/users/`)
+		.then((res) => res.json())
+		.then((data) => {
+			setAllUsers(data.users)
+		})
+		.catch((err) => console.log('something went wrong', err))
+}
+// This function updates bugs by ID to add the user by ID
+const handleAssignUser = (
+	userId,
+	bugId,
+	handleMenuClose,
+	setAllBugs,
+	setAllUsers,
+	setDetailsDialogOpen
+) => {
+	if (userId && bugId) {
+		fetch(`${apiUrl}/users/${userId}/bugs/${bugId}`, {
+			method: 'PATCH',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({})
+		})
+			.then(() => {
+				handleMenuClose()
+				fetchAllBugs(setAllBugs)
+				fetchAllUsers(setAllUsers)
+				setDetailsDialogOpen(false)
+			})
+			.catch((err) => console.log('something went wrong', err))
+	}
+}
+// Bug Add: Calls fetch request to CREATE
+const handleNewBugSubmit = (
+	formData,
+	setDialogType,
+	handleToggle,
+	setAllBugs,
+	setFormData,
+	emptyFormData
+) => {
+	fetch(`${apiUrl}/bugs/`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({
+			bugName: formData.bugName,
+			issues: formData.issues,
+			priority: formData.priority,
+			timeEstimate: formData.timeEstimate,
+			dateDue: formData.dateDue,
+			dateCreated: new Date(now()),
+			assigned: false,
+			isActive: true
+		})
+	})
+		.then(() => {
+			setFormData(emptyFormData)
+			setDialogType('')
+			handleToggle()
+			fetchAllBugs(setAllBugs)
+		})
+		.catch((err) => console.log('something went wrong', err))
+}
+// Bug Edit: Calls fetch request to create OR update based on form type
+const handleEditBugSubmit = (
+	formData,
+	setDialogType,
+	handleToggle,
+	dialogData,
+	setAllBugs,
+	setFormData,
+	emptyFormData
+) => {
+	fetch(`${apiUrl}/bugs/${dialogData._id}`, {
+		method: 'PATCH',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({
+			bugName: formData.bugName,
+			issues: formData.issues,
+			priority: formData.priority,
+			timeEstimate: formData.timeEstimate,
+			dateDue: formData.dateDue,
+			dateCreated: formData.dateCreated
+		})
+	})
+		.then(() => {
+			setFormData(emptyFormData)
+			setDialogType('')
+			handleToggle()
+			fetchAllBugs(setAllBugs)
+		})
+		.catch((err) => console.log('something went wrong', err))
+}
+// User Add
+const handleNewUserSubmit = (
+	formData,
+	setDialogType,
+	handleToggle,
+	setAllUsers,
+	setFormData,
+	emptyFormData
+) => {
+	fetch(`${apiUrl}/users/`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({
+			userName: formData.userName,
+			firstName: formData.firstName,
+			lastName: formData.lastName
+		})
+	})
+		.then(() => {
+			setFormData(emptyFormData)
+			setDialogType('')
+			handleToggle()
+			fetchAllUsers(setAllUsers)
+		})
+		.catch((err) => console.log('something went wrong', err))
+}
+// User Edit
+const handleEditUserSubmit = (
+	formData,
+	setDialogType,
+	handleToggle,
+	dialogData,
+	setAllUsers,
+	setFormData,
+	emptyFormData
+) => {
+	fetch(`${apiUrl}/users/${dialogData._id}`, {
+		method: 'PATCH',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({
+			userName: formData.userName,
+			firstName: formData.firstName,
+			lastName: formData.lastName
+		})
+	})
+		.then(() => {
+			setFormData(emptyFormData)
+			setDialogType('')
+			handleToggle()
+			fetchAllUsers(setAllUsers)
+		})
+		.catch((err) => console.log('something went wrong', err))
+}
+// Remove a bug by ID
+const handleBugDelete = (dialogData, setAllBugs) => {
+	fetch(`${apiUrl}/bugs/${dialogData._id}`, {
+		method: 'DELETE'
+	})
+		.then(() => {
+			fetchAllBugs(setAllBugs)
+		})
+		.catch((err) => console.log('something went wrong', err))
+}
+// Close a bug by ID
+const handleBugToggle = (dialogData, setAllBugs) => {
+	fetch(`${apiUrl}/bugs/${dialogData._id}`, {
+		method: 'PATCH',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({
+			isActive: !dialogData.isActive
+		})
+	})
+		.then(() => fetchAllBugs(setAllBugs))
+		.catch((err) => console.log('something went wrong', err))
+}
+
+// *** Table Functions ****
+
 // Filter rows by filter
 const handleFilterRowsBy = (filter, allRows, setRows, setTitle) => {
 	if (filter === 'allBugs') {
@@ -29,12 +214,12 @@ const handleFilterRowsBy = (filter, allRows, setRows, setTitle) => {
 		setTitle('All Users')
 	}
 	if (filter === 'assignedUsers') {
-		const activeRows = allRows.filter((row) => row.assigned !== 'none')
+		const activeRows = allRows.filter((row) => row.bugs.length > 0)
 		setRows(activeRows)
 		setTitle('Users with Bugs')
 	}
 	if (filter === 'unassignedUsers') {
-		const activeRows = allRows.filter((row) => row.assigned === 'none')
+		const activeRows = allRows.filter((row) => row.bugs.length === 0)
 		setRows(activeRows)
 		setTitle('Users with no Bugs')
 	}
@@ -86,22 +271,7 @@ const handleRequestSort = (
 	setOrderBy(property)
 }
 
-// Handles selecting all rows in the table header
-// const handleSelectAllClick = (event, rows, setSelected) => {
-// 	if (event.target.checked) {
-// 		const newSelecteds = rows.map((n) => n.name)
-// 		setSelected(newSelecteds)
-// 		return
-// 	}
-// 	setSelected([])
-// }
-
-// Handles selecting one item from the list
-const handleSelectOneRow = (row, selected, setSelected) => {
-	row === selected ? setSelected({}) : setSelected(row)
-}
-
-// Changes which page is being displayed
+// Changes which page of the table is being displayed
 const handleChangePage = (event, newPage, setPage) => {
 	setPage(newPage)
 }
@@ -118,11 +288,19 @@ const handleChangeDense = (event, setDense) => {
 }
 
 export {
+	fetchAllBugs,
+	fetchAllUsers,
+	handleAssignUser,
+	handleNewBugSubmit,
+	handleEditBugSubmit,
+	handleNewUserSubmit,
+	handleEditUserSubmit,
+	handleBugDelete,
+	handleBugToggle,
 	handleFilterRowsBy,
 	getComparator,
 	stableSort,
 	handleRequestSort,
-	handleSelectOneRow,
 	handleChangePage,
 	handleChangeRowsPerPage,
 	handleChangeDense

@@ -25,62 +25,80 @@ import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 import Details from './Details'
 import BugForm from './BugForm'
+import UserForm from './UserForm'
 
 const Home = (props) => {
 	const {
 		dataName,
-		tableHeadCells,
 		tablet,
 		desktop,
 		homeTitle,
-		menuArray,
 		allBugs,
 		allUsers,
-		fetchAllBugs,
-		fetchAllUsers
+		setAllBugs,
+		setAllUsers
 	} = props
+	// Create an object to reset dialogData
+	const emptyDialogData = {
+		bugName: '',
+		issues: '',
+		priority: '',
+		timeEstimate: '',
+		dateDue: '',
+		dateCreated: '',
+		userName: '',
+		firstName: '',
+		lastName: ''
+	}
+
 	// States for controlling the Table
 	const [rows, setRows] = React.useState([])
 	const [order, setOrder] = React.useState('asc')
 	const [orderBy, setOrderBy] = React.useState('calories')
-	const [selected, setSelected] = React.useState({})
+	const [selected, setSelected] = React.useState('')
 	const [page, setPage] = React.useState(0)
 	const [dense, setDense] = React.useState(false)
 	const [rowsPerPage, setRowsPerPage] = React.useState(5)
 	const [title, setTitle] = React.useState(homeTitle)
 	// State for controlling filter menu
 	const [anchorEl, setAnchorEl] = React.useState(null)
+	const [menuType, setMenuType] = React.useState('')
 	const menuOpen = Boolean(anchorEl)
 	// State for controlling the Dialogs
-	const [addDialogOpen, setAddDialogOpen] = React.useState(false)
-	const [editDialogOpen, setEditDialogOpen] = React.useState(false)
+	const [bugDialogOpen, setBugDialogOpen] = React.useState(false)
+	const [userDialogOpen, setUserDialogOpen] = React.useState(false)
 	const [detailsDialogOpen, setDetailsDialogOpen] = React.useState(false)
+	const [dialogData, setDialogData] = React.useState(emptyDialogData)
+	const [dialogType, setDialogType] = React.useState('')
 	// Variable to track location to load state properly
 	let location = useLocation().pathname
 
 	// Event handlers for menu open and close
-	const handleMenuOpen = (event) => {
+	const handleMenuOpen = (event, menuType) => {
 		setAnchorEl(event.currentTarget)
+		setMenuType(menuType)
 	}
 	const handleMenuClose = () => {
 		setAnchorEl(null)
 	}
 	// Open and close the Add Form
-	const handleAddDialogToggle = () => {
-		setAddDialogOpen(!addDialogOpen)
+	const handleBugDialogToggle = () => {
+		setBugDialogOpen(!bugDialogOpen)
 	}
 	// Open and close the Edit Form
-	const handleEditDialogToggle = () => {
-		setEditDialogOpen(!editDialogOpen)
+	const handleUserDialogToggle = () => {
+		setUserDialogOpen(!userDialogOpen)
 	}
 	// Open and close the Details Dialog
 	const handleDetailsDialogToggle = () => {
 		setDetailsDialogOpen(!detailsDialogOpen)
 	}
-
+	// console.log('dialogData: ', dialogData, 'dialogType: ', dialogType)
+	// Use Effect resets state data on navigation to make sure bugs / users display properly
 	React.useEffect(() => {
 		setTitle(homeTitle)
 		setRows(dataName === 'Bug' ? allBugs : allUsers)
+		setDialogData(emptyDialogData)
 	}, [location, allBugs, allUsers])
 
 	// Adding propTypes for the EnhancedTableHead Component
@@ -101,16 +119,24 @@ const Home = (props) => {
 				menuOpen={menuOpen}
 				onClose={handleMenuClose}
 				handleMenuClose={handleMenuClose}
-				allData={dataName === 'Bug' ? allBugs : allUsers}
+				allBugs={allBugs}
+				allUsers={allUsers}
 				setRows={setRows}
 				setTitle={setTitle}
-				menuArray={menuArray}
+				setAllBugs={setAllBugs}
+				setAllUsers={setAllUsers}
+				dataName={dataName}
+				menuType={menuType}
+				selected={selected}
+				setDetailsDialogOpen={setDetailsDialogOpen}
 			/>
 			<Paper sx={{ width: '100%', mb: 2 }}>
 				<EnhancedTableToolbar
 					handleMenuOpen={handleMenuOpen}
 					title={title}
-					handleAddDialogToggle={handleAddDialogToggle}
+					dataName={dataName}
+					handleBugDialogToggle={handleBugDialogToggle}
+					handleUserDialogToggle={handleUserDialogToggle}
 				/>
 				<TableContainer>
 					<Table
@@ -131,7 +157,9 @@ const Home = (props) => {
 									setOrderBy
 								)
 							}
-							tableHeadCells={tableHeadCells}
+							dataName={dataName}
+							tablet={tablet}
+							desktop={desktop}
 						/>
 						<TableBody>
 							{
@@ -148,8 +176,13 @@ const Home = (props) => {
 											tablet={tablet}
 											desktop={desktop}
 											dataName={dataName}
-											handleEditDialogToggle={handleEditDialogToggle}
+											handleBugDialogToggle={handleBugDialogToggle}
+											handleUserDialogToggle={handleUserDialogToggle}
 											handleDetailsDialogToggle={handleDetailsDialogToggle}
+											handleMenuOpen={handleMenuOpen}
+											setAllBugs={setAllBugs}
+											setDialogData={setDialogData}
+											setDialogType={setDialogType}
 										/>
 									))
 							}
@@ -188,20 +221,37 @@ const Home = (props) => {
 				}
 				label="Dense padding"
 			/>
+			{/* Works for users or bugs based on DataName */}
 			<Details
 				open={detailsDialogOpen}
 				handleToggle={handleDetailsDialogToggle}
-				// Replace 'bug' with state
 				dataName={dataName}
-				selected={selected}
+				dialogData={dialogData}
+				handleMenuOpen={handleMenuOpen}
+				handleBugDialogToggle={handleBugDialogToggle}
+				handleUserDialogToggle={handleUserDialogToggle}
+				setAllBugs={setAllBugs}
 			/>
-			<BugForm open={addDialogOpen} handleToggle={handleAddDialogToggle} />
-			{/* Recycle form for Edit */}
+			{/* Works for Edit or New based on type */}
 			<BugForm
-				open={editDialogOpen}
-				handleToggle={handleEditDialogToggle}
-				type="edit"
-				selected={selected}
+				bugDialogOpen={bugDialogOpen}
+				dataName={dataName}
+				handleToggle={handleBugDialogToggle}
+				desktop={desktop}
+				type={dialogType}
+				dialogData={dialogData}
+				setAllBugs={setAllBugs}
+				setDialogType={setDialogType}
+			/>
+			{/* Works for Edit or New based on type */}
+			<UserForm
+				userDialogOpen={userDialogOpen}
+				dataName={dataName}
+				handleToggle={handleUserDialogToggle}
+				type={dialogType}
+				dialogData={dialogData}
+				setAllUsers={setAllUsers}
+				setDialogType={setDialogType}
 			/>
 		</Box>
 	)
