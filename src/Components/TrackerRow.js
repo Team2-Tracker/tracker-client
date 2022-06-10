@@ -59,6 +59,10 @@ const TrackerRow = (props) => {
 				</TableCell>
 			)
 		}
+		let assignedUser = 'none'
+		if (row.user) {
+			assignedUser = row.user.length > 0 ? row.user[0].userName : 'none'
+		}
 		return (
 			<React.Fragment>
 				<TableRow
@@ -92,7 +96,7 @@ const TrackerRow = (props) => {
 						{moment(row.dateDue).format('MMM Do YY')}
 					</TableCell>
 					{dateCreatedCell}
-					<TableCell align="right">{row.assigned}</TableCell>
+					<TableCell align="right">{assignedUser}</TableCell>
 				</TableRow>
 				<TableRow selected={true}>
 					<TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -113,20 +117,12 @@ const TrackerRow = (props) => {
 		let bugHoursCell = ''
 		if (desktop) {
 			let bugHours = 0
-			row.bugs.forEach((bug) => {
-				bugHours = bugHours + bug.timeEstimate
-			})
-			bugHoursCell = (
-				<TableCell align="center">
-					{
-						(row.bugs.reduce(
-							(previous, current) =>
-								previous.timeEstimate + current.timeEstimate
-						),
-						0)
-					}
-				</TableCell>
-			)
+			if (row.bugs) {
+				row.bugs.forEach((bug) => {
+					bugHours = bugHours + bug.timeEstimate
+				})
+			}
+			bugHoursCell = <TableCell align="center">{bugHours}</TableCell>
 		}
 		return (
 			<React.Fragment>

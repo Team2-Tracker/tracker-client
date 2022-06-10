@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { alpha } from '@mui/material/styles'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'

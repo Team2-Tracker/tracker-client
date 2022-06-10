@@ -134,7 +134,7 @@ function Details(props) {
 				) : (
 					''
 				)}
-				<Button variant="outlined" size="small" onClose={handleToggle}>
+				<Button variant="outlined" size="small" onClick={handleToggle}>
 					Done
 				</Button>
 			</DialogActions>

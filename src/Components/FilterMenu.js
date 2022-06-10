@@ -16,7 +16,8 @@ const FilterMenu = (props) => {
 		setAllUsers,
 		dataName,
 		menuType,
-		selected
+		selected,
+		setDetailsDialogOpen
 	} = props
 
 	let allData = []
@@ -63,7 +64,8 @@ const FilterMenu = (props) => {
 								menuItem.bugId,
 								handleMenuClose,
 								setAllBugs,
-								setAllUsers
+								setAllUsers,
+								setDetailsDialogOpen
 						  )
 				}}
 			>
@@ -77,9 +79,6 @@ const FilterMenu = (props) => {
 			anchorEl={anchorEl}
 			open={menuOpen}
 			onClose={handleMenuClose}
-			MenuListProps={{
-				'aria-labelledby': 'basic-button'
-			}}
 		>
 			{menuItemList}
 		</Menu>

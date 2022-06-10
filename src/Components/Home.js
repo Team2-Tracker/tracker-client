@@ -114,6 +114,7 @@ const Home = (props) => {
 				dataName={dataName}
 				menuType={menuType}
 				selected={selected}
+				setDetailsDialogOpen={setDetailsDialogOpen}
 			/>
 			<Paper sx={{ width: '100%', mb: 2 }}>
 				<EnhancedTableToolbar
@@ -221,7 +222,6 @@ const Home = (props) => {
 			/>
 			{/* Works for Edit or New based on type */}
 			<BugForm
-				open={bugDialogOpen}
 				bugDialogOpen={bugDialogOpen}
 				dataName={dataName}
 				handleToggle={handleBugDialogToggle}
@@ -232,7 +232,6 @@ const Home = (props) => {
 			/>
 			{/* Works for Edit or New based on type */}
 			<UserForm
-				open={userDialogOpen}
 				userDialogOpen={userDialogOpen}
 				dataName={dataName}
 				handleToggle={handleUserDialogToggle}

@@ -10,15 +10,7 @@ import DialogTitle from '@mui/material/DialogTitle'
 import { handleNewUserSubmit, handleEditUserSubmit } from './Utils'
 
 const BugForm = (props) => {
-	const {
-		open,
-		handleToggle,
-		name,
-		type,
-		dialogData,
-		userDialogOpen,
-		setAllUsers
-	} = props
+	const { handleToggle, type, dialogData, userDialogOpen, setAllUsers } = props
 
 	// State to track form input
 	const [formData, setFormData] = useState({
@@ -36,7 +28,7 @@ const BugForm = (props) => {
 				lastName: dialogData.lastName
 			})
 		}
-	}, [dialogData])
+	}, [userDialogOpen])
 
 	// Handle functions set state to form values
 	const handleUserNameChange = (event) => {
@@ -75,7 +67,7 @@ const BugForm = (props) => {
 	]
 
 	return (
-		<Dialog open={open} onClose={handleToggle}>
+		<Dialog open={userDialogOpen} onClose={handleToggle}>
 			<DialogTitle>{type === 'edit' ? 'Edit User' : 'Add User'}</DialogTitle>
 			<DialogContent>
 				<Box
