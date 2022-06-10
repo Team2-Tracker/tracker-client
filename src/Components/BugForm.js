@@ -21,7 +21,7 @@ const BugForm = (props) => {
 		open,
 		bugDialogOpen,
 		handleToggle,
-		name,
+		dataName,
 		type,
 		dialogData,
 		desktop,
@@ -121,7 +121,7 @@ const BugForm = (props) => {
 
 	return (
 		<Dialog open={open} onClose={handleToggle}>
-			<DialogTitle>{name} Details</DialogTitle>
+			<DialogTitle>{type === 'edit' ? 'Edit Bug' : 'Add Bug'}</DialogTitle>
 			<DialogContent>
 				<Box
 					component="form"

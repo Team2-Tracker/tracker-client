@@ -24,7 +24,7 @@ const EnhancedTableToolbar = (props) => {
 				pr: { xs: 1, sm: 1 }
 			}}
 		>
-			<Tooltip title="Add bug">
+			<Tooltip title={dataName === 'Bug' ? 'Add Bug' : 'Add User'}>
 				<IconButton
 					onClick={() => {
 						dataName === 'Bug'
