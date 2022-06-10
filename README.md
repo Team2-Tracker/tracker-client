@@ -2,6 +2,21 @@
 
 ## Tracker App - Front-End
 
+Link: (https://team2-tracker.github.io/tracker-client/)
+
+## Prerequisites
+
+    - Your front-end must use React and leverage the backend API.
+
+    - You must use React Router to handle multiple views.
+
+    - You must communicate with the back-end API RESTfully to Create
+
+    - Read, Update, and Destroy resources (using either fetch or axios).
+    
+    - Your frontend must be responsive and work on mobile phones, tablets, and desktops
+
+
 ## Project Schedule
 
 |  Day | Deliverable | Status
@@ -185,12 +200,20 @@ This component contains CRUD functions.
 
 ## Code Snippet
 
-Use this section to include a brief code snippet of functionality that you are proud of an a brief description  
+This code snippet filters through bugs and selects only the unassigned bugs to be displayed on the table.
 
-```
-function reverse(string) {
-	// here is the code to reverse a string of text
-}
+```js
+if (menuType === 'unassignedBugs') {
+		const unassignedBugs = allBugs.filter((bug) => !bug.assigned)
+		menuArray = unassignedBugs.map((bug) => {
+			return {
+				id: bug._id,
+				name: bug.bugName,
+				userId: selected._id,
+				bugId: bug._id
+			}
+		})
+	}
 ```
 
 ## Issues and Resolutions
