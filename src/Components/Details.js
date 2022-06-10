@@ -23,6 +23,21 @@ function Details(props) {
 
 	let textFieldList = ''
 	let displayList = ''
+	let bugList = ''
+	if (dialogData.bugs) {
+		bugList =
+			dialogData.bugs.length > 0
+				? dialogData.bugs.reduce(
+						(previous, current) => previous.bugName + ' ' + current.bugName
+				  )
+				: 'None'
+	}
+	let bugHours = 0
+	if (dialogData.bugs) {
+		dialogData.bugs.forEach((bug) => {
+			bugHours = bugHours + bug.timeEstimate
+		})
+	}
 	if (dataName === 'Bug' && Object.keys(dialogData).length > 0) {
 		displayList = [
 			{ label: 'Name', value: dialogData.bugName },
@@ -41,11 +56,7 @@ function Details(props) {
 			{ label: 'Last Name', value: dialogData.lastName },
 			{
 				label: 'Bugs',
-				value: dialogData.bugs
-					? dialogData.bugs.reduce(
-							(previous, current) => previous.bugName + ' ' + current.bugName
-					  )
-					: 'None'
+				value: bugList
 			},
 			{
 				label: 'Number of Bugs Assigned',
@@ -53,13 +64,7 @@ function Details(props) {
 			},
 			{
 				label: 'Total Estimated Hours Assigned',
-				value: dialogData.bugs
-					? dialogData.bugs.reduce(
-							(previous, current) =>
-								previous.timeEstimate + current.timeEstimate,
-							0
-					  )
-					: 0
+				value: bugHours
 			}
 		]
 	}
