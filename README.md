@@ -1,70 +1,224 @@
-# Getting Started with Create React App
+# Project Overview
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Tracker App - Front-End
 
-## Available Scripts
+Link: (https://team2-tracker.github.io/tracker-client/)
 
-In the project directory, you can run:
+## Prerequisites
 
-### `npm start`
+    - Your front-end must use React and leverage the backend API.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+    - You must use React Router to handle multiple views.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+    - You must communicate with the back-end API RESTfully to Create
 
-### `npm test`
+    - Read, Update, and Destroy resources (using either fetch or axios).
+    
+    - Your frontend must be responsive and work on mobile phones, tablets, and desktops
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+## Project Schedule
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+|  Day | Deliverable | Status
+|---|---| ---|
+|Friday / Saturday / Sunday| Project Worksheet, Wireframes, Time /Priority Matrix | Complete
+|Monday| Initialize repos, Create API, Create skeleton React App components | Complete
+|Tuesday| Finish API MVP, Build out all React bug bomponents (No styling), Stretch - Get users to reuse bug components  | Complete
+|Wednesday| Build out React User components, Style App, Host Back-End and Front-End | Complete
+|Thursday| Resolve bugs, More styling, Post MVP goals | Partially Complete
+|Friday| Present | Incomplete
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Project Description
 
-### `npm run eject`
+An interactive app that tracks Bugs/Issues and can assign them to users for comments and resolution. A clean, modern interface using MUI components and reactive styling to provide a seamless mobile-first experience.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Wireframes
+  
+- [Mobile] (https://imgur.com/4FrNkU9) 
+- [Desktop] (https://imgur.com/WnY3u33)
+- [Time/Priority] (https://imgur.com/4CeQsy2)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Wireframing Resources:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- [Figma](https://www.figma.com/)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+## Time/Priority Matrix 
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+|  Key | Feature | Time | Priority
+|---|---|---|---|
+| A | Create React | 30 min | 9
+| B | Create skeleton of React components, successful API fetch | 1 hr | 8
+| C | React Bug Home component  | 4 hr | 7
+| D | React Bug Details component | 4 hr | 7
+| E | React User component | 4 hr | 7
+| F | React User Details component | 4 hr | 7
+| G | React About page with pictures, bios & links | 4 hr | 6
+| H | React MVP styling | 8 hr | 6
+| I | React Dashboard component | 8 hr | 4
+| J | React dynamic styling to color bugs by priority | 2 hr | 5
+| K | React Search form | 2 hr | 2
+| L | React Comment functionality| 4 hr | 3
+| M | React Desktop styling changes | 8 hr | 5
+| N | React Sign-In functionality | 4 hr | 1
+ 
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### MVP
 
-### Code Splitting
+1. Create React
+2. Create skeleton of React components, successful API fetch
+3. React Bug Home component
+4. React Bug Details component
+5. React User component
+6. React User Details component
+7. React About page with pictures, bios & links
+8. React MVP styling
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+#### MVP Goals
 
-### Analyzing the Bundle Size
+1. Create client repository
+2. A home page that displays a table of bugs filtered by a query (All, Active, Closed)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+        A. The table should sort the bugs by name, status, date, etc
 
-### Making a Progressive Web App
+        B. Each row on the table is a link to bring the user to a bug details page
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+        C. A + icon opens a form to add a new bug
 
-### Advanced Configuration
+        D. A button inside the row allows marking a bug complete
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+3. A bug details page displays all the details of the selected bug
 
-### Deployment
+        A. An edit button opens a form to edit any of the bug’s attributes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+        B. A close button marks the bug closed
 
-### `npm run build` fails to minify
+        C. An assign button brings up a list of users that can be assigned to this bug
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+4. User homepage/dashboard that displays all the users in a table with relevant information like number of bugs assigned, bug hours, etc
+        A. Each user row in the table is a link to the user details page
+
+        B. A + icon opens a form to add a new user (post MVP)
+
+        C. A remove button for each user allows a user to be removed (post MVP)
+
+5. A user details page displays all the details of the selected user
+        A. An edit button to edit the user fields (postMVP)
+
+        B. A delete button to remove the user - if admin, disable remove button (post MVP)
+
+        C. An assign button brings up a list of unassigned bugs and will assign them to this user. (postMVP)
+
+6. About page
+
+        A. Headshots and bio details about each team member
+
+        B. A link to each team-members portfolio website
+
+
+
+#### PostMVP 
+
+1. Add comments to bugs that display in bug details
+2. Dashboard page that displays bug metrics
+
+        A. New bugs this week
+    
+        B. Bugs closed this week
+    
+        C. Bug hours assigned per user
+    
+        D. Bug hours by area / subject
+    
+3. Add dynamic styling to color bugs by priority
+4. Add countdown timer / past due status to bugs -> makes highest priority
+5. Add authorization / sign in to require credentials for editing
+6. Add search form
+7. Add desktop styling changes:
+
+        A. Change from table rows to cards
+    
+        B. Add avatar by user assigned
+    
+        C. Link to bug details displays in detail area instead of new page
+
+
+## Functional Components
+
+#### About: 
+
+This component renders pictures and bios of team with links to every member's Personal Portfolio and Github.
+
+#### Bug Form: 
+
+This component contains the code that allows users to add and edit issues in the Tracker app. 
+
+#### Details: 
+
+This component contains the form's code that allows users to read, assign, edit, and close a created bugs details.
+
+#### Enhanced Table Head: 
+
+This component contains the code to map through the headCells array to create each header, sort when/where/what direction, the actual name of the heading, and creates the Table Heading with sort and list functionality.
+
+#### Enhanced Table Toolbar: 
+
+This component contains the code for the toolbar which contains the table header OR the selected bugs feature.
+
+#### Filter Menu: 
+
+This component contains the code for the filtering menu. It allows users to filter through all of the bugs and choose to show the following: All Bugs, Active Bugs, Closed Bugs, Assigned Bugs, and Unassigned Bugs.
+
+#### Home: 
+
+This component renders the Homepage of the Tracker App which contains the Top Nav Bar and Issues table.
+
+#### Table Config: 
+
+This component contains the code for the Column Names for Bugs and Users, starting with 3 of each to display at mobile, Issues, Dates Created.
+
+#### Table Controls:
+
+This component contains the code to Send PATCH requests to DB to change active status to FALSE, and GET requests to update all bugs.
+
+#### Top Nav Bar: 
+
+This component contains the code for the Top Nav which consists of the menu to navigate to the Bugs, Users and About pages.
+
+#### Tracker Row: 
+
+This component contains the codes which sets whichever row is selected by ID, and populate issues.
+
+#### Users: 
+
+This component renders a Log that provides information on all of the bugs assigned to specific users. 
+
+#### Utils: 
+
+This component contains CRUD functions.
+
+## Code Snippet
+
+This code snippet filters through bugs and selects only the unassigned bugs to be displayed on the table.
+
+```js
+if (menuType === 'unassignedBugs') {
+		const unassignedBugs = allBugs.filter((bug) => !bug.assigned)
+		menuArray = unassignedBugs.map((bug) => {
+			return {
+				id: bug._id,
+				name: bug.bugName,
+				userId: selected._id,
+				bugId: bug._id
+			}
+		})
+	}
+```
+
+## Issues and Resolutions
+
+**ERROR**: Issue running npm run deploy. It was not working correctly. All it was displaying was the README.md.
+
+                              
+**RESOLUTION**: There were typos in package.json that caused the error. The changes were made, switched to main then ran npm run deploy. The following step was to check that our repositories "Settings" that the "Pages" branch is set to gh-pages. We were then able to successfully deploy.
