@@ -42,8 +42,8 @@ const Home = (props) => {
 	const emptyDialogData = {
 		bugName: '',
 		issues: '',
-		priority: 1,
-		timeEstimate: 0,
+		priority: '',
+		timeEstimate: '',
 		dateDue: '',
 		dateCreated: '',
 		userName: '',
@@ -94,8 +94,7 @@ const Home = (props) => {
 		setDetailsDialogOpen(!detailsDialogOpen)
 	}
 
-	console.log('dialogData: ', dialogData)
-
+	// Use Effect resets state data on navigation to make sure bugs / users display properly
 	React.useEffect(() => {
 		setTitle(homeTitle)
 		setRows(dataName === 'Bug' ? allBugs : allUsers)

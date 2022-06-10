@@ -23,14 +23,15 @@ const BugForm = (props) => {
 	const emptyDialogData = {
 		bugName: '',
 		issues: '',
-		priority: 1,
-		timeEstimate: 0,
-		dateDue: '',
+		priority: '',
+		timeEstimate: '',
+		dateDue: moment().format('MM/DD/yyyy'),
 		dateCreated: ''
 	}
+
 	// State to track form input - Ternary functions add default values for edit forms
 	const [formData, setFormData] = useState(emptyDialogData)
-
+	console.log(formData)
 	// Use effect to only set state when data is available
 	React.useEffect(() => {
 		if (type === 'edit' && bugDialogOpen) {
@@ -68,12 +69,12 @@ const BugForm = (props) => {
 	}
 	const handleDateChange = (event) => {
 		const newData = { ...formData }
-		newData.dateDue = event
+		newData.dateDue = moment(event).toJSON()
 		setFormData(newData)
 	}
 	const handleDateCreatedChange = (event) => {
 		const newData = { ...formData }
-		newData.dateCreated = event
+		newData.dateCreated = moment(event).toJSON()
 		setFormData(newData)
 	}
 	// Array to create form elements
@@ -157,7 +158,7 @@ const BugForm = (props) => {
 						<DesktopDatePicker
 							label="Date Due"
 							inputFormat="MM/DD/yyyy"
-							value={formData.dateCreated}
+							value={formData.dateDue}
 							onChange={handleDateChange}
 							renderInput={(params) => <TextField {...params} />}
 						/>
@@ -165,7 +166,7 @@ const BugForm = (props) => {
 						<MobileDatePicker
 							label="Date Due"
 							inputFormat="MM/DD/yyyy"
-							value={formData.dateCreated}
+							value={formData.dateDue}
 							onChange={handleDateChange}
 							renderInput={(params) => <TextField {...params} />}
 						/>

@@ -10,6 +10,7 @@ const fetchAllBugs = (setAllBugs) => {
 		.then((data) => {
 			setAllBugs(data.bugs)
 		})
+		.catch((err) => console.log('something went wrong', err))
 }
 const fetchAllUsers = (setAllUsers) => {
 	fetch(apiUrl + `/users/`)
@@ -17,6 +18,7 @@ const fetchAllUsers = (setAllUsers) => {
 		.then((data) => {
 			setAllUsers(data.users)
 		})
+		.catch((err) => console.log('something went wrong', err))
 }
 // This function updates bugs by ID to add the user by ID
 const handleAssignUser = (
@@ -32,14 +34,14 @@ const handleAssignUser = (
 			method: 'PATCH',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({})
-		}).then(() => {
-			handleMenuClose()
-			fetchAllBugs(setAllBugs)
-			fetchAllUsers(setAllUsers)
-			setDetailsDialogOpen(false)
 		})
-	} else {
-		console.log('something went wrong', 'userId:', userId, 'bugId:', bugId)
+			.then(() => {
+				handleMenuClose()
+				fetchAllBugs(setAllBugs)
+				fetchAllUsers(setAllUsers)
+				setDetailsDialogOpen(false)
+			})
+			.catch((err) => console.log('something went wrong', err))
 	}
 }
 // Bug Add: Calls fetch request to CREATE
@@ -50,7 +52,6 @@ const handleNewBugSubmit = (
 	setAllBugs,
 	emptyDialogData
 ) => {
-	console.log('formData:', formData)
 	fetch(`${apiUrl}/bugs/`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
@@ -64,11 +65,13 @@ const handleNewBugSubmit = (
 			assigned: false,
 			isActive: true
 		})
-	}).then(() => {
-		setFormData(emptyDialogData)
-		handleToggle()
-		fetchAllBugs(setAllBugs)
 	})
+		.then(() => {
+			setFormData(emptyDialogData)
+			handleToggle()
+			fetchAllBugs(setAllBugs)
+		})
+		.catch((err) => console.log('something went wrong', err))
 }
 // Bug Edit: Calls fetch request to create OR update based on form type
 const handleEditBugSubmit = (
@@ -90,11 +93,13 @@ const handleEditBugSubmit = (
 			dateDue: formData.dateDue,
 			dateCreated: formData.dateCreated
 		})
-	}).then(() => {
-		setFormData(emptyDialogData)
-		handleToggle()
-		fetchAllBugs(setAllBugs)
 	})
+		.then(() => {
+			setFormData(emptyDialogData)
+			handleToggle()
+			fetchAllBugs(setAllBugs)
+		})
+		.catch((err) => console.log('something went wrong', err))
 }
 // User Add
 const handleNewUserSubmit = (
@@ -112,11 +117,13 @@ const handleNewUserSubmit = (
 			firstName: formData.firstName,
 			lastName: formData.lastName
 		})
-	}).then(() => {
-		setFormData(emptyDialogData)
-		handleToggle()
-		fetchAllUsers(setAllUsers)
 	})
+		.then(() => {
+			setFormData(emptyDialogData)
+			handleToggle()
+			fetchAllUsers(setAllUsers)
+		})
+		.catch((err) => console.log('something went wrong', err))
 }
 // User Edit
 const handleEditUserSubmit = (
@@ -135,19 +142,23 @@ const handleEditUserSubmit = (
 			firstName: formData.firstName,
 			lastName: formData.lastName
 		})
-	}).then(() => {
-		setFormData(emptyDialogData)
-		handleToggle()
-		fetchAllUsers(setAllUsers)
 	})
+		.then(() => {
+			setFormData(emptyDialogData)
+			handleToggle()
+			fetchAllUsers(setAllUsers)
+		})
+		.catch((err) => console.log('something went wrong', err))
 }
 // Remove a bug by ID
 const handleBugDelete = (dialogData, setAllBugs) => {
 	fetch(`${apiUrl}/bugs/${dialogData._id}`, {
 		method: 'DELETE'
-	}).then(() => {
-		fetchAllBugs(setAllBugs)
 	})
+		.then(() => {
+			fetchAllBugs(setAllBugs)
+		})
+		.catch((err) => console.log('something went wrong', err))
 }
 // Close a bug by ID
 const handleBugToggle = (dialogData, setAllBugs) => {
@@ -157,7 +168,9 @@ const handleBugToggle = (dialogData, setAllBugs) => {
 		body: JSON.stringify({
 			isActive: !dialogData.isActive
 		})
-	}).then(() => fetchAllBugs(setAllBugs))
+	})
+		.then(() => fetchAllBugs(setAllBugs))
+		.catch((err) => console.log('something went wrong', err))
 }
 
 // *** Table Functions ****
